@@ -1,0 +1,208 @@
+@use "../utils/media-queries" as responsive;
+
+@use "../base/colors" as color;
+
+.container {
+  width: 100%;
+  height: 100%;
+  padding: 1rem 8%;
+  position: relative;
+  margin: 8rem 0;
+
+  @media #{responsive.$laptop} {
+    padding: 1rem 6%;
+  }
+
+  @media #{responsive.$tablet-landscape} , #{responsive.$tablet-portrait} , #{responsive.$phone} {
+    padding: 1rem 4%;
+  }
+
+  .slider {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+
+    .slides {
+      display: grid;
+      grid-template-columns: 35% 30% 35%;
+      grid-template-rows: 50% 50%;
+      place-content: center;
+      width: 100%;
+      height: 100%;
+      padding: 0.5rem 0;
+
+      @media #{responsive.$tablet-portrait} {
+        grid-template-columns: 50% 50%;
+        grid-template-rows: 50% 50%;
+        gap: 1rem 0rem;
+        padding: 0 0.1rem;
+      }
+
+      @media #{responsive.$phone} {
+        grid-template-columns: 100%;
+        grid-template-rows: auto;
+        gap: 1.5rem;
+        padding: 0;
+      }
+
+      h2 {
+        width: 100%;
+        color: color.$main;
+        font-family: dana-light;
+        font-size: 2.4rem;
+        line-height: 4rem;
+        grid-column: 1/2;
+        grid-row: 1/2;
+
+        @media #{responsive.$tablet-landscape} {
+          font-size: 2.2rem;
+        }
+
+        @media #{responsive.$tablet-portrait} , #{responsive.$phone} {
+          grid-row: 1/2;
+          grid-column: 1/2;
+        }
+
+        span {
+          font-family: dana-extra-bold;
+          font-size: 2.3rem;
+
+          @media #{responsive.$tablet-landscape} {
+            font-size: 2.2rem;
+          }
+        }
+
+        .star {
+          position: relative;
+        }
+
+        svg {
+          position: absolute;
+          top: 5px;
+          left: -50px;
+        }
+      }
+
+      p {
+        width: 380px;
+        text-align: justify;
+        font-family: dana;
+        font-size: 1rem;
+        color: color.$main;
+        line-height: 2rem;
+        grid-row: 1/2;
+        grid-column: 3/4;
+        place-self: start end;
+
+        @media #{responsive.$tablet-landscape} {
+          width: 100%;
+        }
+
+        @media #{responsive.$tablet-portrait} {
+          place-self: center start;
+          grid-row: 1/2;
+          grid-column: 2/3;
+          width: 100%;
+        }
+
+        @media #{responsive.$phone} {
+          width: 100%;
+          grid-column: 1/2;
+          grid-row: 2/3;
+          font-size: 0.9rem;
+        }
+      }
+
+      .textBasedComment {
+        grid-row: 2/3;
+        grid-column: 1/2;
+
+        @media #{responsive.$tablet-portrait} {
+          width: 100%;
+          grid-row: 3/4;
+          grid-column: 1/3;
+        }
+
+        @media #{responsive.$phone}{
+          grid-column: 1/2;
+          grid-row: 4/5;
+        }
+      }
+
+      .modelContainer {
+        grid-row: 1/3;
+        grid-column: 2/3;
+        place-self: center;
+
+        @media #{responsive.$tablet-portrait} , #{responsive.$phone} {
+          display: none;
+        }
+      }
+
+      .voiceBasedComment {
+        grid-row: 2/3;
+        grid-column: 3/4;
+
+        @media #{responsive.$tablet-portrait} {
+          grid-column: 1/3;
+          grid-row: 4/5;
+        }
+
+        @media #{responsive.$phone}{
+         grid-column: 1/2;
+         grid-row: 3/4; 
+        }
+      }
+    }
+  }
+
+  .controls {
+    display: flex;
+    align-items: center;
+    width: max-content;
+    height: max-content;
+    gap: 1rem;
+    margin-top: 1rem;
+    position: absolute;
+    bottom: 0;
+    z-index: 1;
+
+    @media #{responsive.$tablet-landscape} {
+      bottom: -25px;
+    }
+
+    @media #{responsive.$tablet-portrait} {
+      bottom: -50px;
+      left: 44%;
+    }
+
+    @media #{responsive.$phone}{
+      bottom: -3rem;
+    }
+
+    .prevBtn,
+    .nextBtn {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 50px;
+      height: 45px;
+      background-color: color.$main;
+      cursor: pointer;
+
+      img {
+        width: 13px;
+
+        @media #{responsive.$tablet-portrait} {
+          width: 16px;
+        }
+      }
+    }
+
+    .disabled {
+      background-color: #515151;
+      cursor: not-allowed;
+    }
+  }
+}

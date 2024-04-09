@@ -1,0 +1,305 @@
+@use "../base/colors" as color;
+@use "../utils/media-queries" as responsive;
+
+.container {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  grid-template-rows: 100%;
+  place-items: center;
+  gap: 3rem;
+  width: 100%;
+  height: 100%;
+  direction: rtl;
+  padding: 1rem 8%;
+  position: relative;
+  margin: 8rem 0;
+
+  @media #{responsive.$laptop} {
+    padding: 1rem 6%;
+    grid-template-rows: 400px 400px;
+  }
+
+  @media #{responsive.$tablet-landscape} {
+    grid-template-columns: 50% 50%;
+    grid-template-rows: 650px 450px;
+    padding: 1rem 4%;
+    gap: 0;
+  }
+
+  @media #{responsive.$tablet-portrait} {
+    grid-template-columns: 100%;
+    grid-template-rows: 50% 50%;
+    padding: 1rem 4%;
+    gap: 3rem;
+  }
+
+  @media #{responsive.$phone} {
+    grid-template-columns: 100%;
+    grid-template-rows: 33% 33% 33%;
+    padding: 1rem 4%;
+    gap: 2rem;
+    top: -50px;
+  }
+
+  section.modelContainer {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    grid-column: 1/2;
+    grid-row: 1/3;
+    position: relative;
+
+    @media #{responsive.$tablet-landscape} , #{responsive.$tablet-portrait} , #{responsive.$phone} {
+      justify-content: center;
+      align-items: center;
+    }
+
+    @media #{responsive.$tablet-landscape} ,#{responsive.$tablet-portrait} ,#{responsive.$phone} {
+      grid-column: 1/2;
+      grid-row: 1/2;
+    }
+
+    .textContainer {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      height: max-content;
+      position: absolute;
+      top: -20px;
+      right: -33px;
+      z-index: 1;
+
+      @media #{responsive.$tablet-portrait}{
+       top: -20px;
+       right: 0; 
+      }
+
+      @media #{responsive.$phone} {
+        top: 0;
+        right: 0;
+        height: 100%;
+        align-items: flex-start;
+      }
+
+      svg {
+        fill: none;
+        stroke: none;
+        direction: ltr;
+        overflow: visible;
+        height: 310px;
+
+        @media #{responsive.$tablet-portrait}{
+         width: 100%;
+         height: 340px;
+        }
+
+        @media #{responsive.$phone} {
+          width: 97%;
+          height: max-content;
+        }
+
+        text {
+          fill: #222;
+          stroke: none;
+          font-size: 0.8rem;
+          word-spacing: 0.13rem;
+          font-family: dana-light;
+
+          @media #{responsive.$phone} {
+            font-size: 1.4rem;
+          }
+        }
+      }
+    }
+
+    .image {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      height: 100%;
+      position: relative;
+
+      @media #{responsive.$tablet-portrait}{
+        justify-content: center;
+      }
+
+      @media #{responsive.$phone} {
+        padding: 1rem;
+      }
+
+      img {
+        width: 90%;
+        height: 100%;
+        border: none;
+        border-radius: 320px 320px 0 0;
+        padding-bottom: 2rem;
+
+        @media #{responsive.$phone} {
+          width: 100%;
+        }
+      }
+    }
+  }
+
+  .introduction {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+    height: 100%;
+    grid-row: 1/2;
+    grid-column: 2/3;
+
+    @media #{responsive.$laptop} {
+      gap: 1rem;
+    }
+
+    @media #{responsive.$tablet-landscape} {
+      justify-content: center;
+      align-items: center;
+      grid-column: 2/3;
+      grid-row: 1/2;
+    }
+
+    @media #{responsive.$tablet-portrait} {
+      justify-content: center;
+      align-items: center;
+      gap: 1rem;
+      grid-row: 2/3;
+      grid-column: 1/2;
+    }
+
+    @media #{responsive.$phone} {
+      grid-column: 1/2;
+      grid-row: 2/2;
+      margin-bottom: 1rem;
+    }
+
+    svg {
+      @media #{responsive.$tablet-portrait} {
+        display: none;
+      }
+    }
+
+    h3 {
+      font-family: dana;
+      font-size: 2.5rem;
+
+      @media #{responsive.$phone} {
+        font-size: 2rem;
+      }
+
+      span {
+        font-family: dana-extra-bold;
+      }
+    }
+
+    p {
+      width: 95%;
+      text-align: justify;
+      font-family: dana;
+      line-height: 2.2rem;
+
+      @media #{responsive.$tablet-landscape} {
+        width: 100%;
+        text-align: center;
+        line-height: 2.4rem;
+      }
+
+      @media #{responsive.$tablet-portrait} {
+        width: 85%;
+        text-align: center;
+      }
+
+      @media #{responsive.$phone} {
+        width: 90%;
+        text-align: justify;
+        line-height: 2.5rem;
+      }
+    }
+
+    button {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 160px;
+      height: 60px;
+      gap: 0.6rem;
+      gap: 10px;
+      border: none;
+      background-color: color.$main;
+      color: #fff;
+      font-family: dana-light;
+      font-size: 1.1rem;
+      cursor: pointer;
+      margin-top: 1rem;
+
+      @media #{responsive.$laptop} {
+        width: 190px;
+        height: 60px;
+        font-size: 1rem;
+      }
+
+      @media #{responsive.$tablet-landscape} {
+        width: 190px;
+        height: 60px;
+        font-size: 1rem;
+      }
+
+      @media #{responsive.$phone} {
+        width: 170px;
+        height: 60px;
+        font-size: 1.1rem;
+        padding: 0;
+      }
+    }
+  }
+
+  .productListContainer {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    grid-column: 2/3;
+    grid-row: 2/3;
+
+    @media #{responsive.$laptop} {
+      gap: 0;
+      height: 100%;
+    }
+
+    @media #{responsive.$tablet-landscape} {
+      width: 100%;
+      grid-column: 1/3;
+      grid-row: 2/3;
+    }
+
+    @media #{responsive.$tablet-portrait} {
+      align-self: center;
+      width: 93%;
+      grid-row: 3/4;
+      grid-column: 1/2;
+    }
+
+    @media #{responsive.$phone} {
+      height: 100%;
+      grid-column: 1/2;
+      grid-row: 3/4;
+      gap: 3rem;
+    }
+
+    .line {
+      width: 95%;
+      outline: 0.1px solid color.$main;
+
+      @media #{responsive.$tablet-landscape} {
+        width: 70%;
+      }
+
+      @media #{responsive.$phone} {
+        width: 100%;
+      }
+    }
+  }
+}

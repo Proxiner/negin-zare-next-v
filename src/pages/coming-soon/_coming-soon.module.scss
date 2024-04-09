@@ -1,0 +1,33 @@
+@use "../../base/colors" as color;
+@use "../../utils/media-queries" as responsive;
+
+.comingSoon {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  color: color.$main;
+  direction: rtl;
+  font-family: dana-black;
+  font-size: 3rem;
+  background-color: #d5bdaf41;
+  text-align: center;
+  padding: 1rem 8%;
+  gap: 1rem;
+
+  @media #{responsive.$phone} {
+    font-size: 2rem;
+    padding: 1rem 4%;
+  }
+
+  a {
+    font-size: 1rem;
+    color: #fff;
+    text-decoration: none;
+    padding: 1rem;
+    background-color: color.$main;
+  }
+}

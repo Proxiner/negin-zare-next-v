@@ -1,0 +1,302 @@
+@use "../base/colors" as color;
+@use "../utils/media-queries" as responsive;
+
+section.slider {
+  display: grid;
+  grid-template-columns: 30% 40% 30%;
+  grid-template-rows: 100%;
+  width: 100%;
+  height: 100%;
+  direction: rtl;
+  padding: 1rem 8%;
+
+  @media #{responsive.$laptop} {
+    padding: 1rem 6%;
+  }
+
+  @media #{responsive.$tablet-landscape} {
+    grid-template-columns: 50% 50%;
+    grid-template-rows: 50% 50%;
+    row-gap: 4rem;
+    padding: 1rem 4%;
+  }
+
+  @media #{responsive.$tablet-portrait} {
+    grid-template-columns: 50% 50%;
+    grid-template-rows: 50% 50%;
+    padding: 1rem 4%;
+  }
+
+  @media #{responsive.$phone} {
+    grid-template-columns: 100%;
+    grid-template-rows: auto;
+    padding: 1rem 4%;
+    gap: 2rem;
+  }
+
+  .readMore {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: max-content;
+    height: max-content;
+    gap: 1rem;
+    padding: 0.8rem 2rem;
+    color: #fff;
+    font-family: dana;
+    font-size: 1rem;
+    background-color: color.$main;
+    border: none;
+    text-decoration: none;
+
+    @media #{responsive.$laptop} {
+      font-size: 0.9rem;
+    }
+
+    @media #{responsive.$phone} {
+      padding: 0.7rem 1.6rem;
+      font-size: 0.8rem;
+      position: relative;
+      top: 10px;
+      left: -20%;
+    }
+  }
+
+  .courseDetails {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    font-family: dana;
+    gap: 1.4rem;
+
+    @media #{responsive.$laptop} {
+      gap: 1.1rem;
+    }
+
+    @media #{responsive.$tablet-landscape} {
+      grid-column: 1/2;
+      grid-row: 1/3;
+      justify-content: flex-start;
+    }
+
+    @media #{responsive.$tablet-portrait} {
+      grid-column: 1/2;
+      grid-row: 1/2;
+    }
+
+    @media #{responsive.$phone} {
+      display: grid;
+      grid-template-columns: 50% 50%;
+      grid-template-rows: repeat(4, auto);
+      grid-row: 2/3;
+      padding: 0 1rem;
+    }
+
+    h3 {
+      width: 355px;
+      font-family: dana-bold;
+      font-size: 1.8rem;
+
+      @media #{responsive.$laptop} {
+        font-size: 1.5rem;
+        line-height: 3rem;
+      }
+
+      @media #{responsive.$tablet-landscape} {
+        font-size: 1.4rem;
+        line-height: 2.8rem;
+      }
+
+      @media #{responsive.$tablet-portrait} {
+        width: 300px;
+        font-size: 1.5rem;
+        line-height: 2.8rem;
+      }
+
+      @media #{responsive.$phone} {
+        grid-column: 1/3;
+        width: 80%;
+        font-family: dana-medium;
+        font-size: 1.2rem;
+        line-height: 2rem;
+      }
+    }
+
+    .price {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      width: max-content;
+      height: max-content;
+
+      span:nth-child(1) {
+        font-family: dana;
+        font-size: 0.9rem;
+
+        @media #{responsive.$phone} {
+          font-size: 0.8rem;
+        }
+      }
+
+      span:nth-child(2) {
+        font-family: dana-bold;
+        font-size: 1.4rem;
+
+        @media #{responsive.$phone} {
+          font-size: 1.2rem;
+        }
+
+        i {
+          font-family: dana;
+          font-size: 1.4rem;
+          font-style: normal;
+
+          @media #{responsive.$phone} {
+            font-size: 1.2rem;
+          }
+        }
+      }
+    }
+
+    .hours,
+    .sessions,
+    .instructor,
+    .type {
+      width: max-content;
+      height: max-content;
+
+      @media #{responsive.$phone} {
+        display: flex;
+        flex-direction: column;
+      }
+
+      span {
+        font-size: 0.9rem;
+        font-family: dana-semi-bold;
+        @media #{responsive.$phone} {
+          font-size: 0.8rem;
+        }
+      }
+
+      i {
+        font-family: dana-light;
+        font-size: 0.9rem;
+        font-style: normal;
+        @media #{responsive.$phone} {
+          font-size: 0.8rem;
+        }
+      }
+    }
+
+    .hours {
+      @media #{responsive.$phone} {
+        grid-column: 2/3;
+        grid-row: 2/3;
+      }
+    }
+
+    .sessions {
+      @media #{responsive.$phone} {
+        grid-column: 1/2;
+        grid-row: 2/3;
+      }
+    }
+
+    .type {
+      @media #{responsive.$phone} {
+        grid-column: 1/2;
+        grid-row: 3/4;
+      }
+    }
+
+    .instructor {
+      @media #{responsive.$phone} {
+        grid-column: 2/3;
+        grid-row: 3/4;
+      }
+    }
+
+    .readMore {
+      display: none;
+      text-decoration: none;
+
+      @media #{responsive.$tablet-portrait} , #{responsive.$phone} {
+        display: flex;
+      }
+
+      @media #{responsive.$tablet-portrait} {
+        width: 130px;
+        height: 45px;
+        padding: 0;
+        top: -4px;
+        left: -140px;
+        position: relative;
+      }
+    }
+  }
+
+  .model {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+
+    @media #{responsive.$tablet-landscape} {
+      grid-row: 1/2;
+      grid-column: 2/3;
+    }
+
+    @media #{responsive.$tablet-portrait} {
+      grid-column: 2/2;
+    }
+
+    @media #{responsive.$phone} {
+      grid-row: 1/2;
+    }
+  }
+
+  .details {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    width: 100%;
+    height: 100%;
+    gap: 2rem;
+    padding-bottom: 5rem;
+    padding-right: 1rem;
+
+    @media #{responsive.$tablet-landscape} {
+      justify-content: center;
+      align-items: center;
+      padding: 0;
+      grid-column: 1/3;
+      grid-row: 2/3;
+    }
+
+    @media #{responsive.$tablet-portrait} , #{responsive.$phone} {
+      display: none;
+    }
+
+    p {
+      width: 320px;
+      font-family: dana-light;
+      font-size: 1rem;
+      text-align: justify;
+      line-height: 1.8rem;
+
+      @media #{responsive.$laptop} {
+        line-height: 2.1rem;
+      }
+
+      @media #{responsive.$tablet-landscape} {
+        width: 70%;
+        text-align: center;
+        line-height: 2rem;
+      }
+    }
+  }
+}

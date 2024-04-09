@@ -1,0 +1,101 @@
+@use '../../base/colors' as colors;
+
+.container {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    grid-template-rows: auto;
+    width: 540px;
+    height: max-content;
+    background-color: #f1f1f1;
+    border: 1px solid colors.$main;
+    direction: rtl;
+    padding: 1rem;
+    border-radius: 15px;
+
+    .coverSection {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        border-left: 1px solid #e49567;
+    }
+
+    .details {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 1rem;
+        padding: 1rem;
+
+        h2 {
+            font-family: dana-medium, serif;
+        }
+
+        p {
+            font-family: dana, serif;
+            line-height: 1.5rem;
+        }
+
+        .hours {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0.5rem;
+            width: max-content;
+            height: max-content;
+            font-family: dana, serif;
+            gap: 0.3rem;
+
+            svg {
+                width: 20px;
+            }
+        }
+
+        .row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            width: 100%;
+            height: max-content;
+
+            .customersSigned {
+                width: max-content;
+                height: max-content;
+                border-bottom: 1px solid colors.$main;
+                font-family: dana, serif;
+                padding: 0.5rem;
+                color: colors.$main;
+            }
+
+            .price {
+                display: flex;
+                flex-direction: column;
+                font-family: dana-bold, serif;
+
+                span{
+                    font-family: dana-light;
+                }
+            }
+        }
+    }
+
+    .redirect {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: max-content;
+        height: max-content;
+        font-family: dana, serif;
+        background-color: colors.$main;
+        color: #ffffff;
+        padding: 0.5rem 1rem;
+        grid-column: 2/2;
+        grid-row: 2/3;
+        gap: 0.5rem;
+        margin-right: auto;
+        border-radius: 5px;
+        text-decoration: none;
+    }
+
+}

@@ -1,0 +1,469 @@
+@use "/src/base/colors" as color;
+@use "/src/utils/media-queries" as responsive;
+
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  gap: 1rem;
+  position: relative;
+  padding: 1rem 8%;
+  z-index: 1;
+
+  @media #{responsive.$laptop} {
+    padding: 1rem 6%;
+  }
+
+  @media #{responsive.$tablet-landscape} , #{responsive.$tablet-portrait} {
+    padding: 1rem 4%;
+  }
+
+  @media #{responsive.$phone} {
+    padding: 1rem 4%;
+  }
+
+  .row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    direction: rtl;
+    margin-top: 3rem;
+    z-index: 1;
+
+    @media #{responsive.$tablet-portrait} {
+      flex-direction: column;
+      gap: 3rem;
+    }
+
+    @media #{responsive.$phone} {
+      flex-direction: column;
+      margin-top: 0;
+      row-gap: 6rem;
+    }
+
+    //arrow
+    .textContainer::before {
+      content: "";
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      background-image: url("../../public/assets/images/arrow.svg");
+      background-repeat: no-repeat;
+      background-size: 75px;
+      background-position: bottom 35px left 55px;
+
+      @media #{responsive.$tablet-portrait} {
+        background-position: bottom 15px right 250px;
+      }
+
+      @media #{responsive.$phone} {
+        background-position: bottom left 30%;
+      }
+    }
+
+    .textContainer {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 50%;
+      height: 100%;
+      position: relative;
+
+      @media #{responsive.$tablet-portrait} {
+        width: 100%;
+        height: 100%;
+      }
+
+      @media #{responsive.$phone} {
+        width: 100%;
+        height: 50%;
+      }
+
+      section.text {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        font-family: dana-light;
+        width: 100%;
+        height: 100%;
+        margin-bottom: 1.5rem;
+
+        @media #{responsive.$laptop} {
+          margin-bottom: 1rem;
+        }
+
+        @media #{responsive.$phone} {
+          margin-bottom: 1rem;
+        }
+
+        h3 {
+          display: flex;
+          align-items: center;
+          width: max-content;
+          height: 100%;
+          gap: 1.5rem;
+          font-size: 3rem;
+          margin-bottom: 1rem;
+
+          @media #{responsive.$laptop} {
+            font-size: 2.5rem;
+          }
+
+          @media #{responsive.$tablet-landscape} {
+            font-size: 2.5rem;
+          }
+
+          @media #{responsive.$phone} {
+            font-family: dana-light;
+            font-size: 1.5rem;
+          }
+
+          svg {
+            width: 170px;
+
+            @media #{responsive.$laptop} {
+              width: 140px;
+            }
+
+            @media #{responsive.$tablet-landscape} {
+              width: 35%;
+            }
+
+            @media #{responsive.$phone} {
+              width: 30%;
+              max-width: 30%;
+            }
+          }
+        }
+
+        h1 {
+          display: flex;
+          align-items: center;
+          width: max-content;
+          height: 100%;
+          gap: 0.5rem;
+          font-family: dana-black;
+          font-size: 4.1rem;
+
+          @media #{responsive.$laptop} {
+            font-size: 3.4rem;
+          }
+
+          @media #{responsive.$tablet-landscape} {
+            font-size: 3.3rem;
+          }
+
+          @media #{responsive.$phone} {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            width: 100%;
+            font-size: 2.2rem;
+          }
+
+          svg {
+            width: 50px;
+
+            @media #{responsive.$phone} {
+              width: 40px;
+            }
+          }
+        }
+
+        h2 {
+          max-width: 420px;
+          height: max-content;
+          gap: 0.5rem;
+          font-family: dana-black;
+          font-size: 4.1rem;
+
+          @media #{responsive.$laptop} {
+            font-size: 3.4rem;
+          }
+
+          @media #{responsive.$tablet-landscape} {
+            font-size: 3.3rem;
+          }
+
+          @media #{responsive.$phone} {
+            font-size: 2.2rem;
+          }
+        }
+      }
+
+      section.action {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 3rem;
+        width: 100%;
+        height: 100%;
+        position: relative;
+
+        @media #{responsive.$laptop} {
+          gap: 2rem;
+        }
+
+        @media #{responsive.$tablet-landscape} {
+          gap: 1.5rem;
+        }
+
+        .starPucker {
+          width: max-content;
+          height: max-content;
+          position: absolute;
+          z-index: 2;
+          top: 135px;
+          left: 10px;
+
+          @media #{responsive.$laptop} {
+            top: 130px;
+            left: 70px;
+          }
+
+          @media #{responsive.$tablet-landscape} {
+            top: 100px;
+            left: 0;
+          }
+
+          @media #{responsive.$tablet-portrait} {
+            display: none;
+          }
+
+          @media #{responsive.$phone} {
+            left: 40px;
+          }
+
+          img {
+            width: 35px;
+
+            @media #{responsive.$laptop} {
+              width: 30px;
+            }
+
+            @media #{responsive.$phone} {
+              width: 25px;
+            }
+          }
+        }
+
+        p {
+          font-family: dana-light;
+          font-size: 1rem;
+          line-height: 1.875rem;
+          width: 450px;
+
+          @media #{responsive.$laptop} {
+            line-height: 1.875rem;
+          }
+
+          @media #{responsive.$tablet-portrait}{
+           font-size: 1.2rem; 
+           line-height: 2.4rem;
+          }
+
+          @media #{responsive.$phone} {
+            width: 300px;
+            line-height: 2.4rem;
+          }
+        }
+
+        a {
+          text-decoration: none;
+
+          @media #{responsive.$phone} {
+            width: max-content;
+          }
+        }
+
+        a:hover.startBTN {
+          transform: scale(1.1);
+        }
+
+        .startBTN {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 210px;
+          padding: 0.875rem 2rem;
+          border: none;
+          background-color: color.$main;
+          color: #fff;
+          font-family: dana;
+          font-size: 1rem;
+          transition: all 0.3s linear;
+          cursor: pointer;
+
+          @media #{responsive.$laptop} {
+            width: 180px;
+            padding: 0.8rem 0;
+            font-size: 0.9rem;
+          }
+
+          @media #{responsive.$phone} {
+            width: 180px;
+            padding: 0.8rem 0;
+            font-size: 0.9rem;
+          }
+        }
+
+        .happyCustomers {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 320px;
+          height: 100px;
+          background-color: color.$accent;
+          border: 1px solid color.$main;
+          border-radius: 0px 50px 50px 0px;
+
+          @media #{responsive.$laptop} {
+            width: 270px;
+            height: 80px;
+          }
+
+          @media #{responsive.$tablet-portrait} , #{responsive.$phone} {
+            display: none;
+          }
+
+          .profileContainer {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 50%;
+            height: 100%;
+            border: none;
+
+            a {
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              width: 100%;
+              height: 100%;
+              text-decoration: none;
+              position: relative;
+            }
+
+            a:hover .profile {
+              transform: scale(1.3);
+              z-index: 1;
+            }
+
+            .profile {
+              width: 70px;
+              height: 70px;
+              border-radius: 50%;
+              object-fit: cover;
+              object-position: top;
+              position: absolute;
+              border: 3px solid #edd5c7;
+              transition: all linear 0.3s;
+              z-index: 1;
+
+              @media #{responsive.$laptop} {
+                width: 55px;
+                height: 55px;
+              }
+            }
+
+            .profile:nth-child(1) {
+              left: -35px;
+              @media #{responsive.$laptop} {
+                left: -25px;
+              }
+            }
+
+            img:nth-child(2) {
+              left: 20px;
+              @media #{responsive.$laptop} {
+                left: 20px;
+              }
+            }
+
+            img:nth-child(3) {
+              left: 75px;
+              @media #{responsive.$laptop} {
+                left: 65px;
+              }
+            }
+          }
+
+          .countAndViewContainer {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 50%;
+            height: 100%;
+            border-right: 1px solid color.$main;
+
+            // .arrow {
+            //   position: absolute;
+            //   bottom: 30px;
+            //   left: 160px;
+
+            //   @media #{responsive.$laptop} {
+            //     bottom: 20px;
+            //     left: 160px;
+            //   }
+
+            //   @media #{responsive.$tablet-landscape} {
+            //     display: none;
+            //   }
+            // }
+
+            button {
+              display: flex;
+              flex-direction: column;
+              align-items: flex-end;
+              justify-content: center;
+              width: 100%;
+              height: 100%;
+              padding: 0 0.5rem;
+              font-family: dana;
+              font-size: 1.3rem;
+              border: none;
+              background-color: #f1eae6;
+
+              @media #{responsive.$laptop} {
+                font-size: 1rem;
+                padding: 0 1rem;
+              }
+
+              span {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-family: dana-bold;
+                font-size: 1.8rem;
+                direction: ltr;
+                width: 100%;
+                margin-left: 0.4rem;
+
+                @media #{responsive.$laptop} {
+                  font-size: 1.5rem;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .imageContainer {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      width: 100%;
+      height: 100%;
+
+      img {
+        width: 80%;
+        height: 80%;
+      }
+    }
+  }
+}

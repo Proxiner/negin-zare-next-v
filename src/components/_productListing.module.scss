@@ -1,0 +1,113 @@
+@use "../utils/media-queries" as responsive;
+
+.container {
+  display: flex;
+  width: 100%;
+  height: 220px;
+  gap: 2rem;
+
+  @media #{responsive.$phone} {
+    flex-direction: column;
+    align-items: flex-start;
+    height: max-content;
+  }
+
+  section.visualization {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 30%;
+    height: 100%;
+
+    @media #{responsive.$tablet-landscape} {
+      width: 15%;
+    }
+
+    @media #{responsive.$phone} {
+      width: 100%;
+      justify-content: space-between;
+      gap: 0.5rem;
+      direction: ltr;
+    }
+
+    .indicatorContainer {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      height: 100%;
+      font-family: dana-semi-bold;
+      font-size: 4rem;
+
+      @media #{responsive.$laptop} {
+        font-size: 3.5rem;
+      }
+
+      @media #{responsive.$phone} {
+        width: max-content;
+        font-size: 3rem;
+      }
+    }
+  }
+
+  section.information {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 70%;
+    height: 100%;
+    gap: 1rem;
+
+    @media #{responsive.$laptop} {
+      gap: 0.8rem;
+    }
+
+    @media #{responsive.$tablet-landscape} {
+      width: 85%;
+      gap: 0.5rem;
+    }
+
+    @media #{responsive.$phone} {
+      width: 100%;
+      gap: 0.5rem;
+    }
+
+    h2 {
+      font-size: 1.5rem;
+      font-family: dana-medium;
+
+      @media #{responsive.$tablet-landscape} {
+        font-size: 1.4rem;
+      }
+
+      @media #{responsive.$phone} {
+        font-size: 1.4rem;
+      }
+    }
+
+    p {
+      width: 100%;
+      font-size: 1rem;
+      font-family: dana;
+      line-height: 2rem;
+
+      @media #{responsive.$laptop} {
+        font-size: 1rem;
+      }
+
+      @media #{responsive.$tablet-landscape} {
+        width: 60%;
+        text-align: justify;
+        font-size: 1.1rem;
+        line-height: 2rem;
+      }
+
+      @media #{responsive.$phone} {
+        text-align: initial;
+        font-size: 0.9rem;
+        width: 95%;
+        line-height: 2.3rem;
+      }
+    }
+  }
+}

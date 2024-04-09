@@ -1,0 +1,585 @@
+@use "../utils/media-queries" as responsive;
+@use "../base/colors" as color;
+
+.polygonContainer {
+  position: absolute;
+  content: "";
+  background-color: color.$main;
+  clip-path: polygon(0 0, 100% 15%, 100% 100%, 0% 100%);
+  width: 100%;
+  height: 1350px;
+  z-index: -2;
+  top: -150px;
+  overflow: hidden;
+
+  @media #{responsive.$tablet-portrait} {
+    height: 1850px;
+  }
+
+  @media #{responsive.$phone} {
+    height: 1500px;
+  }
+}
+
+.introductionContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5%;
+  width: 100%;
+  height: 100%;
+  padding: 1rem 8%;
+  position: relative;
+  margin: 0 0 5rem 0;
+
+  @media #{responsive.$laptop} {
+    padding: 1rem 6%;
+  }
+
+  @media #{responsive.$tablet-portrait} {
+    gap: 40px;
+  }
+  
+  .introduction {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    padding: 3rem 0;
+
+    // You can change the height for responsive phone "hero"
+    @media #{responsive.$tablet-portrait} {
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 60px;
+      height: 800px;
+    }
+
+    @media #{responsive.$tablet-landscape} {
+      height: 30%;
+    }
+
+    @media #{responsive.$phone} {
+      flex-direction: column;
+      height: 400px;
+      margin-top: 10rem;
+    }
+
+    .experience {
+      display: flex;
+      align-items: center;
+      width: 32%;
+      height: 100%;
+
+      @media #{responsive.$laptop} {
+        width: 45%;
+      }
+
+      @media #{responsive.$tablet-landscape} {
+        width: 45%;
+      }
+
+      @media #{responsive.$tablet-portrait} {
+        width: 100%;
+        height: 50%;
+        justify-content: center;
+        align-items: center;
+      }
+
+      @media #{responsive.$phone} {
+        flex-direction: column-reverse;
+        width: 100%;
+        height: 100%;
+        gap: 20px;
+      }
+
+      .experienceImage {
+        width: max-content;
+        height: max-content;
+        position: relative;
+        padding: 1rem;
+      }
+
+      .experienceImage::before {
+        content: "";
+        width: 200px;
+        height: 200px;
+        position: absolute;
+        bottom: 55px;
+        right: -20px;
+        // background-image: url(../../public/assets/images/);
+        background-size: 70%;
+        background-repeat: no-repeat;
+
+        @media #{responsive.$laptop} {
+          width: 180px;
+          height: 200px;
+          bottom: 50px;
+          right: 45px;
+        }
+
+        @media #{responsive.$tablet-portrait} {
+          width: 200px;
+          height: 200px;
+          bottom: 55px;
+          right: 27px;
+        }
+      }
+
+      .experienceParagraph {
+        width: 220px;
+        height: 100%;
+        text-align: right;
+        color: #fff;
+        font-family: dana-medium;
+        font-size: 1.3rem;
+        line-height: 35px;
+
+        @media #{responsive.$laptop} {
+          width: 350px;
+          font-size: 1.4rem;
+        }
+
+        @media #{responsive.$tablet-portrait} {
+          height: max-content;
+          font-size: 1.2rem;
+        }
+
+        @media #{responsive.$tablet-landscape} {
+          width: 290px;
+          font-size: 1.2rem;
+        }
+
+        @media #{responsive.$phone} {
+          justify-content: center;
+          width: 100%;
+          height: 50%;
+          font-size: 1rem;
+        }
+      }
+    }
+
+    .counterBox {
+      display: flex;
+      justify-content: flex-end;
+      align-items: flex-end;
+      gap: 20%;
+      width: 70%;
+      height: 100%;
+
+      @media #{responsive.$tablet-portrait} {
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 30%;
+      }
+
+      @media #{responsive.$tablet-landscape} {
+        width: 50%;
+        justify-content: center;
+        gap: 35px;
+      }
+
+      @media #{responsive.$phone} {
+        width: 100%;
+      }
+
+      .customer {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        width: max-content;
+        height: 33%;
+
+        @media #{responsive.$laptop} {
+          width: 150px;
+        }
+
+        @media #{responsive.$tablet-portrait} {
+          justify-content: center;
+          width: 140px;
+        }
+
+        span:nth-child(1) {
+          color: #fff;
+          font-family: dana-medium;
+          font-size: 3rem;
+
+          @media #{responsive.$laptop} {
+            font-size: 2.8rem;
+          }
+
+          @media #{responsive.$tablet-portrait} {
+            font-size: 2.3rem;
+          }
+
+          @media #{responsive.$tablet-landscape} {
+            font-size: 2.2rem;
+          }
+
+          @media #{responsive.$phone} {
+            font-size: 1.563rem;
+          }
+        }
+
+        span:nth-child(2) {
+          color: #ffffffb3;
+          font-family: dana-extra-light;
+          font-size: 2rem;
+
+          @media #{responsive.$laptop} {
+            font-size: 1.5rem;
+          }
+
+          @media #{responsive.$tablet-portrait} {
+            font-size: 1.5rem;
+          }
+
+          @media #{responsive.$tablet-landscape} {
+            font-size: 1.3rem;
+          }
+
+          @media #{responsive.$phone} {
+            font-size: 1rem;
+          }
+        }
+      }
+
+      .student {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        width: max-content;
+        height: 33%;
+
+        @media #{responsive.$laptop} {
+          width: 180px;
+        }
+
+        @media #{responsive.$tablet-portrait} {
+          justify-content: center;
+          width: 140px;
+        }
+
+        span:nth-child(1) {
+          color: #fff;
+          font-family: dana-medium;
+          font-size: 3rem;
+
+          @media #{responsive.$laptop} {
+            font-size: 2.8rem;
+          }
+
+          @media #{responsive.$tablet-portrait} {
+            font-size: 2.3rem;
+          }
+
+          @media #{responsive.$tablet-landscape} {
+            font-size: 2.2rem;
+          }
+
+          @media #{responsive.$phone} {
+            font-size: 1.563rem;
+          }
+        }
+
+        span:nth-child(2) {
+          color: #ffffffb3;
+          font-family: dana-extra-light;
+          font-size: 2rem;
+
+          @media #{responsive.$laptop} {
+            font-size: 1.5rem;
+          }
+
+          @media #{responsive.$tablet-portrait} {
+            font-size: 1.5rem;
+          }
+
+          @media #{responsive.$tablet-landscape} {
+            font-size: 1.3rem;
+          }
+
+          @media #{responsive.$phone} {
+            font-size: 1rem;
+          }
+        }
+      }
+
+      .yearExperience {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        width: max-content;
+        height: 33%;
+
+        @media #{responsive.$laptop} {
+          width: 150px;
+        }
+
+        @media #{responsive.$tablet-portrait} {
+          justify-content: center;
+          width: 140px;
+        }
+
+        span:nth-child(1) {
+          color: #fff;
+          font-family: dana-medium;
+          font-size: 3rem;
+
+          @media #{responsive.$laptop} {
+            font-size: 2.8rem;
+          }
+
+          @media #{responsive.$tablet-portrait} {
+            font-size: 2.3rem;
+          }
+
+          @media #{responsive.$tablet-landscape} {
+            font-size: 2.2rem;
+          }
+
+          @media #{responsive.$phone} {
+            font-size: 1.563rem;
+          }
+        }
+
+        span:nth-child(2) {
+          color: #ffffffb3;
+          font-family: dana-extra-light;
+          font-size: 2rem;
+
+          @media #{responsive.$laptop} {
+            font-size: 1.5rem;
+          }
+
+          @media #{responsive.$tablet-portrait} {
+            font-size: 1.5rem;
+          }
+
+          @media #{responsive.$tablet-landscape} {
+            font-size: 1.3rem;
+          }
+
+          @media #{responsive.$phone} {
+            font-size: 1rem;
+          }
+        }
+      }
+    }
+  }
+
+  .starContainer::before{
+    position: absolute;
+    content: "";
+    width: 150px;
+    height: 250px;
+    right: -190px;
+    color: #fff;
+    background-image: url('../../public/assets/images/lipstick.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+  }
+
+  .starContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 50px;
+    gap: 1rem;
+    position: relative;
+
+    svg {
+      @media #{responsive.$phone} {
+        width: 100px;
+        height: 100px;
+      }
+    }
+
+    .starLine {
+      width: 650px;
+      height: 1px;
+      background: linear-gradient(
+        -90deg,
+        #ffffff 0%,
+        rgba(255, 255, 255, 0) 100%
+      );
+
+      @media #{responsive.$laptop} {
+        width: 550px;
+      }
+
+      @media #{responsive.$phone} {
+        width: 350px;
+      }
+    }
+
+    .starLine:nth-child(1) {
+      width: 650px;
+      height: 1px;
+      background: linear-gradient(90deg, #fff 0%, rgba(255, 255, 255, 0) 100%);
+
+      @media #{responsive.$laptop} {
+        width: 550px;
+      }
+
+      @media #{responsive.$phone} {
+        width: 350px;
+      }
+    }
+  }
+
+  .aboutNeginContainer {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    margin-bottom: 150px;
+
+    @media #{responsive.$tablet-portrait} {
+      flex-direction: column-reverse;
+    }
+
+    .aboutNeginRightImage {
+      display: flex;
+      width: 33%;
+      height: 100%;
+      margin-top: 50px;
+      padding: 1rem 0;
+
+      //important
+      @media #{responsive.$tablet-portrait} {
+        height: 100px;
+        transform: rotate(15deg);
+        position: absolute;
+        right: 0px;
+        bottom: 320px;
+        margin-top: 0;
+      }
+
+      @media #{responsive.$phone} {
+        transform: rotate(15deg);
+        position: absolute;
+        right: 100px;
+        top: 1000px;
+        margin-top: 0;
+      }
+    }
+
+    .textAndImage {
+      display: flex;
+      justify-content: centers;
+      width: 100%;
+      height: max-content;
+
+      .text {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 40px;
+        width: 100%;
+        height: max-content;
+        text-align: center;
+
+        @media #{responsive.$laptop} {
+          gap: 28px;
+        }
+
+        h2 {
+          font-family: dana-medium;
+          font-size: 4.25rem;
+          color: #fff;
+
+          @media #{responsive.$laptop} {
+            font-size: 3.1rem;
+          }
+
+          @media #{responsive.$tablet-portrait} {
+            font-size: 2.6rem;
+            width: 700px;
+          }
+
+          @media #{responsive.$tablet-landscape} {
+            font-size: 2rem;
+            width: max-content;
+          }
+
+          @media #{responsive.$phone} {
+            font-size: 1.563rem;
+            width: 400px;
+          }
+        }
+
+        p {
+          font-family: dana-extra-light;
+          font-size: 1rem;
+          color: #fff;
+
+          @media #{responsive.$laptop} {
+            width: 370px;
+            font-size: 1.2rem;
+            line-height: 2rem;
+          }
+
+          @media #{responsive.$tablet-portrait} {
+            font-size: 1.1rem;
+            line-height: 2.4rem;
+          }
+        }
+
+        button {
+          width: 150px;
+          height: 50px;
+          color: color.$main;
+          font-family: dana-light;
+          font-size: 1rem;
+          background-color: #fff;
+          border: none;
+          transition: linear 0.8s;
+
+          @media #{responsive.$tablet-portrait} {
+            width: 160px;
+            height: 50px;
+          }
+
+          @media #{responsive.$phone} {
+            width: 140px;
+            height: 45px;
+            font-size: 0.813rem;
+          }
+        }
+
+        button:hover {
+          font-family: dana;
+          background-color: #edd5c7;
+          cursor: pointer;
+        }
+      }
+
+      .image {
+        display: flex;
+        align-items: flex-end;
+        width: max-content;
+        height: 600px;
+        transform: rotate(-10deg);
+
+        @media #{responsive.$tablet-portrait} {
+          transform: rotate(-15deg);
+          position: relative;
+          left: 90px;
+          bottom: 50px;
+        }
+
+        @media #{responsive.$phone} {
+          transform: rotate(-8deg);
+          position: relative;
+          left: 80px;
+          bottom: 80px;
+        }
+      }
+    }
+  }
+}

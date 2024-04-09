@@ -1,0 +1,284 @@
+@use "/src/base/colors" as color;
+@use "/src/utils/media-queries" as responsive;
+
+.pathDefault,
+.pathCrossed {
+  transition: stroke-dasharray 0.2s ease;
+  stroke-dasharray: 20;
+  stroke-dashoffset: 0;
+}
+
+.pathCrossed {
+  stroke-dasharray: 10 0;
+  stroke-dashoffset: 20;
+}
+
+.phoneNavContent {
+  display: none;
+  grid-template-columns: 100%;
+  grid-template-rows: 80% 20%;
+  width: 100%;
+  height: 100vh;
+  background-color: color.$main;
+  position: absolute;
+  z-index: 3;
+  right: -512px;
+  top: 0;
+  transition: all linear 0.5s;
+  padding: 5rem 0 2.5rem 0;
+
+  @media #{responsive.$phone} {
+    display: grid;
+  }
+
+  @media #{responsive.$phone}  and (max-height : 517px) {
+    padding: 0;
+  }
+
+  ul {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    gap: 4rem;
+    font-family: dana;
+    list-style: none;
+
+    @media #{responsive.$phone}  and (max-height : 517px) {
+      flex-wrap: wrap;
+      gap: 2rem;
+      padding: 6rem 0 0 0;
+    }
+
+    a {
+      text-decoration: none;
+      color: #fff;
+    }
+  }
+
+  .callToAction {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    gap: 0.2rem;
+    direction: rtl;
+
+    a {
+      text-decoration: none;
+    }
+
+    button {
+      display: flex;
+      padding: 12px 28px;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      color: color.$main;
+      font-family: dana-medium;
+      font-size: 1rem;
+      background-color: #edd5c7;
+      border: none;
+    }
+  }
+}
+
+.phoneMenuContainer {
+  display: none;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  direction: rtl;
+  margin-top: 10px;
+  z-index: 3;
+  position: relative;
+  padding: 1rem 4%;
+
+  @media #{responsive.$phone} {
+    display: flex;
+    margin-bottom: 3rem;
+  }
+
+  .hamMenu,
+  .chatbox {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 15%;
+    height: 100%;
+    background-color: color.$main;
+    padding: 0.8rem;
+    border: none;
+    cursor: pointer;
+
+    svg {
+      width: 100%;
+    }
+  }
+
+  .mobileLogo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+
+    .selectedLogo {
+      width: 100px;
+      height: 50px;
+    }
+  }
+}
+
+.container {
+  display: grid;
+  grid-template-columns: 35% 30% 35%;
+  grid-template-rows: 100px;
+  direction: rtl;
+  padding: 1rem 8%;
+
+  @media #{responsive.$laptop} {
+    padding: 1rem 6%;
+  }
+
+  @media #{responsive.$tablet-landscape} {
+    margin-bottom: 2rem;
+    grid-template-columns: 40% 25% 35%;
+    padding: 1rem 4%;
+  }
+
+  @media #{responsive.$tablet-portrait} {
+    grid-template-columns: 25% 50% 25%;
+    padding: 1rem 4%;
+  }
+
+  @media #{responsive.$phone} {
+    display: none;
+  }
+
+  ul {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 2.5rem;
+    list-style: none;
+    font-family: dana;
+
+    @media #{responsive.$laptop} {
+      gap: 2.4rem;
+    }
+
+    @media #{responsive.$tablet-portrait} {
+      justify-content: center;
+      font-size: 0.9rem;
+      gap: 10%;
+    }
+
+    @media #{responsive.$phone} {
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      height: 100%;
+      grid-row: 2/3;
+    }
+
+    a::before {
+      width: 0;
+      height: 1px;
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      content: "";
+      background-color: color.$main;
+      transition: all linear 0.3s;
+    }
+
+    a {
+      width: max-content;
+      height: max-content;
+      text-decoration: none;
+      color: color.$main;
+      position: relative;
+      line-height: 2rem;
+    }
+
+    a:hover::before {
+      width: 100%;
+    }
+  }
+
+  .logoContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+
+    @media #{responsive.$tablet-portrait} {
+      grid-column: 1/2;
+      grid-row: 1/2;
+      justify-content: flex-start;
+      z-index: 1;
+    }
+
+    @media #{responsive.$phone} {
+      flex-direction: column;
+      align-items: center;
+      grid-row: 1/2;
+    }
+
+    .logo {
+      width: 100px;
+      height: 50px;
+
+      @media #{responsive.$laptop} {
+        width: 90px;
+      }
+    }
+  }
+
+  .callToAction {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 2rem;
+
+    @media #{responsive.$laptop} {
+      gap: 1rem;
+    }
+
+    @media #{responsive.$phone} {
+      width: 100%;
+      height: 100%;
+      justify-content: center;
+      gap: 0.2rem;
+    }
+
+    a {
+      text-decoration: none;
+    }
+
+    a:hover button {
+      transform: scale(1.1);
+    }
+
+    button {
+      display: flex;
+      padding: 12px 28px;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      color: #fff;
+      font-family: dana-medium;
+      font-size: 1rem;
+      background-color: color.$main;
+      border: none;
+      cursor: pointer;
+      transition: all linear 0.3s;
+    }
+  }
+}

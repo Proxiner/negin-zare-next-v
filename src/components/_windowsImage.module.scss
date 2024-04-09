@@ -1,0 +1,27 @@
+@use "../base/colors" as color;
+
+@use "../utils/media-queries" as responsive;
+
+.image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+
+  @media #{responsive.$phone}{
+   padding: 1rem; 
+  }
+
+  img {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    object-fit: cover;
+    object-position: top;
+    z-index: 2;
+  }
+
+  .before{
+    position: absolute;
+  }
+}

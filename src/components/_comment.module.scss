@@ -1,0 +1,149 @@
+@use "../base/colors" as color;
+@use "../utils/media-queries" as responsive;
+
+.container::before {
+  content: "";
+  position: absolute;
+  width: 40%;
+  height: 100%;
+  border-left: 1px solid color.$main;
+  background-color: #edd5c7;
+  right: 0;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 200px;
+  background-color: transparent;
+  border: 1px solid color.$main;
+  padding: 0.5rem;
+  background-color: #f1eae6;
+  position: relative;
+
+  @media #{responsive.$tablet-landscape} {
+    gap: 0.5rem;
+  }
+
+  @media #{responsive.$tablet-portrait}{
+   gap: 1.2rem; 
+  }
+
+  section.profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    width: 20%;
+    height: 100%;
+    z-index: 2;
+
+    @media #{responsive.$tablet-landscape} {
+      gap: 0.5rem;
+    }
+
+    @media #{responsive.$tablet-portrait}{
+     width: 10%;   
+    }
+
+    img {
+      width: 75px;
+      height: 75px;
+      border: none;
+      border-radius: 50%;
+      object-fit: cover;
+
+      @media #{responsive.$tablet-landscape} {
+        width: 65px;
+        height: 65px;
+      }
+
+      @media #{responsive.$phone}{
+        width: 60px;
+        height: 60px;
+      }
+    }
+
+    .line {
+      display: flex;
+      width: 1px;
+      height: 67px;
+      background-color: color.$main;
+
+      @media #{responsive.$tablet-landscape} {
+        height: 65px;
+      }
+    }
+
+    svg {
+      width: 50px;
+      height: 50px;
+
+      @media #{responsive.$tablet-landscape} , #{responsive.$tablet-portrait} {
+        width: 35px;
+        height: 35px;
+      }
+    }
+  }
+
+  section.comment {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    height: 100%;
+    gap: 0.5rem;
+    background-color: #f1eae6;
+    position: relative;
+    padding: 0.5rem;
+
+    @media #{responsive.$tablet-portrait} {
+      width: 90%;
+    }
+
+    .quotes {
+      width: 30px;
+      height: 30px;
+      position: absolute;
+      left: 5px;
+      top: 5px;
+    }
+
+    h3 {
+      font-family: dana-extra-bold;
+      font-size: 1rem;
+
+      @media #{responsive.$tablet-portrait} {
+        font-size: 1.1rem;
+      }
+    }
+
+    span {
+      font-family: dana;
+      font-size: 0.8rem;
+    }
+
+    div {
+      text-align: justify;
+      font-family: dana;
+      font-size: 0.9rem;
+      line-height: 1.5rem;
+
+      @media #{responsive.$tablet-landscape} {
+        font-size: 0.8rem;
+        line-height: 1.3rem;
+      }
+
+      @media #{responsive.$tablet-portrait} {
+        width: 80%;
+        font-size: 1rem;
+        line-height: 2rem;
+      }
+
+      @media #{responsive.$phone}{
+       font-size: 0.8rem;
+       line-height: 1.4rem; 
+      }
+    }
+  }
+}
