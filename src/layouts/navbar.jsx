@@ -53,7 +53,7 @@ const Navbar = () => {
           <Link href="/coming-soon">درباره ما</Link>
         </ul>
         <div className={styles.callToAction}>
-          <Link href="/register">
+          <Link href="/login">
             <button>
               <FaRegUser /> حساب کاربری
             </button>
@@ -165,7 +165,7 @@ const Navbar = () => {
         </div>
 
         <div className={styles.callToAction}>
-          <Link href="/register">
+          <Link href="/login">
             <button>
               <FaRegUser /> حساب کاربری
             </button>

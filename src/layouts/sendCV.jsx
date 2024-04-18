@@ -8,7 +8,7 @@ const SendCV = () => {
     return (
         <>
 
-        <div className={styles.wrapper}>
+        {/* <div className={styles.wrapper}> */}
             <div className={styles.cvContainer}>
 
                 <div className={styles.logoContainer}>
@@ -65,7 +65,7 @@ const SendCV = () => {
                 </div>
 
             </div>
-        </div>
+        {/* </div> */}
             
         </>
     );

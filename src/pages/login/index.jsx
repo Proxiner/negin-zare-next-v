@@ -6,6 +6,8 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+
 import axios from "axios";
 
 //Components
@@ -40,6 +42,8 @@ const Login = () => {
 
   const [authenticate, setAuthenticate] = useState(false);
 
+  const [showPass, setShowPass] = useState(true);
+
   const [userData, setData] = useState({ phone: "", password: "" });
 
   const formSubmit = (data) => {
@@ -50,62 +54,77 @@ const Login = () => {
         phone: data.phoneNumber,
         password: data.password,
       })
-      .then((response) => {
+      .then(() => {
         setAuthenticate(true);
-        console.log(response.data);
       })
       .catch((message) => console.error(message));
   };
 
   return (
-    <div className={styles.wrapper}>
-      <div className={styles.loginContainer}>
-        <Image
-          width={100}
-          height={100}
-          src="/assets/images/phone-logo.png"
-          alt="phone-logo"
-          className={styles.logo}
-          priority={true}
-        />
-        <div className={styles.imageAndContent}>
-          <div className={styles.loginImage}>
-            <Image width={450} height={600} src="/assets/images/intro_2.jpg" alt="model" />
-          </div>
-          <div className={styles.loginFormContainer}>
-            {authenticate ? (
-              <OTP userData={userData} />
-            ) : (
-              <form onSubmit={handleSubmit(formSubmit)}>
-                <Input
-                  className={styles.input}
-                  id="phoneNumber"
-                  type="text"
-                  label="شماره تماس"
-                  placeholder="شماره تلفون خود وارد کنید"
-                  register={{ ...register("phoneNumber") }}
-                />
-                <span style={{ color: "#ff0000", fontFamily: "dana-light" }}>
-                  {errors.phoneNumber?.message}
-                </span>
+    <div className={styles.loginContainer}>
+      <Image
+        width={100}
+        height={100}
+        src="/assets/images/phone-logo.png"
+        alt="phone-logo"
+        className={styles.logo}
+        priority={true}
+      />
+      <div className={styles.imageAndContent}>
+        <div className={styles.loginImage}>
+          <Image
+            width={450}
+            height={600}
+            src="/assets/images/intro_2.jpg"
+            alt="model"
+          />
+        </div>
+        <div className={styles.loginFormContainer}>
+          {authenticate ? (
+            <OTP userData={userData} />
+          ) : (
+            <form onSubmit={handleSubmit(formSubmit)}>
+              <Input
+                className={styles.input}
+                id="phoneNumber"
+                type="text"
+                label="شماره تماس"
+                placeholder="شماره تلفون خود وارد کنید"
+                register={{ ...register("phoneNumber") }}
+              />
+              <span style={{ color: "#ff0000", fontFamily: "dana-light" }}>
+                {errors.phoneNumber?.message}
+              </span>
+              <div className={styles.password}>
                 <Input
                   className={styles.input}
                   id="password"
-                  type="password"
+                  type={showPass ? "password" : "text"}
                   label="رمز عبور"
                   placeholder="********"
                   register={{ ...register("password") }}
                 />
-                <span style={{ color: "#ff0000", fontFamily: "dana-light" }}>
-                  {errors.password?.message}
-                </span>
-                <div className={styles.btnFormContainer}>
-                  <button type="submit"> درخواست کد </button>
-                  <button type="reset"> لغو </button>
-                </div>
-              </form>
-            )}
-          </div>
+                {showPass ? (
+                  <AiOutlineEyeInvisible
+                    className={styles.eye}
+                    onClick={() => setShowPass(!showPass)}
+                  />
+                ) : (
+                  <AiOutlineEye
+                    className={styles.eye}
+                    onClick={() => setShowPass(!showPass)}
+                  />
+                )}
+              </div>
+              <span style={{ color: "#ff0000", fontFamily: "dana-light" }}>
+                {errors.password?.message}
+              </span>
+              <div className={styles.btnFormContainer}>
+                <button type="submit"> درخواست کد </button>
+                <button type="reset"> لغو </button>
+              </div>
+            </form>
+          )}
         </div>
       </div>
     </div>

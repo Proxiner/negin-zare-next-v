@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 
 import PopMessage from "@/components/popMessage";
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 
 import Input from "../../components/Input";
 
@@ -62,6 +63,8 @@ const Login = () => {
       })
       .catch(() => setMessage("failed"));
   };
+
+  const [showPass, setShowPass] = useState(true);
 
   return (
     <div className={styles.wrapper}>
@@ -140,21 +143,43 @@ const Login = () => {
                 <div className={styles.password}>
                   <Input
                     id="password"
-                    type="password"
+                    type={showPass ? "password" : "text"}
                     label="رمز عبور"
                     placeholder="********"
                     register={{ ...register("password") }}
                   />
+                  {showPass ? (
+                    <AiOutlineEyeInvisible
+                      className={styles.eye}
+                      onClick={() => setShowPass(!showPass)}
+                    />
+                  ) : (
+                    <AiOutlineEye
+                      className={styles.eye}
+                      onClick={() => setShowPass(!showPass)}
+                    />
+                  )}
                 </div>
 
                 <div className={styles.repeatPassword}>
                   <Input
                     id="confrimPassword"
-                    type="password"
+                    type={showPass ? "password" : "text"}
                     label="تکرار رمزعبور"
                     placeholder="********"
                     register={{ ...register("confrimPassword") }}
                   />
+                  {showPass ? (
+                    <AiOutlineEyeInvisible
+                      className={styles.eye}
+                      onClick={() => setShowPass(!showPass)}
+                    />
+                  ) : (
+                    <AiOutlineEye
+                      className={styles.eye}
+                      onClick={() => setShowPass(!showPass)}
+                    />
+                  )}
                 </div>
               </div>
               <span style={{ color: "#ff0000", fontFamily: "dana-light" }}>

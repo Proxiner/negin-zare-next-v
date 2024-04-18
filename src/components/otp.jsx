@@ -2,6 +2,8 @@ import { useState, useEffect, useRef, useContext } from "react";
 
 import { LoginContext } from "@/context/LoginContext";
 
+import { useRouter } from "next/router";
+
 import axios from "axios";
 
 import styles from "./_otp.module.scss";
@@ -66,6 +68,8 @@ const OTP = ({ userData }) => {
   const { phone, password } = userData;
   const { token, setToken } = useContext(LoginContext);
 
+  const router = useRouter();
+
   const handleLoginVerify = () => {
     if (code.join("").length < 5) {
       setError(true);
@@ -78,6 +82,7 @@ const OTP = ({ userData }) => {
         })
         .then((response) => {
           const tokenst = response.data.authorisation.token;
+          router.push('/dashboard')
           setToken((token) => (token = tokenst));
         })
         .catch((message) => {
@@ -103,6 +108,7 @@ const OTP = ({ userData }) => {
             onKeyDown={(element) => handleKeyDown(element, index)}
             maxLength="1"
             key={index}
+            inputMode="numeric"
             className={` ${styles.digits} ${error ? `${styles.error}` : ""}`}
           />
         ))}

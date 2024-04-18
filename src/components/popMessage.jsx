@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 
-
 import { useRouter } from "next/router";
 
 import Image from "next/image";
@@ -8,7 +7,7 @@ import Link from "next/link";
 
 import styles from "./_popMessage.module.scss";
 
-const PopMessage = ({ warning , message, imageSrc, tryAgain, again }) => {
+const PopMessage = ({ warning, message, imageSrc, tryAgain, again }) => {
   const router = useRouter();
 
   const line = useRef();
@@ -17,7 +16,7 @@ const PopMessage = ({ warning , message, imageSrc, tryAgain, again }) => {
 
   const [timer, setTimer] = useState(3);
 
-  const [showTimer , setShow] = useState(true);
+  const [showTimer, setShow] = useState(true);
 
   useEffect(() => {
     content.current;
@@ -28,19 +27,25 @@ const PopMessage = ({ warning , message, imageSrc, tryAgain, again }) => {
       case "حساب کاربری با موفقیت ساخته شد :)":
         content.current.children[1].style.color = "limegreen";
         line.current.style.backgroundColor = "limegreen";
-        setShow(true)
+        setShow(true);
         break;
 
       case "این حساب کاربری قبلا ایجاد شده است :(":
         content.current.children[1].style.color = "orange";
         line.current.style.backgroundColor = "white";
-        setShow(false)
+        setShow(false);
+        break;
+
+      case "توکن شما منقضی شده":
+        content.current.children[1].style.color = "red";
+        line.current.style.backgroundColor = "red";
+        setShow(true);
         break;
 
       default:
         content.current.children[1].style.color = "red";
         line.current.style.backgroundColor = "red";
-        setShow(true)
+        setShow(true);
         break;
     }
 
@@ -59,6 +64,10 @@ const PopMessage = ({ warning , message, imageSrc, tryAgain, again }) => {
           content.current.children[1].textContent ===
           "این حساب کاربری قبلا ایجاد شده است :("
         ) {
+        } else if (
+          content.current.children[1].textContent === "توکن شما منقضی شده"
+        ) {
+          router.push("/login");
         } else {
           router.reload();
         }
@@ -78,7 +87,9 @@ const PopMessage = ({ warning , message, imageSrc, tryAgain, again }) => {
         <h3>{message}</h3>
         <span>
           {tryAgain} {showTimer ? `${timer} ثانیه` : ""}
-          <Link href='/login' style={{color : 'blue'}}>{again}</Link>
+          <Link href="/login" style={{ color: "blue" }}>
+            {again}
+          </Link>
         </span>
         <div className={styles.line} ref={line}></div>
       </div>
