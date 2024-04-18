@@ -42,7 +42,8 @@
 
     img {
       width: 120px;
-      padding: 20px 0px;
+      height: max-content;
+      margin-top: 1.5rem;
 
       @media #{responsive.$tablet-landscape} {
         width: 150px;
@@ -56,14 +57,13 @@
     .imageAndContent {
       display: flex;
       width: 100%;
-      height: 100%;
+      height: 90%;
 
       .loginImage {
         display: flex;
         justify-content: center;
         align-items: center;
         width: 50%;
-        height: 100%;
 
         @media #{responsive.$tablet-landscape} {
           width: 40%;
@@ -80,9 +80,24 @@
 
         img {
           width: 80%;
-          height: 100%;
+          height: 90%;
           object-fit: cover;
-          object-position: center -30px;
+          object-position: center top 120px;
+
+          // @media #{responsive.$laptop} {
+          //   width: 430px;
+          //   height: 600px;
+          // }
+
+          // @media #{responsive.$tablet-landscape} {
+          //   width: 310px;
+          //   height: 430px;
+          // }
+
+          // @media #{responsive.$tablet-portrait} {
+          //   width: 250px;
+          //   height: 320px;
+          // }
         }
       }
     }

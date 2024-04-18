@@ -9,9 +9,7 @@ import * as yup from "yup";
 import axios from "axios";
 
 //Components
-import WindowsImage from "../../components/windowsImage";
 import OTP from "@/components/otp";
-// import PopMessage from "@/components/popMessage";
 
 import Image from "next/image";
 
@@ -40,8 +38,6 @@ const Login = () => {
     resolver: yupResolver(schema),
   });
 
-  // const [message , setMessage] = useState("succses");
-
   const [authenticate, setAuthenticate] = useState(false);
 
   const [userData, setData] = useState({ phone: "", password: "" });
@@ -61,129 +57,6 @@ const Login = () => {
       .catch((message) => console.error(message));
   };
 
-  const [windowImageProps, setWindowImageProps] = useState({
-    current: {
-      imageWidthContainer: 450,
-      imageHeightContainer: 630,
-      imageWidth: 100,
-      imageHeight: 100,
-      beforeWidth: 450,
-      beforeHeight: 630,
-      beforeTop: 15,
-      beforeRight: -20,
-      imageRadius: "0px 0px 0px 0px",
-      beforeBorderRadius: "0px 0px 0px 0px",
-      beforeBorder: "1px solid #fff",
-    },
-
-    laptop: {
-      imageWidthContainer: 430,
-      imageHeightContainer: 600,
-      imageWidth: 100,
-      imageHeight: 100,
-      beforeWidth: 430,
-      beforeHeight: 600,
-      beforeTop: 15,
-      beforeRight: -20,
-      imageRadius: "0px 0px 0px 0px",
-      beforeBorderRadius: "0px 0px 0px 0px",
-      beforeBorder: "1px solid #fff",
-    },
-
-    tabletLandscape: {
-      imageWidthContainer: 310,
-      imageHeightContainer: 430,
-      imageWidth: 100,
-      imageHeight: 100,
-      beforeWidth: 310,
-      beforeHeight: 430,
-      beforeTop: 15,
-      beforeRight: -15,
-      imageRadius: "0px 0px 0px 0px",
-      beforeBorderRadius: "0px 0px 0px 0px",
-      beforeBorder: "1px solid #fff",
-    },
-
-    tabletPortrait: {
-      imageWidthContainer: 250,
-      imageHeightContainer: 320,
-      imageWidth: 100,
-      imageHeight: 100,
-      beforeWidth: 250,
-      beforeHeight: 320,
-      beforeTop: 15,
-      beforeRight: 10,
-      imageRadius: "120px 120px 0px 0px",
-      beforeBorderRadius: "77.5px 77.5px 0px 0px",
-      beforeBorder: "1px solid #fff",
-    },
-
-    phone: {
-      imageWidthContainer: 250,
-      imageHeightContainer: 320,
-      imageWidth: 100,
-      imageHeight: 100,
-      beforeWidth: 250,
-      beforeHeight: 320,
-      beforeTop: 15,
-      beforeRight: 10,
-      imageRadius: "120px 120px 0px 0px",
-      beforeBorderRadius: "0px 0px 0px 0px",
-      beforeBorder: "1px solid #fff",
-    },
-  });
-
-  useEffect(() => {
-    const handleResize = () => {
-      if (matchMedia("(min-width: 1366px) and (max-width: 1440px)").matches) {
-        setWindowImageProps((prevState) => ({
-          ...prevState,
-          current: prevState.laptop,
-        }));
-      } else if (
-        matchMedia(
-          "(min-width: 1024px) and (max-width: 1365px) and (orientation : landscape)"
-        ).matches
-      ) {
-        setWindowImageProps((prevState) => ({
-          ...prevState,
-          current: prevState.tabletLandscape,
-        }));
-      } else if (
-        matchMedia(
-          "(min-width: 768px) and (max-width: 1024px) and (orientation : portrait)"
-        ).matches
-      ) {
-        setWindowImageProps((prevState) => ({
-          ...prevState,
-          current: prevState.tabletPortrait,
-        }));
-      } else if (
-        matchMedia("(min-width: 375px) and (max-width: 512px)").matches
-      ) {
-        setWindowImageProps((prevState) => ({
-          ...prevState,
-          current: prevState.phone,
-        }));
-      } else {
-        setWindowImageProps((prevState) => ({
-          ...prevState,
-          current: prevState.current,
-        }));
-      }
-    };
-
-    window.addEventListener("resize", handleResize);
-
-    handleResize();
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
-
-  //validait
-
   return (
     <div className={styles.wrapper}>
       <div className={styles.loginContainer}>
@@ -193,26 +66,11 @@ const Login = () => {
           src="/assets/images/phone-logo.png"
           alt="phone-logo"
           className={styles.logo}
+          priority={true}
         />
         <div className={styles.imageAndContent}>
           <div className={styles.loginImage}>
-            {/* <WindowsImage
-              imageSrc="/assets/images/intro_2.jpg"
-              iconVisibility="none"
-              imageWidthContainer={windowImageProps.current.imageWidthContainer}
-              imageHeightContainer={
-                windowImageProps.current.imageHeightContainer
-              }
-              imageWidth={windowImageProps.current.imageWidth}
-              imageHeight={windowImageProps.current.imageHeight}
-              beforeWidth={windowImageProps.current.beforeWidth}
-              beforeHeight={windowImageProps.current.beforeHeight}
-              beforeTop={windowImageProps.current.beforeTop}
-              beforeRight={windowImageProps.current.beforeRight}
-              imageRadius={windowImageProps.current.imageRadius}
-              beforeBorderRadius={windowImageProps.current.beforeBorderRadius}
-              beforeBorder={windowImageProps.current.beforeBorder}
-            /> */}
+            <Image width={450} height={600} src="/assets/images/intro_2.jpg" alt="model" />
           </div>
           <div className={styles.loginFormContainer}>
             {authenticate ? (

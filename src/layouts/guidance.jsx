@@ -4,6 +4,8 @@ import React from "react";
 import styles from "./_guidance.module.scss";
 import BluredBlob from "../components/bluredBlob";
 
+import Link from "next/link";
+
 const Guidance = () => {
   return (
     <div className={styles.guidanceContainer} id="help">
@@ -23,33 +25,13 @@ const Guidance = () => {
             />
           </svg>
           <div className={styles.title}>
-            <span className={styles.titleOne}> هنر دستان من </span>
-            <span className={styles.titleTwo}> معجزه می کند </span>
+            <span className={styles.titleOne}>  تو هم میتونی عضو تیم </span>
+            <span className={styles.titleTwo}> خفن ما بشی... </span>
           </div>
         </div>
 
-        <div className={styles.boxForm}>
-          <div className={styles.getFreeQuidance}>
-            <p>
-              دریافت <br />
-              <span> مشاوره رایگان </span>
-            </p>
-          </div>
-
-          <form action="#">
-            <input
-              name="fullNmae"
-              id="fullName"
-              placeholder="نام و نام خانوادگی"
-            />
-            <input
-              name="phoneNumber"
-              id="phoneNumber"
-              placeholder="شماره تماس"
-            />
-            <input name="option" id="option" placeholder="بخش مشاوره" />
-            <button type="submit"> ارسال </button>
-          </form>
+        <div className={styles.btnContainer}>
+          <button> <Link href="/apply"> ارسال رزومه </Link> </button>
         </div>
       </div>
     </div>

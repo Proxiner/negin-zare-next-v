@@ -1,220 +1,237 @@
-@use '/src/base/fonts' as *;
+@use "/src/base/fonts" as *;
 @use "/src/base/colors" as color;
 @use "/src/utils/media-queries" as responsive;
 
 .wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+  background-color: #edd6c7;
+  direction: rtl;
+
+  .loginContainer {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 100%;
-    height: 100vh;
-    background-color: #EDD6C7;
-    direction: rtl;
+    width: 90%;
+    height: 95%;
+    background-color: #000000;
 
-    .loginContainer {
+    @media #{responsive.$tablet-portrait} {
+      justify-content: center;
+      align-items: center;
+      flex-direction: column-reverse;
+    }
+
+    @media #{responsive.$tablet-portrait} {
+      justify-content: center;
+      align-items: center;
+    }
+
+    @media #{responsive.$phone} {
+      justify-content: center;
+      align-items: center;
+      flex-direction: column-reverse;
+      height: 100%;
+    }
+
+    img {
+      width: 120px;
+      height: max-content;
+      margin-top: 1rem;
+
+      @media #{responsive.$tablet-landscape} {
+        width: 150px;
+      }
+
+      @media #{responsive.$phone} {
+        width: 80px;
+      }
+    }
+
+    .imageAndContent {
+      display: flex;
+      width: 100%;
+      height: 90%;
+    }
+
+    .loginImage {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 50%;
+      height: 100%;
+
+      @media #{responsive.$tablet-landscape} {
+        width: 40%;
+        justify-content: flex-end;
+      }
+
+      @media #{responsive.$tablet-portrait} {
+        display: none;
+      }
+
+      @media #{responsive.$phone} {
+        display: none;
+      }
+
+      img {
+        width: 80%;
+        height: 90%;
+        object-fit: cover;
+        object-position: center top 120px;
+        // padding: 2rem 0;
+
+        // @media #{responsive.$laptop} {
+        //     width: 430px;
+        //     height: 600px;
+        // }
+
+        // @media #{responsive.$tablet-landscape} {
+        //     width: 310px;
+        //     height: 430px;
+        // }
+
+        // @media #{responsive.$tablet-portrait} {
+        //     width: 250px;
+        //     height: 320px;
+        // }
+      }
+    }
+
+    .loginFormContainer {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 50%;
+      height: 100%;
+      gap: 40px;
+
+      @media #{responsive.$tablet-landscape} {
+        width: 60%;
+        gap: 40px;
+      }
+
+      @media #{responsive.$tablet-portrait} {
+        width: 100%;
+      }
+
+      @media #{responsive.$phone} {
+        width: 100%;
+      }
+
+      form {
         display: flex;
         flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        width: 90%;
-        height: 95%;
-        background-color: #000000;
+        gap: 12px;
 
-        @media #{responsive.$tablet-portrait} {
-            justify-content: center;
-            align-items: center;
-            flex-direction: column-reverse;
-        }
-
-        @media #{responsive.$tablet-portrait} {
-            justify-content: center;
-            align-items: center;
+        @media #{responsive.$tablet-landscape} {
+          gap: 10px;
         }
 
         @media #{responsive.$phone} {
-            justify-content: center;
-            align-items: center;
-            flex-direction: column-reverse;
-            height: 100%;
+          justify-content: center;
+          align-items: center;
+          width: 100%;
         }
 
-        img {
-            width: 120px;
-            padding: 20px 0px;
+        label {
+          color: #c4c4c4;
+          padding-right: 10px;
+          font-family: dana-medium;
+          font-size: 1.1rem;
+
+          @media #{responsive.$tablet-landscape} {
+            font-size: 1rem;
+          }
+
+          @media #{responsive.$phone} {
+            width: 260px;
+          }
+        }
+
+        .input {
+          width: 400px;
+          height: 50px;
+          margin-bottom: 18px;
+          padding: 8px;
+          background-color: transparent;
+          border: 1.5px solid #fff;
+          font-size: 1.1rem;
+          color: #fff;
+          font-family: dana-medium;
+
+          @media #{responsive.$tablet-landscape} {
+            width: 320px;
+            height: 40px;
+          }
+
+          @media #{responsive.$phone} {
+            width: 250px;
+            height: 40px;
+          }
+        }
+
+        .input:focus-visible {
+          background: #131313;
+          outline: none;
+        }
+
+        ::placeholder {
+          font-family: dana;
+          font-size: 0.9rem;
+        }
+
+        .btnFormContainer {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          gap: 50px;
+          width: 100%;
+          margin-top: 15px;
+
+          @media #{responsive.$phone} {
+            gap: 20px;
+          }
+
+          button {
+            width: 165px;
+            height: 53px;
+            font-family: dana-medium;
+            font-size: 1rem;
 
             @media #{responsive.$tablet-landscape} {
-                width: 150px;
+              width: 140px;
+              height: 50px;
             }
 
             @media #{responsive.$phone} {
-                width: 80px;
+              width: 130px;
+              height: 50px;
             }
+          }
+
+          button:nth-child(1) {
+            background: #d7b097;
+            color: #000000;
+            border: none;
+          }
+
+          button:nth-child(2) {
+            background: #242424;
+            color: #fff;
+            border: none;
+          }
+
+          button:hover {
+            cursor: pointer;
+          }
         }
-
-        .imageAndContent {
-            display: flex;
-            width: 100%;
-            height: 100%;
-        }
-
-        .loginImage {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 50%;
-            height: 100%;
-
-            @media #{responsive.$tablet-landscape} {
-                width: 40%;
-                justify-content: flex-end;
-            }
-
-            @media #{responsive.$tablet-portrait} {
-                display: none;
-            }
-
-            @media #{responsive.$phone} {
-                display: none;
-            }
-
-            img {
-                width: 350px;
-                background-color: red;
-            }
-        }
-
-        .loginFormContainer {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            width: 50%;
-            height: 100%;
-            gap: 40px;
-
-            @media #{responsive.$tablet-landscape} {
-                width: 60%;
-                gap: 40px;
-            }
-
-            @media #{responsive.$tablet-portrait} {
-                width: 100%;
-            }
-
-            @media #{responsive.$phone} {
-                width: 100%;
-            }
-
-
-            form {
-                display: flex;
-                flex-direction: column;
-                gap: 12px;
-
-                @media #{responsive.$tablet-landscape} {
-                    gap: 10px;
-                }
-
-                @media #{responsive.$phone} {
-                    justify-content: center;
-                    align-items: center;
-                    width: 100%;
-                }
-
-                label {
-                    color: #c4c4c4;
-                    padding-right: 10px;
-                    font-family: dana-medium;
-                    font-size: 1.1rem;
-
-                    @media #{responsive.$tablet-landscape} {
-                        font-size: 1rem;
-                    }
-
-                    @media #{responsive.$phone} {
-                        width: 260px;
-                    }
-                }
-
-                .input {
-                    width: 400px;
-                    height: 50px;
-                    margin-bottom: 18px;
-                    padding: 8px;
-                    background-color: transparent;
-                    border: 1.5px solid #fff;
-                    font-size: 1.1rem;
-                    color: #fff;
-                    font-family: dana-medium;
-
-                    @media #{responsive.$tablet-landscape} {
-                        width: 320px;
-                        height: 40px;
-                    }
-
-                    @media #{responsive.$phone} {
-                        width: 250px;
-                        height: 40px;
-                    }
-                }
-
-                .input:focus-visible {
-                    background: #131313;
-                    outline: none;
-                }
-
-                ::placeholder {
-                    font-family: dana;
-                    font-size: 0.9rem;
-                }
-
-
-                .btnFormContainer {
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    gap: 50px;
-                    width: 100%;
-                    margin-top: 15px;
-
-                    @media #{responsive.$phone} {
-                        gap: 20px;
-                    }
-
-                    button {
-                        width: 165px;
-                        height: 53px;
-                        font-family: dana-medium;
-                        font-size: 1rem;
-
-                        @media #{responsive.$tablet-landscape} {
-                            width: 140px;
-                            height: 50px;
-                        }
-
-                        @media #{responsive.$phone} {
-                            width: 130px;
-                            height: 50px;
-                        }
-                    }
-
-                    button:nth-child(1) {
-                        background: #d7b097;
-                        color: #000000;
-                        border: none;
-                    }
-
-                    button:nth-child(2) {
-                        background: #242424;
-                        color: #fff;
-                        border: none;
-                    }
-
-                    button:hover {
-                        cursor: pointer;
-                    }
-                }
-            }
-        }
+      }
     }
+  }
 }

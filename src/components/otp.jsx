@@ -1,9 +1,10 @@
 import { useState, useEffect, useRef, useContext } from "react";
 
+import { LoginContext } from "@/context/LoginContext";
+
 import axios from "axios";
 
 import styles from "./_otp.module.scss";
-import { useRouter } from "next/router";
 
 const OTP = ({ userData }) => {
   const url = "http://45.139.10.86/api";
@@ -14,8 +15,6 @@ const OTP = ({ userData }) => {
   const [hurry, setHurry] = useState(false);
 
   const timeContent = useRef(null);
-
-  const router = useRouter();
 
   useEffect(() => {
     const countdown = setInterval(() => {
@@ -65,6 +64,7 @@ const OTP = ({ userData }) => {
   };
 
   const { phone, password } = userData;
+  const { token, setToken } = useContext(LoginContext);
 
   const handleLoginVerify = () => {
     if (code.join("").length < 5) {
@@ -77,14 +77,18 @@ const OTP = ({ userData }) => {
           phone: phone,
         })
         .then((response) => {
-          console.log(response.data.authorisation.token);
-          router.push(`/dashboard?token=${response.data.authorisation.token}`);
+          const tokenst = response.data.authorisation.token;
+          setToken((token) => (token = tokenst));
         })
         .catch((message) => {
           console.error(message);
         });
     }
   };
+
+  useEffect(() => {
+    localStorage.setItem("token", JSON.stringify(token));
+  }, [token]);
 
   return (
     <div className={styles.container}>

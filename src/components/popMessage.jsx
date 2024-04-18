@@ -1,12 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
 
+
 import { useRouter } from "next/router";
 
 import Image from "next/image";
+import Link from "next/link";
 
 import styles from "./_popMessage.module.scss";
 
-const PopMessage = ({ message, imageSrc, tryAgain }) => {
+const PopMessage = ({ warning , message, imageSrc, tryAgain, again }) => {
   const router = useRouter();
 
   const line = useRef();
@@ -15,29 +17,48 @@ const PopMessage = ({ message, imageSrc, tryAgain }) => {
 
   const [timer, setTimer] = useState(3);
 
+  const [showTimer , setShow] = useState(true);
+
   useEffect(() => {
-    console.log(content.current.children[1].textContent);
-    if (
-      content.current.children[1].textContent ===
-      "حساب کاربری با موفقیت ساخته شد :)"
-    ) {
-      line.current.style.backgroundColor = "limegreen";
-      content.current.children[1].style.color = "limegreen";
-    } else {
-      line.current.style.backgroundColor = "red";
-      content.current.children[1].style.color = "red";
+    content.current;
+  });
+
+  useEffect(() => {
+    switch (content.current.children[1].textContent) {
+      case "حساب کاربری با موفقیت ساخته شد :)":
+        content.current.children[1].style.color = "limegreen";
+        line.current.style.backgroundColor = "limegreen";
+        setShow(true)
+        break;
+
+      case "این حساب کاربری قبلا ایجاد شده است :(":
+        content.current.children[1].style.color = "orange";
+        line.current.style.backgroundColor = "white";
+        setShow(false)
+        break;
+
+      default:
+        content.current.children[1].style.color = "red";
+        line.current.style.backgroundColor = "red";
+        setShow(true)
+        break;
     }
+
     const interval = setInterval(() => {
       if (timer > 0) {
         setTimer((prevTimer) => prevTimer - 1);
         line.current.style.width = "0";
       } else {
-        clearInterval(interval); // تایمر را متوقف کنید
+        clearInterval(interval);
         if (
           content.current.children[1].textContent ===
           "حساب کاربری با موفقیت ساخته شد :)"
         ) {
-          router.push("/login"); // انتقال به مسیر جدید
+          router.push("/login");
+        } else if (
+          content.current.children[1].textContent ===
+          "این حساب کاربری قبلا ایجاد شده است :("
+        ) {
         } else {
           router.reload();
         }
@@ -53,10 +74,11 @@ const PopMessage = ({ message, imageSrc, tryAgain }) => {
     <div className={styles.container}>
       <div className={styles.content} ref={content}>
         <Image width={35} height={35} src={imageSrc} alt="thumbs up or down" />
+        {warning}
         <h3>{message}</h3>
         <span>
-          {" "}
-          {tryAgain} {timer} ثانیه
+          {tryAgain} {showTimer ? `${timer} ثانیه` : ""}
+          <Link href='/login' style={{color : 'blue'}}>{again}</Link>
         </span>
         <div className={styles.line} ref={line}></div>
       </div>

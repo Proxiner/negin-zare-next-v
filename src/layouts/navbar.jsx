@@ -1,4 +1,6 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
+
+import { FaRegUser } from "react-icons/fa6";
 
 import Link from "next/link";
 import Image from "next/image";
@@ -12,18 +14,18 @@ const Navbar = () => {
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const toggleHelp = () => {
-    setIsMenuOpen(!isMenuOpen);
-    if (isMenuOpen) {
-      menuContent.current.style.right = "-512px";
-      document.body.style.overflowY = "auto";
-      document.documentElement.style.overflowY = "auto";
-    } else {
-      menuContent.current.style.right = "0";
-      document.body.style.overflowY = "hidden";
-      document.documentElement.style.overflowY = "hidden";
-    }
-  };
+  // const toggleHelp = () => {
+  //   setIsMenuOpen(!isMenuOpen);
+  //   if (isMenuOpen) {
+  //     menuContent.current.style.right = "-512px";
+  //     document.body.style.overflowY = "auto";
+  //     document.documentElement.style.overflowY = "auto";
+  //   } else {
+  //     menuContent.current.style.right = "0";
+  //     document.body.style.overflowY = "hidden";
+  //     document.documentElement.style.overflowY = "hidden";
+  //   }
+  // };
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -51,8 +53,10 @@ const Navbar = () => {
           <Link href="/coming-soon">درباره ما</Link>
         </ul>
         <div className={styles.callToAction}>
-          <Link href="#help" onClick={toggleHelp}>
-            <button>مشاوره رایگان</button>
+          <Link href="/register">
+            <button>
+              <FaRegUser /> حساب کاربری
+            </button>
           </Link>
         </div>
       </div>
@@ -161,8 +165,10 @@ const Navbar = () => {
         </div>
 
         <div className={styles.callToAction}>
-          <Link href="#help">
-            <button>مشاوره رایگان</button>
+          <Link href="/register">
+            <button>
+              <FaRegUser /> حساب کاربری
+            </button>
           </Link>
         </div>
       </div>

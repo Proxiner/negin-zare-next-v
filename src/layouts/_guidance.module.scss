@@ -46,6 +46,8 @@
 
   .guidanceContent {
     display: flex;
+    justify-content: center;
+    align-items: center;
     flex-direction: column;
     gap: 100px;
     width: 65%;
@@ -88,7 +90,7 @@
         position: absolute;
         width: 50px;
         height: 50px;
-        right: 286px;
+        right: 170px;
         top: 20px;
 
 
@@ -173,190 +175,219 @@
     }
 
 
-    .boxForm::before {
-      position: absolute;
-      content: " ";
-      top: 15px;
-      left: 5px;
-      width: 100%;
-      height: 100%;
-      border: 1px solid #fff;
-      z-index: -1;
-    }
+    // .boxForm::before {
+    //   position: absolute;
+    //   content: " ";
+    //   top: 15px;
+    //   left: 5px;
+    //   width: 100%;
+    //   height: 100%;
+    //   border: 1px solid #fff;
+    //   z-index: -1;
+    // }
 
-    .boxForm {
-      display: flex;
-      align-items: center;
-      direction: rtl;
-      width: 100%;
-      height: max-content;
-      background-color: #f1eae6;
-      border: 1px solid #000;
-      position: relative;
+    // .boxForm {
+    //   display: flex;
+    //   align-items: center;
+    //   direction: rtl;
+    //   width: 100%;
+    //   height: max-content;
+    //   background-color: #f1eae6;
+    //   border: 1px solid #000;
+    //   position: relative;
 
-      @media #{responsive.$tablet-portrait} {
-        flex-direction: column;
-        align-items: center;
-        height: 550px;
-        gap: 25px;
-      }
+    //   @media #{responsive.$tablet-portrait} {
+    //     flex-direction: column;
+    //     align-items: center;
+    //     height: 550px;
+    //     gap: 25px;
+    //   }
 
-      @media #{responsive.$tablet-landscape} {
-        flex-direction: column;
-        align-items: center;
-        height: 175px;
-        gap: 25px;
-      }
+    //   @media #{responsive.$tablet-landscape} {
+    //     flex-direction: column;
+    //     align-items: center;
+    //     height: 175px;
+    //     gap: 25px;
+    //   }
 
-      @media #{responsive.$phone} {
-        flex-direction: column;
-        align-items: center;
-        height: 420px;
-        gap: 25px;
-      }
+    //   @media #{responsive.$phone} {
+    //     flex-direction: column;
+    //     align-items: center;
+    //     height: 420px;
+    //     gap: 25px;
+    //   }
 
-      .getFreeQuidance {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 210px;
-        height: 146px;
-        border-left: 1px solid color.$main;
-        background-color: color.$accent;
-
-
-        @media #{responsive.$laptop} {
-          height: 126px;
-        }
-
-        @media #{responsive.$tablet-portrait} {
-          flex-direction: column;
-          width: 100%;
-          height: 180px;
-          text-align: center;
-          border-left: 0px;
-          border-bottom: 1.5px solid color.$main;
-        }
-
-        @media #{responsive.$tablet-landscape} {
-          flex-direction: column;
-          width: 100%;
-          height: 80px;
-          text-align: center;
-          border-left: 0px;
-          border-bottom: 1.5px solid color.$main;
-        }
-
-        @media #{responsive.$phone} {
-          flex-direction: column;
-          width: 100%;
-          height: 100px;
-          text-align: center;
-          border-left: 0px;
-          border-bottom: 1.5px solid color.$main;
-        }
-
-        p {
-          font-family: dana-extra-light;
-          font-size: 1.5rem;
-          color: #000;
-
-          @media #{responsive.$laptop} {
-            font-size: 1.3rem;
-          }
-
-          @media #{responsive.$tablet-portrait} {
-            font-size: 1.6rem;
-          }
-
-          @media #{responsive.$phone} {
-            font-size: 1.25rem;
-          }
-
-          span {
-            font-family: dana-medium;
-            font-size: 1.5rem;
-
-            @media #{responsive.$laptop} {
-              font-size: 1.2rem;
-            }
-
-            @media #{responsive.$tablet-portrait} {
-              font-size: 1.6rem;
-            }
-
-            @media #{responsive.$phone} {
-              font-size: 1.25rem;
-            }
-          }
-        }
-      }
-
-      form {
-        display: flex;
-        justify-content: center;
-        gap: 25px;
-        width: 100%;
-        height: max-content;
-
-        @media #{responsive.$tablet-portrait} {
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-          height: 100%;
-        }
-
-        @media #{responsive.$phone} {
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-          height: 100%;
-        }
+    //   .getFreeQuidance {
+    //     display: flex;
+    //     justify-content: center;
+    //     align-items: center;
+    //     width: 210px;
+    //     height: 146px;
+    //     border-left: 1px solid color.$main;
+    //     background-color: color.$accent;
 
 
-        input {
-          width: 210px;
-          height: 55px;
-          font-size: 1.2rem;
-          font-family: dana;
-          padding-right: 20px;
-          border: 1px solid color.$main;
-          background-color: transparent;
+    //     @media #{responsive.$laptop} {
+    //       height: 126px;
+    //     }
 
-          @media #{responsive.$laptop} {
-            width: 190px;
-            height: 48px;
-          }
+    //     @media #{responsive.$tablet-portrait} {
+    //       flex-direction: column;
+    //       width: 100%;
+    //       height: 180px;
+    //       text-align: center;
+    //       border-left: 0px;
+    //       border-bottom: 1.5px solid color.$main;
+    //     }
 
-          @media #{responsive.$tablet-portrait} {
-            width: 90%;
-          }
+    //     @media #{responsive.$tablet-landscape} {
+    //       flex-direction: column;
+    //       width: 100%;
+    //       height: 80px;
+    //       text-align: center;
+    //       border-left: 0px;
+    //       border-bottom: 1.5px solid color.$main;
+    //     }
 
-          @media #{responsive.$phone} {
-            width: 90%;
-          }
-        }
+    //     @media #{responsive.$phone} {
+    //       flex-direction: column;
+    //       width: 100%;
+    //       height: 100px;
+    //       text-align: center;
+    //       border-left: 0px;
+    //       border-bottom: 1.5px solid color.$main;
+    //     }
 
-        input::placeholder {
-          font-size: 1rem;
-          font-family: dana;
-          color: #3f4343;
+    //     p {
+    //       font-family: dana-extra-light;
+    //       font-size: 1.5rem;
+    //       color: #000;
+
+    //       @media #{responsive.$laptop} {
+    //         font-size: 1.3rem;
+    //       }
+
+    //       @media #{responsive.$tablet-portrait} {
+    //         font-size: 1.6rem;
+    //       }
+
+    //       @media #{responsive.$phone} {
+    //         font-size: 1.25rem;
+    //       }
+
+    //       span {
+    //         font-family: dana-medium;
+    //         font-size: 1.5rem;
+
+    //         @media #{responsive.$laptop} {
+    //           font-size: 1.2rem;
+    //         }
+
+    //         @media #{responsive.$tablet-portrait} {
+    //           font-size: 1.6rem;
+    //         }
+
+    //         @media #{responsive.$phone} {
+    //           font-size: 1.25rem;
+    //         }
+    //       }
+    //     }
+    //   }
+
+    //   form {
+    //     display: flex;
+    //     justify-content: center;
+    //     gap: 25px;
+    //     width: 100%;
+    //     height: max-content;
+
+    //     @media #{responsive.$tablet-portrait} {
+    //       flex-direction: column;
+    //       align-items: center;
+    //       justify-content: center;
+    //       height: 100%;
+    //     }
+
+    //     @media #{responsive.$phone} {
+    //       flex-direction: column;
+    //       align-items: center;
+    //       justify-content: center;
+    //       height: 100%;
+    //     }
 
 
-          @media #{responsive.$laptop} {
-            font-size: 0.9rem;
-          }
+    //     input {
+    //       width: 210px;
+    //       height: 55px;
+    //       font-size: 1.2rem;
+    //       font-family: dana;
+    //       padding-right: 20px;
+    //       border: 1px solid color.$main;
+    //       background-color: transparent;
+
+    //       @media #{responsive.$laptop} {
+    //         width: 190px;
+    //         height: 48px;
+    //       }
+
+    //       @media #{responsive.$tablet-portrait} {
+    //         width: 90%;
+    //       }
+
+    //       @media #{responsive.$phone} {
+    //         width: 90%;
+    //       }
+    //     }
+
+    //     input::placeholder {
+    //       font-size: 1rem;
+    //       font-family: dana;
+    //       color: #3f4343;
 
 
-          @media #{responsive.$phone} {
-            font-size: 0.9rem;
-          }
-        }
+    //       @media #{responsive.$laptop} {
+    //         font-size: 0.9rem;
+    //       }
 
-        button {
-          width: 102px;
-          height: 55px;
-          background-color: color.$main;
+
+    //       @media #{responsive.$phone} {
+    //         font-size: 0.9rem;
+    //       }
+    //     }
+
+    //     button {
+    //       width: 102px;
+    //       height: 55px;
+    //       background-color: color.$main;
+    //       color: #fff;
+    //       font-size: 1rem;
+    //       font-family: dana;
+    //       border: none;
+
+    //       @media #{responsive.$laptop} {
+    //         height: 48px;
+    //       }
+
+    //       @media #{responsive.$tablet-portrait} {
+    //         width: 90%;
+    //         height: 65px;
+    //         font-size: 1.1rem;
+    //       }
+
+    //       @media #{responsive.$phone} {
+    //         width: 90%;
+    //         height: 45px;
+    //         font-size: 1.1rem;
+    //       }
+    //     }
+    //   }
+    // }
+
+    .btnContainer {
+      button {
+          width: 150px;
+          height: 50px;
+          background-color: color.$accent;
           color: #fff;
           font-size: 1rem;
           font-family: dana;
@@ -367,17 +398,24 @@
           }
 
           @media #{responsive.$tablet-portrait} {
-            width: 90%;
-            height: 65px;
+            width: 150px;
+            height: 55px;
             font-size: 1.1rem;
           }
 
           @media #{responsive.$phone} {
-            width: 90%;
+            width: 150px;
             height: 45px;
-            font-size: 1.1rem;
+            font-size: 1rem;
           }
-        }
+
+          a {
+            text-decoration: none;
+            color: color.$main;
+            font-size: 1.1rem;
+            font-family: dana;
+            border: none;
+          }
       }
     }
   }
