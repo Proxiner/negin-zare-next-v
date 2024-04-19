@@ -50,7 +50,11 @@ const Index = () => {
         .then((response) => {
           setLicense(response.data.license);
         })
-        .catch((message) => console.table(message));
+        .catch((message) => {
+          if (message.message === "Request failed with status code 401") {
+            setShowMessage("token expired");
+          }
+        });
     }
   }, [token]);
 
@@ -69,15 +73,35 @@ const Index = () => {
     }
   }, [token]);
 
+  const unsecuredCopyToClipboard = (text) => {
+    const textArea = document.createElement("textarea");
+    textArea.value = text;
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    try {
+      document.execCommand("copy");
+      alert("کد لایسنس با موفقیت کپی شد");
+    } catch (err) {
+      console.error("Unable to copy to clipboard", err);
+      alert("لایسنس کپی نشد دستی اقدام کنید ");
+    }
+    document.body.removeChild(textArea);
+  };
+
   const copyLicense = () => {
-    navigator.clipboard.writeText(license).then(
-      function () {
-        alert("کد لایسنس با موفقیت کپی شد");
-      },
-      function () {
-        alert("لایسنس کپی نشد دستی اقدام کنید ");
-      }
-    );
+    if (window.isSecureContext && navigator.clipboard) {
+      navigator.clipboard.writeText(license).then(
+        function () {
+          alert("کد لایسنس با موفقیت کپی شد");
+        },
+        function () {
+          alert("لایسنس کپی نشد دستی اقدام کنید ");
+        }
+      );
+    } else {
+      unsecuredCopyToClipboard(license);
+    }
   };
 
   const { name, email, phone } = userData;
