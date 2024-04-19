@@ -212,8 +212,12 @@
             font-size: 1.3rem;
 
             @media #{responsive.$phone} {
-              left: 30px;
+              left: 25px;
               bottom: 28px;
+            }
+
+            @media screen and (min-width : 391px) and (max-width : 430px) {
+              left: 45px;
             }
           }
         }
@@ -238,8 +242,12 @@
             font-size: 1.3rem;
 
             @media #{responsive.$phone} {
-              left: 30px;
+              left: 25px;
               bottom: 28px;
+            }
+
+            @media screen and (min-width : 391px) and (max-width : 430px) {
+              left: 45px;
             }
           }
         }
