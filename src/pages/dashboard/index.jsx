@@ -25,6 +25,8 @@ const Index = () => {
   };
 
   useEffect(() => {
+    document.title = "نگین | پنل کاربری 💄";
+
     if (localStorage.getItem("token") === null) {
       setShowMessage("token expired");
     } else {
@@ -68,13 +70,15 @@ const Index = () => {
   }, [token]);
 
   const copyLicense = () => {
-    navigator.clipboard.writeText(license).then(function() {
-        alert('کد لایسنس با موفقیت کپی شد');
-    }, function() {
-        alert('لایسنس کپی نشد دستی اقدام کنید ');
-    });
-};
-
+    navigator.clipboard.writeText(license).then(
+      function () {
+        alert("کد لایسنس با موفقیت کپی شد");
+      },
+      function () {
+        alert("لایسنس کپی نشد دستی اقدام کنید ");
+      }
+    );
+  };
 
   const { name, email, phone } = userData;
 
@@ -94,7 +98,11 @@ const Index = () => {
           <h1>- پنل کاربری</h1>
           <h3>خوش اومدی {name} عزیز 👋 </h3>
           <button onClick={logout}>
-            <IoIosLogOut className={styles.logoutIco} color="red" fontSize="1.2rem" />
+            <IoIosLogOut
+              className={styles.logoutIco}
+              color="red"
+              fontSize="1.2rem"
+            />
             <span>خروج از حساب</span>
           </button>
         </div>

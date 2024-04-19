@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import PopMessage from "@/components/popMessage";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
@@ -34,6 +34,10 @@ const schema = yup.object({
 });
 
 const Login = () => {
+  useEffect(() => {
+    document.title = "نگین | ثبت نام 💄";
+  });
+
   const url = "http://45.139.10.86/api";
 
   const [message, setMessage] = useState("");
