@@ -199,14 +199,31 @@
 
       .btnFormContainer {
         display: flex;
+        flex-direction: column;
         justify-content: center;
-        align-items: center;
-        gap: 50px;
         width: 100%;
         margin-top: 15px;
+        gap: 2rem;
+
+        @media #{responsive.$phone} {
+          align-items: center;
+        }
+
+        .btns {
+          display: flex;
+          gap: 50px;
+          @media #{responsive.$phone} {
+            gap: 1rem;
+          }
+        }
 
         @media #{responsive.$phone} {
           gap: 20px;
+        }
+
+        a {
+          color: #8e8e8e;
+          font-family: dana;
         }
 
         button {

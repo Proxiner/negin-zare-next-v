@@ -10,6 +10,8 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 
 import axios from "axios";
 
+import Link from "next/link";
+
 //Components
 import OTP from "@/components/otp";
 
@@ -30,7 +32,6 @@ const schema = yup.object({
 });
 
 const Login = () => {
-
   useEffect(() => {
     document.title = "نگین | ورود 💄";
   });
@@ -125,8 +126,11 @@ const Login = () => {
                 {errors.password?.message}
               </span>
               <div className={styles.btnFormContainer}>
-                <button type="submit"> درخواست کد </button>
-                <button type="reset"> لغو </button>
+                <div className={styles.btns}>
+                  <button type="submit"> درخواست کد </button>
+                  <button type="reset"> لغو </button>
+                </div>
+                <Link href="/register">حساب کاربری نداری؟</Link>
               </div>
             </form>
           )}
