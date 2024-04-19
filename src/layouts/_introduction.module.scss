@@ -39,7 +39,7 @@
   @media #{responsive.$tablet-portrait} {
     gap: 40px;
   }
-  
+
   .introduction {
     display: flex;
     justify-content: center;
@@ -371,14 +371,14 @@
     }
   }
 
-  .starContainer::before{
+  .starContainer::before {
     position: absolute;
     content: "";
     width: 150px;
     height: 250px;
     right: -190px;
     color: #fff;
-    background-image: url('../../public/assets/images/lipstick.png');
+    background-image: url("../../public/assets/images/lipstick.png");
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center center;
@@ -392,6 +392,10 @@
     height: 50px;
     gap: 1rem;
     position: relative;
+
+    @media #{responsive.$phone} {
+      margin-top: 3rem;
+    }
 
     svg {
       @media #{responsive.$phone} {
@@ -486,6 +490,10 @@
 
         @media #{responsive.$laptop} {
           gap: 28px;
+        }
+
+        @media #{responsive.$phone} {
+          margin-top: 2rem;
         }
 
         h2 {
