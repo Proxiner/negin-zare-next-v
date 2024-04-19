@@ -1,4 +1,8 @@
+"use client";
+
 import "@/dist/main.css";
+
+import React, { useEffect, useState } from "react";
 
 import { useRouter } from "next/router";
 
@@ -7,6 +11,17 @@ import LoginProvider from "@/context/LoginContext";
 
 const App = ({ Component, pageProps }) => {
   const router = useRouter();
+
+  const [route, setRoute] = useState(false);
+
+  useEffect(() => {
+    if (localStorage.getItem("token") === null) {
+      setRoute(false);
+    } else {
+      setRoute(true);
+    }
+  }, [route]);
+
   const showNavbar = ![
     "/login",
     "/register",
@@ -17,10 +32,10 @@ const App = ({ Component, pageProps }) => {
   ].includes(router.pathname);
   return (
     <>
-    <LoginProvider>
-        {showNavbar && <Navbar />}
+      <LoginProvider>
+        {showNavbar && <Navbar hrefRoute={route ? "/dashboard" : "/login"} />}
         <Component {...pageProps} />
-    </LoginProvider>
+      </LoginProvider>
     </>
   );
 };

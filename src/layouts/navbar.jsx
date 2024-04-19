@@ -9,7 +9,7 @@ import BluredBlob from "@/components/bluredBlob";
 
 import styles from "./_navbar.module.scss";
 
-const Navbar = () => {
+const Navbar = ({ hrefRoute }) => {
   const menuContent = useRef();
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -53,7 +53,7 @@ const Navbar = () => {
           <Link href="/coming-soon">درباره ما</Link>
         </ul>
         <div className={styles.callToAction}>
-          <Link href="/login">
+          <Link href={hrefRoute}>
             <button>
               <FaRegUser /> حساب کاربری
             </button>
@@ -165,7 +165,7 @@ const Navbar = () => {
         </div>
 
         <div className={styles.callToAction}>
-          <Link href="/login">
+          <Link href={hrefRoute}>
             <button>
               <FaRegUser /> حساب کاربری
             </button>
