@@ -14,6 +14,7 @@ import Link from "next/link";
 
 //Components
 import OTP from "@/components/otp";
+import PopMessage from "@/components/popMessage";
 
 import Image from "next/image";
 
@@ -52,6 +53,8 @@ const Login = () => {
 
   const [userData, setData] = useState({ phone: "", password: "" });
 
+  const [toggleMessage, setToggleMessage] = useState(false);
+
   const formSubmit = (data) => {
     setData({ phone: data.phoneNumber, password: data.password });
 
@@ -63,11 +66,22 @@ const Login = () => {
       .then(() => {
         setAuthenticate(true);
       })
-      .catch((message) => console.error(message));
+      .catch(() => {
+        setToggleMessage(true);
+      });
   };
 
   return (
     <div className={styles.loginContainer}>
+      {toggleMessage ? (
+        <PopMessage
+          imageSrc={"/assets/icons/warning.svg"}
+          message={"شماره همراه یا رمز عبور اشتباه است 😓"}
+          tryAgain={"سعی مجدد در "}
+        />
+      ) : (
+        ""
+      )}
       <Image
         width={100}
         height={100}
