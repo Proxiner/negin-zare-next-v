@@ -41,7 +41,7 @@ const Index = () => {
     if (token) {
       axios
         .post(
-          `${url}getLicense`,
+          `${url}/getLicense`,
           {},
           {
             headers: {
