@@ -41,7 +41,7 @@ const Index = () => {
     if (token) {
       axios
         .post(
-          "http://45.139.10.86/api/getLicense",
+          `${url}getLicense`,
           {},
           {
             headers: {
