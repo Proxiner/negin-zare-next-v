@@ -9,7 +9,7 @@ import axios from "axios";
 import styles from "./_otp.module.scss";
 
 const OTP = ({ userData }) => {
-  const url = "http://45.139.10.86/api";
+  const url = "http://45.139.10.86:8080/api";
 
   const [code, setCode] = useState(Array(5).fill(""));
   const [error, setError] = useState(false);
