@@ -37,7 +37,7 @@ const Login = () => {
     document.title = "نگین | ورود 💄";
   });
 
-  const url = "http://45.139.10.86/api";
+  const url = "http://45.139.10.86:8080/api";
 
   const {
     handleSubmit,

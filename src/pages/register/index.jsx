@@ -38,7 +38,7 @@ const Login = () => {
     document.title = "نگین | ثبت نام 💄";
   });
 
-  const url = "http://45.139.10.86/api";
+  const url = "http://45.139.10.86:8080/api";
 
   const [message, setMessage] = useState("");
 

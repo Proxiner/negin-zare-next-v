@@ -24,6 +24,8 @@ const Index = () => {
     router.push("/");
   };
 
+  const url = "http://45.139.10.86:8080/api";
+
   useEffect(() => {
     document.title = "نگین | پنل کاربری 💄";
 
@@ -61,7 +63,7 @@ const Index = () => {
   useEffect(() => {
     if (token) {
       axios
-        .get("http://45.139.10.86/api/getUser", {
+        .get(`${url}/getUser`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
