@@ -36,7 +36,7 @@ const schema = yup.object({
 const Login = () => {
   useEffect(() => {
     document.title = "نگین | ثبت نام 💄";
-  });
+  }, []);
 
   const url = "http://45.139.10.86:8080/api";
 
