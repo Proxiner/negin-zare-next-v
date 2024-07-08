@@ -48,7 +48,7 @@ const Navbar = ({ hrefRoute }) => {
         <ul>
           <Link href="/">خانه</Link>
           <Link href="/coming-soon">خدمات</Link>
-          <Link href="/coming-soon">آموزش</Link>
+          <Link href="/courses">دوره ها</Link>
           <Link href="/coming-soon">وبلاگ</Link>
           <Link href="/coming-soon">درباره ما</Link>
         </ul>
@@ -149,7 +149,7 @@ const Navbar = ({ hrefRoute }) => {
         <ul>
           <Link href="/">خانه</Link>
           <Link href="/coming-soon">خدمات</Link>
-          <Link href="/coming-soon">آموزش</Link>
+          <Link href="/courses">دوره ها</Link>
           <Link href="/coming-soon">وبلاگ</Link>
           <Link href="/coming-soon">درباره ما</Link>
         </ul>

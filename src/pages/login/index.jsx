@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Input from "../../components/Input";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -20,6 +20,7 @@ import Image from "next/image";
 
 //Styles
 import styles from "./_login.module.scss";
+import useTitle from "@/hooks/useTitle";
 
 const schema = yup.object({
   phoneNumber: yup
@@ -33,9 +34,7 @@ const schema = yup.object({
 });
 
 const Login = () => {
-  useEffect(() => {
-    document.title = "نگین | ورود 💄";
-  });
+  useTitle("نگین | ورود 💄");
 
   const url = "http://45.139.10.86:8080/api";
 

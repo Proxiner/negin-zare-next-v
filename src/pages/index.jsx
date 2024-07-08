@@ -1,5 +1,3 @@
-import { useEffect, useState } from "react";
-
 import Hero from "../layouts/hero";
 import Introduction from "../layouts/introduction";
 import Services from "../layouts/services";
@@ -10,11 +8,10 @@ import Comments from "../layouts/comments";
 import Footer from "../layouts/footer";
 
 import styles from "../layouts/_home.module.scss";
+import useTitle from "@/hooks/useTitle";
 
 const HomePage = () => {
-  useEffect(() => {
-    document.title = "نگین | آرایش میکاپ 💄";
-  });
+  useTitle("نگین | آرایش میکاپ 💄");
 
   return (
     <>

@@ -1,0 +1,146 @@
+@use "../../utils/media-queries" as responsive;
+@use "../../base/colors" as color;
+
+.container {
+  display: grid;
+  grid-template-columns: 60% 40%;
+  grid-template-rows: auto;
+  width: 100%;
+  height: 100%;
+  direction: rtl;
+  padding: 1rem 8% ;
+
+  @media #{responsive.$tablet-landscape} {
+    grid-template-columns: 50% 50%;
+  }
+
+  @media #{responsive.$phone} {
+    grid-template-columns: 100%;
+    grid-template-rows: auto;
+    row-gap: 5rem;
+  }
+
+  .information {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 3rem;
+
+    @media #{responsive.$phone} {
+      gap: 2rem;
+    }
+
+    header {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+
+      @media #{responsive.$phone} {
+        gap: 1rem;
+      }
+
+      h2 {
+        width: 450px;
+        height: max-content;
+        gap: 0.5rem;
+        font-family: dana-black;
+        font-size: 2.5rem;
+
+        @media #{responsive.$tablet-landscape} {
+          font-size: 2.3rem;
+        }
+
+        @media #{responsive.$tablet-portrait} {
+          font-size: 2.4rem;
+        }
+
+        @media #{responsive.$phone} {
+          width: 100%;
+          font-size: 1.8rem;
+        }
+      }
+
+      p {
+        width: 470px;
+        font-family: dana;
+        font-size: 1.2rem;
+        line-height: 2.5rem;
+
+        @media #{responsive.$phone} {
+          width: 100%;
+          font-size: 1rem;
+          line-height: 2rem;
+        }
+      }
+    }
+
+    section {
+      .buy {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0.6rem;
+        width: max-content;
+        height: max-content;
+        padding: 0.8rem 1rem;
+        font-family: dana;
+        font-size: 1rem;
+        background-color: color.$main;
+        border: none;
+        color: #fff;
+        margin-top: 2rem;
+
+        @media #{responsive.$phone} {
+          padding: 0.5rem 1rem;
+        }
+
+        img {
+          width: 20px;
+        }
+      }
+    }
+  }
+
+  .courseModel {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    width: 95%;
+    height: 95%;
+
+    @media #{responsive.$tablet-portrait} {
+      justify-content: center;
+      align-items: flex-end;
+      width: 100%;
+      height: 100%;
+    }
+
+    @media #{responsive.$phone} {
+      justify-content: center;
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      border: none;
+      border-radius: 320px 320px 0 0;
+      outline: 1px solid color.$main;
+      outline-offset: 0.5rem;
+
+      @media #{responsive.$tablet-portrait} {
+        width: 100%;
+        height: 60%;
+        object-fit: cover;
+        object-position: top center;
+        outline-offset: 0.2rem;
+      }
+
+      @media only screen and (min-width: 1024px) and (max-width: 1194px) {
+        width: 100%;
+        height: 100%;
+        outline-offset: 0;
+        padding: 0.5rem;
+      }
+    }
+  }
+}

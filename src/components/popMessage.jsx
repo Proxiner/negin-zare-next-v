@@ -55,21 +55,18 @@ const PopMessage = ({ warning, message, imageSrc, tryAgain, again }) => {
         line.current.style.width = "0";
       } else {
         clearInterval(interval);
-        if (
-          content.current.children[1].textContent ===
-          "حساب کاربری با موفقیت ساخته شد :)"
-        ) {
-          router.push("/login");
-        } else if (
-          content.current.children[1].textContent ===
-          "این حساب کاربری قبلا ایجاد شده است :("
-        ) {
-        } else if (
-          content.current.children[1].textContent === "توکن شما منقضی شده"
-        ) {
-          router.push("/login");
-        } else {
-          router.reload();
+        switch (content.current.children[1].textContent) {
+          case "حساب کاربری با موفقیت ساخته شد :)":
+            router.push("/login");
+            break;
+          case "لطفا مجددا وارد حساب خود شوید!":
+            router.push("/login");
+            break;
+          case "این حساب کاربری قبلا ایجاد شده است :(":
+            break;
+          default:
+            router.reload();
+            break;
         }
       }
     }, 1000);

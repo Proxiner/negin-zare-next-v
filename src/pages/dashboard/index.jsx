@@ -112,7 +112,7 @@ const Index = () => {
     <>
       {messsage === "token expired" ? (
         <PopMessage
-          message="توکن شما منقضی شده"
+          message="لطفا مجددا وارد حساب خود شوید!"
           tryAgain="انتقال خودکار در"
           imageSrc={"/assets/icons/thumbs-down.gif"}
         />

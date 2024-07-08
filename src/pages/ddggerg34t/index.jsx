@@ -8,16 +8,17 @@ import CourseHero from "./courseHero";
 import CourseTitles from "./courseTitles";
 
 const Course = () => {
-
-   useEffect(() => {
-     document.title = "نگین | دوره اسموکی 💄";
-   }, []);
+  useEffect(() => {
+    document.title = "نگین | دوره اسموکی 💄";
+  }, []);
 
   return (
+    <>
       <div className={styles.container}>
         <CourseHero />
         <CourseTitles />
       </div>
+    </>
   );
 };
 

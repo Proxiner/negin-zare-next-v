@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 import PopMessage from "@/components/popMessage";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
@@ -16,6 +16,7 @@ import Image from "next/image";
 
 //Styles
 import styles from "./_register.module.scss";
+import useTitle from "@/hooks/useTitle";
 
 const schema = yup.object({
   username: yup.string().required("لطفا نام کامل خود را وارد کنید"),
@@ -34,9 +35,7 @@ const schema = yup.object({
 });
 
 const Login = () => {
-  useEffect(() => {
-    document.title = "نگین | ثبت نام 💄";
-  }, []);
+  useTitle("نگین | ثبت نام 💄");
 
   const url = "http://45.139.10.86:8080/api";
 
