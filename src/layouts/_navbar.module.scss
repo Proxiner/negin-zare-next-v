@@ -280,5 +280,12 @@
       cursor: pointer;
       transition: all linear 0.3s;
     }
+
+     .cart{
+      background-color: #111;
+      width: max-content;
+      height: max-content;
+      padding: 0.2rem;
+    }
   }
 }
