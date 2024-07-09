@@ -53,14 +53,14 @@ const Navbar = ({ hrefRoute }) => {
           <Link href="/coming-soon">درباره ما</Link>
         </ul>
         <div className={styles.callToAction}>
-          <Link className={styles.cart} href={"/cart"}>
+          {/* <Link className={styles.cart} href={"/cart"}>
             <Image
               width={30}
               height={30}
               src={"/assets/icons/buy.svg"}
               alt="buy"
             />
-          </Link>
+          </Link> */}
           <Link href={hrefRoute}>
             <button>
               <FaRegUser /> حساب کاربری
@@ -173,14 +173,14 @@ const Navbar = ({ hrefRoute }) => {
         </div>
 
         <div className={styles.callToAction}>
-          <Link className={styles.cart} href={"/cart"}>
+          {/* <Link className={styles.cart} href={"/cart"}>
             <Image
               width={30}
               height={30}
               src={"/assets/icons/buy.svg"}
               alt="buy"
             />
-          </Link>
+          </Link> */}
           <Link href={hrefRoute}>
             <button>
               <FaRegUser /> حساب کاربری
