@@ -1,0 +1,171 @@
+@use "/src/utils/media-queries" as responsive;
+@use "../../base/colors" as colors;
+
+.checkoutBox {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+    height: 100vh;
+    margin: 20px;
+    gap: 50px;
+
+    @media #{responsive.$tablet-portrait} {
+        width: 70%;
+    }
+
+    @media #{responsive.$phone} {
+        width: 98%;
+    }
+
+    .product {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 95%;
+        // background-color: red;
+
+        .imageAndDescript {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+
+            @media #{responsive.$phone} {
+                gap: 8px;
+            }
+
+            .imageCheckBox {
+                object-fit: cover;
+                object-position: 0px -30px;
+                border: 0px;
+                border-radius: 12px;
+                box-shadow: 5px 5px 40px #f3cfba;
+
+                @media #{responsive.$phone} {
+                    width: 85px;
+                    height: 85px;
+                }
+            }
+    
+            .description {
+                display: flex;
+                flex-direction: column;
+                gap: 6px;
+    
+                .productName {
+                    font-family: dana-medium;
+                    font-size: 1.3rem;
+
+                    @media #{responsive.$phone} {
+                        font-size: 1.2rem;
+                    }
+                }
+    
+                .productdescript {
+                    font-family: dana-extra-light;
+
+                    @media #{responsive.$phone} {
+                        font-size: 0.9rem;
+                    }
+                }
+            }
+        }
+
+        .price {
+            font-family: dana-medium;
+            font-size: 1.2rem;
+
+            @media #{responsive.$phone} {
+                display: flex;
+                flex-direction: column;
+                align-items: end;
+                font-size: 1.1rem;
+
+                i {
+                    font-size: 0.8rem;
+                }
+            }
+        }
+    }
+
+    .line {
+        width: 95%;
+        height: 2px;
+        background-color: #ededed;
+    }
+
+    .receiptPart {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 12px;
+        width: 100%;
+
+        .textAndNumberCourse {
+            display: flex;
+            justify-content: space-between;
+            width: 95%;
+
+            .text , .numberCourse {
+                font-family: dana-medium;
+                font-size: 1.2rem;
+
+                @media #{responsive.$phone} {
+                    font-size: 1.1rem;
+                }
+            }
+        }
+
+        .totalPriceContainer {
+            display: flex;
+            justify-content: space-between;
+            width: 95%;
+        }
+
+        .totalPriceText , .totalPrice {
+            font-family: dana-medium;
+            font-size: 1.2rem;
+
+            @media #{responsive.$phone} {
+                font-size: 1.1rem;
+
+                i{
+                    font-size: 0.8rem;
+                }
+            }
+        }
+    } 
+
+    .payOff {
+        width: 450px;
+        height: 45px;
+        border: 0px;
+        border-radius: 8px;
+        font-family: dana-medium;
+        font-size: 1.2rem;
+        background-color: colors.$main;
+        color: #fff;
+        box-shadow: 10px 15px 15px rgba(0, 0, 0, 0.158);
+        transition:all linear 0.5s;
+
+        @media #{responsive.$phone} {
+            width: 300px;
+            font-size: 1.1rem;
+        }
+    }
+
+    .payOff:hover {
+        cursor: pointer;
+        width: 460px;
+        height: 48px;
+        box-shadow: 10px 15px 15px rgba(0, 0, 0, 0.186);
+
+        @media #{responsive.$phone} {
+            width: 330px;
+            font-size: 1.1rem;
+        }
+    }
+}

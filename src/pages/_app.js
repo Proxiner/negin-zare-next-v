@@ -29,6 +29,7 @@ const App = ({ Component, pageProps }) => {
     "/_error",
     "/dashboard",
     "/apply",
+    "/check-out"
   ].includes(router.pathname);
   return (
     <>
