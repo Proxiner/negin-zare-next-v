@@ -106,7 +106,7 @@ const Login = () => {
             <Image
               width={450}
               height={600}
-              src="/assets/images/register.jpg"
+              src="/assets/images/intro_1.jpg"
               alt="image model"
             />
           </div>

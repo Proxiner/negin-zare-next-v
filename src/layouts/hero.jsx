@@ -68,8 +68,8 @@ const Hero = () => {
               <div className={styles.profileContainer}>
                 {[
                   "/assets/images/customer_1.jpg",
-                  "/assets/images/intro_3.jpg",
-                  "/assets/images/intro_1.jpg",
+                  "/assets/images/customer_3.jpg",
+                  "/assets/images/customer_2.jpg",
                 ].map((src, index) => (
                   <a href="#comments" key={index}>
                     <Image
@@ -87,26 +87,18 @@ const Hero = () => {
                 <button>
                   <span>۱K+</span>مشتری راضی
                 </button>
-                {/* <div className={styles.arrow}>
-                  <Image
-                    width={75}
-                    height={75}
-                    src="/assets/images/arrow.svg"
-                    alt="arrow call to action"
-                  />
-                </div> */}
               </div>
             </div>
           </section>
         </div>
         <div className={styles.imageContainer}>
-          <Image
-            width={635}
-            height={800}
-            src="/assets/images/hero.png"
-            priority={true}
-            alt="hero"
-          />
+            <Image
+              className={styles.heroImage}
+              width={600}
+              height={700}
+              src="/assets/images/hero.svg"
+              alt="hero-model"
+            />
         </div>
       </div>
     </div>
