@@ -97,13 +97,14 @@
   position: relative;
   padding: 1rem 4%;
 
+  
+
   @media #{responsive.$phone} {
     display: flex;
     margin-bottom: 3rem;
   }
 
-  .hamMenu,
-  .chatbox {
+  .hamMenu {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -116,6 +117,37 @@
 
     svg {
       width: 100%;
+    }
+  }
+
+  .cart {
+    background: rgb(237, 213, 199);
+    background: -moz-linear-gradient(
+      0deg,
+      rgba(237, 213, 199, 1) 0%,
+      rgba(249, 185, 148, 1) 100%
+    );
+    background: -webkit-linear-gradient(
+      0deg,
+      rgba(237, 213, 199, 1) 0%,
+      rgba(249, 185, 148, 1) 100%
+    );
+    background: linear-gradient(
+      0deg,
+      rgba(237, 213, 199, 1) 0%,
+      rgba(249, 185, 148, 1) 100%
+    );
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#edd5c7",endColorstr="#f9b994",GradientType=1);
+    width: max-content;
+    height: max-content;
+    padding: 0.6rem;
+
+    @media #{responsive.$tablet-portrait} {
+      padding: 0.4rem;
+    }
+
+    svg {
+      width: 25px;
     }
   }
 
@@ -151,7 +183,7 @@
   }
 
   @media #{responsive.$tablet-portrait} {
-    grid-template-columns: 25% 50% 25%;
+    grid-template-columns: 20% 50% 30%;
     padding: 1rem 4%;
   }
 
@@ -245,10 +277,14 @@
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    gap: 2rem;
+    gap: 1rem;
 
     @media #{responsive.$laptop} {
       gap: 1rem;
+    }
+
+    @media #{responsive.$tablet-portrait} {
+      gap: 0.5rem;
     }
 
     @media #{responsive.$phone} {
@@ -279,13 +315,48 @@
       border: none;
       cursor: pointer;
       transition: all linear 0.3s;
+
+      @media #{responsive.$tablet-portrait} {
+        padding: 10px 10px;
+        font-size: 0.9rem;
+      }
     }
 
-     .cart{
+    .verticalLine {
+      width: 1px;
+      height: 40px;
       background-color: #111;
+    }
+
+    .cart {
+      background: rgb(237, 213, 199);
+      background: -moz-linear-gradient(
+        0deg,
+        rgba(237, 213, 199, 1) 0%,
+        rgba(249, 185, 148, 1) 100%
+      );
+      background: -webkit-linear-gradient(
+        0deg,
+        rgba(237, 213, 199, 1) 0%,
+        rgba(249, 185, 148, 1) 100%
+      );
+      background: linear-gradient(
+        0deg,
+        rgba(237, 213, 199, 1) 0%,
+        rgba(249, 185, 148, 1) 100%
+      );
+      filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#edd5c7",endColorstr="#f9b994",GradientType=1);
       width: max-content;
       height: max-content;
-      padding: 0.2rem;
+      padding: 0.6rem;
+
+      @media #{responsive.$tablet-portrait} {
+        padding: 0.4rem;
+      }
+
+      svg {
+        width: 25px;
+      }
     }
   }
 }
