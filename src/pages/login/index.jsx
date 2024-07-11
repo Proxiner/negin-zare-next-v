@@ -62,8 +62,9 @@ const Login = () => {
         phone: data.phoneNumber,
         password: data.password,
       })
-      .then(() => {
+      .then((response) => {
         setAuthenticate(true);
+        console.log(response.data)
       })
       .catch(() => {
         setToggleMessage(true);

@@ -42,6 +42,12 @@ const PopMessage = ({ warning, message, imageSrc, tryAgain, again }) => {
         setShow(true);
         break;
 
+      case "لطفا وارد حساب خود شوید":
+        content.current.children[1].style.color = "#ff0000";
+        line.current.style.backgroundColor = "#ff0000";
+        setShow(true);
+        break;
+
       default:
         content.current.children[1].style.color = "red";
         line.current.style.backgroundColor = "red";
@@ -63,6 +69,9 @@ const PopMessage = ({ warning, message, imageSrc, tryAgain, again }) => {
             router.push("/login");
             break;
           case "این حساب کاربری قبلا ایجاد شده است :(":
+            break;
+            case "لطفا وارد حساب خود شوید" : 
+            router.push("/login");
             break;
           default:
             router.reload();

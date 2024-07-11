@@ -75,7 +75,7 @@
     }
 
     section {
-      .buy {
+      .buy, .remove {
         display: flex;
         justify-content: center;
         align-items: center;
@@ -89,16 +89,35 @@
         border: none;
         color: #fff;
         margin-top: 2rem;
-
+        cursor: pointer;
+        transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease, border 0.3s ease;
+    
+        &:hover {
+          transform: scale(1.05);
+          background-color: #232121;
+        }
+    
         @media #{responsive.$phone} {
           padding: 0.5rem 1rem;
         }
-
+    
         img {
           width: 20px;
         }
       }
+    
+      .remove {
+        background-color: transparent;
+        color: color.$main;
+        border: 1px solid color.$main;
+
+        &:hover {
+          background-color: #f3f3f3;
+        }
+      }
     }
+    
+    
   }
 
   .courseModel {
