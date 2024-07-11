@@ -107,6 +107,7 @@
     align-items: center;
     width: 95%;
     height: 95%;
+    max-height: 800px;
 
     @media #{responsive.$tablet-portrait} {
       justify-content: center;
@@ -126,6 +127,7 @@
       border-radius: 320px 320px 0 0;
       outline: 1px solid color.$main;
       outline-offset: 0.5rem;
+      object-fit: cover;
 
       @media #{responsive.$tablet-portrait} {
         width: 100%;

@@ -30,7 +30,7 @@ function Courses() {
           <Image
             width={400}
             height={300}
-            src="/assets/images/courses_1.jpg"
+            src={`/assets/images/${course.thumbnail}`}
             alt=""
           />
           <h2> {stripHtml(course.headline)} </h2>

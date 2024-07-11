@@ -12,27 +12,11 @@ const Makeup = () => {
       <BluredBlob bottom={-250} left={-100} zIndex={-1} opacity={0.5} />
 
       <section className={styles.modelContainer}>
-        <div className={styles.textContainer}>
-          <svg viewBox="0 0 461.09 234.73">
-            <path
-              id="curve"
-              d="M.5,351.5v-116.77C.5,105.37,103.49.5,230.54.5s230.04,104.87,230.04,234.23v116.77"
-            />
-
-            <text>
-              <textPath href="#curve" startOffset={20}>
-                لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با
-                استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله
-                در ستون و سطرآنچنان که لازم است
-              </textPath>
-            </text>
-          </svg>
-        </div>
         <div className={styles.image}>
           <Image
             width={600}
             height={800}
-            src="/assets/images/makeup.jpg"
+            src="/assets/images/makeup.svg"
             alt="makeup"
           />
         </div>

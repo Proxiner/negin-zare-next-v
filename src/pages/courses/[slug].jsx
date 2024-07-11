@@ -47,7 +47,7 @@ const CourseDetail = ({ course }) => {
         <Image
           width={400}
           height={600}
-          src={"/assets/images/courses_1.jpg"}
+          src={`/assets/images/${course.thumbnail}`}
           alt="course image"
         />
       </div>
