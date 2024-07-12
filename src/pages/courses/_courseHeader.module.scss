@@ -8,7 +8,7 @@
   width: 100%;
   height: 100%;
   direction: rtl;
-  padding: 1rem 8% ;
+  padding: 1rem 8%;
 
   @media #{responsive.$tablet-landscape} {
     grid-template-columns: 50% 50%;
@@ -75,7 +75,7 @@
     }
 
     section {
-      .buy, .remove {
+      .buy , .remove {
         display: flex;
         justify-content: center;
         align-items: center;
@@ -90,34 +90,53 @@
         color: #fff;
         margin-top: 2rem;
         cursor: pointer;
-        transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease, border 0.3s ease;
-    
+        transition: background-color 0.3s ease, color 0.3s ease,
+          transform 0.3s ease, border 0.3s ease;
+
         &:hover {
           transform: scale(1.05);
           background-color: #232121;
         }
-    
+
         @media #{responsive.$phone} {
           padding: 0.5rem 1rem;
         }
-    
+
         img {
           width: 20px;
         }
       }
-    
-      .remove {
-        background-color: transparent;
-        color: color.$main;
-        border: 1px solid color.$main;
 
-        &:hover {
-          background-color: #f3f3f3;
-        }
-      }
+      // .add {
+      //   display: flex;
+      //   justify-content: center;
+      //   align-items: center;
+      //   gap: 0.6rem;
+      //   width: 188px;
+      //   height: 55px;
+      //   padding: 0.8rem 1rem;
+      //   padding: 0.2rem 0;
+      //   margin-top: 1rem;
+      //   border-top: 1px solid color.$main;
+        
+      //   svg {
+      //     width: 20px;
+      //     height: 20px;
+      //     cursor: pointer;
+      //   }
+        
+      //   .count {
+      //     display: flex;
+      //     justify-content: center;
+      //     align-items: center;
+      //     font-family: dana-light;
+      //     width: 20px;
+      //     height: max-content;
+      //     font-size: 1.5rem;
+      //     color: color.$main;
+      //   }
+      // }
     }
-    
-    
   }
 
   .courseModel {

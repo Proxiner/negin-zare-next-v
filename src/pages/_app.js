@@ -30,6 +30,7 @@ const App = ({ Component, pageProps }) => {
     "/dashboard",
     "/apply",
     "/cart",
+    "/courses/[slug]",
   ].includes(router.pathname);
   return (
     <>

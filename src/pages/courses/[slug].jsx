@@ -1,62 +1,119 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./_courseHeader.module.scss";
 
 import CourseDetails from "./courseDetails";
 import Image from "next/image";
 import axios from "axios";
 import PopMessage from "@/components/popMessage";
+import { FaPlus, FaMinus } from "react-icons/fa6";
 
 import useStripHtml from "@/hooks/useStripHtml";
 import useTitle from "@/hooks/useTitle";
 
 const CourseDetail = ({ course }) => {
-  const [addToCart, setAddToCart] = useState(false);
-  const [message, setShowMessage] = useState("");
-  const isInitialMount = useRef(true);
-
-  if (!course) return <div>Loading...</div>;
-
   const stripHtml = useStripHtml();
+
   useTitle(`دوره | ${course.title} 💄`);
 
   const url = "http://45.139.10.86:8080/api";
 
+  const [message, setMessage] = useState();
+  const [showButton, setShowButton] = useState(false);
+  const [buttonState, setButtonState] = useState("default");
+  const [exist, setExist] = useState(false);
+  const [token, setToken] = useState();
+
   useEffect(() => {
     const storedToken = localStorage.getItem("token")?.replace(/"/g, "");
-
-    if (!storedToken) {
-      setShowMessage("need login");
-      setAddToCart(false);
-      return;
-    }
-
-    if (isInitialMount.current) {
-      isInitialMount.current = false;
-      return;
-    }
-
-    const axiosConfig = {
-      headers: {
-        Authorization: `Bearer ${storedToken}`,
-      },
-    };
-
-    if (addToCart) {
-      axios
-        .post(`${url}/cart/add?productId=${course.id}`, {}, axiosConfig)
-        .then((response) => console.log(response.data))
-        .catch((error) => console.error(error));
+    if (storedToken) {
+      setToken(storedToken);
     } else {
-      axios
-        .post(`${url}/cart/remove?productId=${course.id}`, {}, axiosConfig)
-        .then((response) => console.log(response.data))
-        .catch((error) => console.error(error));
+      // setMessage("login-required");
     }
-  }, [addToCart, course.id]);
+  }, []);
+
+  useEffect(() => {
+    if (token) {
+      axios
+        .get(`${url}/cart/list`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((response) => {
+          const courseExists = response.data.items.some(
+            (item) => item.id === course.id
+          );
+          setExist(courseExists);
+        })
+        .catch((error) => {
+          if (error.response && error.response.status === 401) {
+            // setMessage("login-required");
+          } else {
+            console.error("Error fetching cart list:", error);
+          }
+        });
+    }
+  }, [token, course.id]);
+
+  useEffect(() => {
+    if (token) {
+      switch (buttonState) {
+        case "add":
+          axios
+            .post(
+              `${url}/cart/add`,
+              { productId: course.id },
+              {
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            )
+            .then((response) => {
+              console.log(response.data);
+              setExist(true);
+              setShowButton(false);
+            })
+            .catch((error) => {
+              console.error("Error adding to cart:", error);
+            });
+          break;
+
+        case "remove":
+          axios
+            .post(
+              `${url}/cart/remove`,
+              { productId: course.id },
+              {
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            )
+            .then((response) => {
+              console.log(response.data);
+              setExist(false);
+              setShowButton("default");
+            })
+            .catch((error) => {
+              console.error("Error removing from cart:", error);
+            });
+          break;
+
+        case "default":
+          setShowButton(true);
+          break;
+      }
+    }
+  }, [buttonState, token]);
 
   return (
     <>
-      {message === "need login" && (
+      {message === "login-required" && (
         <PopMessage
           message="لطفا وارد حساب خود شوید"
           tryAgain="انتقال خودکار در"
@@ -77,34 +134,33 @@ const CourseDetail = ({ course }) => {
               instructor={course.teacher.name}
               type={course.type}
             />
-            <button
-              onClick={() => setAddToCart(!addToCart)}
-              className={
-                addToCart ? `${styles.buy} ${styles.remove}` : styles.buy
-              }
-            >
-              {addToCart ? (
-                <>
-                  <Image
-                    width={30}
-                    height={30}
-                    src={"/assets/icons/remove.svg"}
-                    alt="remove-from-cart"
-                  />
-                  حذف از سبد خرید
-                </>
-              ) : (
-                <>
-                  <Image
-                    width={30}
-                    height={30}
-                    src={"/assets/icons/add.svg"}
-                    alt="add-to-cart"
-                  />
-                  افزودن به سبد خرید
-                </>
-              )}
-            </button>
+            {exist ? (
+              <button
+                className={styles.remove}
+                onClick={() => setButtonState("remove")}
+              >
+                <Image
+                  width={30}
+                  height={30}
+                  src={"/assets/icons/remove.svg"}
+                  alt="remove-from-cart"
+                />
+                حذف از سبد خرید
+              </button>
+            ) : (
+              <button
+                className={styles.buy}
+                onClick={() => setButtonState("add")}
+              >
+                <Image
+                  width={30}
+                  height={30}
+                  src={"/assets/icons/add.svg"}
+                  alt="add-to-cart"
+                />
+                افزودن به سبد خرید
+              </button>
+            )}
           </section>
         </div>
 

@@ -1,6 +1,7 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import { FaRegUser } from "react-icons/fa6";
+import { PiShoppingCartSimpleFill } from "react-icons/pi";
 
 import Link from "next/link";
 import Image from "next/image";
@@ -8,11 +9,35 @@ import Image from "next/image";
 import BluredBlob from "@/components/bluredBlob";
 
 import styles from "./_navbar.module.scss";
+import axios from "axios";
 
 const Navbar = ({ hrefRoute }) => {
   const menuContent = useRef();
 
+  const url = "http://45.139.10.86:8080/api";
+
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [showBadge, setShowBadge] = useState(false);
+  const [cartCount, setCartCount] = useState(null);
+
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token").replace(/"/g, "");
+
+    if (cartCount === null) {
+      setShowBadge(false);
+    } else {
+      axios
+        .get(`${url}/cart/list`, {
+          headers: {
+            Authorization: `Bearer ${storedToken}`,
+          },
+        })
+        .then((response) => {
+          setShowBadge(true)
+          setCartCount(response.data.count)
+        });
+    }
+  }, []);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -137,12 +162,10 @@ const Navbar = ({ hrefRoute }) => {
 
         <div className={styles.callToAction}>
           <Link className={styles.cart} href={"/cart"}>
-            <Image
-              width={25}
-              height={25}
-              src={"/assets/icons/cart.svg"}
-              alt="myCart"
-            />
+          <span className={`${styles.badge} ${showBadge ? styles.animate : ''}`}> 
+            {cartCount}
+          </span>
+            <PiShoppingCartSimpleFill fill="#111" />
           </Link>
           <div className={styles.verticalLine}></div>
           <Link href={hrefRoute}>

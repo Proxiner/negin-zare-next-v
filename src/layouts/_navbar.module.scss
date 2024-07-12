@@ -97,8 +97,6 @@
   position: relative;
   padding: 1rem 4%;
 
-  
-
   @media #{responsive.$phone} {
     display: flex;
     margin-bottom: 3rem;
@@ -141,6 +139,7 @@
     width: max-content;
     height: max-content;
     padding: 0.6rem;
+    position: relative;
 
     @media #{responsive.$tablet-portrait} {
       padding: 0.4rem;
@@ -329,33 +328,45 @@
     }
 
     .cart {
-      background: rgb(237, 213, 199);
-      background: -moz-linear-gradient(
-        0deg,
-        rgba(237, 213, 199, 1) 0%,
-        rgba(249, 185, 148, 1) 100%
-      );
-      background: -webkit-linear-gradient(
-        0deg,
-        rgba(237, 213, 199, 1) 0%,
-        rgba(249, 185, 148, 1) 100%
-      );
-      background: linear-gradient(
-        0deg,
-        rgba(237, 213, 199, 1) 0%,
-        rgba(249, 185, 148, 1) 100%
-      );
-      filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#edd5c7",endColorstr="#f9b994",GradientType=1);
-      width: max-content;
-      height: max-content;
-      padding: 0.6rem;
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      width: 40px;
+      height: 50px;
+      position: relative;
 
       @media #{responsive.$tablet-portrait} {
         padding: 0.4rem;
       }
 
+      .badge {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 0.7rem;
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+        background: rgb(237,213,199);
+        background: -moz-linear-gradient(180deg, rgba(237,213,199,1) 0%, rgba(249,185,148,1) 100%);
+        background: -webkit-linear-gradient(180deg, rgba(237,213,199,1) 0%, rgba(249,185,148,1) 100%);
+        background: linear-gradient(180deg, rgba(237,213,199,1) 0%, rgba(249,185,148,1) 100%);
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#edd5c7",endColorstr="#f9b994",GradientType=1); 
+        color: color.$main;
+        font-family: dana;
+        top: 8px;
+        right: -4px;
+        position: absolute;
+        transition: all ease-in-out 0.3s;
+        transform: scale(0);
+      }
+
+      .animate{
+        transform: scale(1.1);
+      }
+
       svg {
-        width: 25px;
+        font-size: 2rem;
       }
     }
   }
