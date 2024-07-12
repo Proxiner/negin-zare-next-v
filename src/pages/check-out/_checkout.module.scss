@@ -6,4 +6,47 @@
     flex-direction: column;
     align-items: center;
     width: 100%;
+
+    .checkoutNav {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        width: 100%;
+        position: fixed;
+        top: 0;
+        margin-top: 30px;
+
+        .navText {
+            font-family: dana-medium;
+            font-size: 1rem;
+            color: colors.$main;
+            border-bottom: 1px solid colors.$main;
+
+            @media #{responsive.$phone} {
+                font-size: 0.8rem;
+            }
+
+        }
+
+        .navImage {
+            @media #{responsive.$phone} {
+                width: 60px;
+                height: 30px;
+            }
+        }
+
+        .navLink {
+            font-family: dana-medium;
+            font-size: 1rem;
+            text-decoration: none;
+            background-color: colors.$main;
+            padding: 10px 35px;
+            color: colors.$accent;
+
+            @media #{responsive.$phone} {
+                font-size: 0.8rem;
+                padding: 10px 12px;
+            }
+        }
+    }
 }
