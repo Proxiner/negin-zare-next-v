@@ -8,14 +8,18 @@ import { MdContentCopy } from "react-icons/md";
 import { useRouter } from "next/router";
 
 import axios from "axios";
-import PopMessage from "@/components/popMessage";
+import { toast, ToastContainer, Bounce } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Link from "next/link";
+import useTitle from "@/hooks/useTitle";
 
 const Index = () => {
+  useTitle("نگین | پنل کاربری 💄");
+
   const [userData, setData] = useState([]);
   const [token, setToken] = useState();
   const [license, setLicense] = useState();
   const [showLicense, setShowLicense] = useState(false);
-  const [messsage, setShowMessage] = useState("");
 
   const router = useRouter();
 
@@ -26,11 +30,28 @@ const Index = () => {
 
   const url = "http://45.139.10.86:8080/api";
 
-  useEffect(() => {
-    document.title = "نگین | پنل کاربری 💄";
 
+  useEffect(() => {
     if (localStorage.getItem("token") === null) {
-      setShowMessage("token expired");
+      toast.info(
+        <>
+          <span> لطفا وارد حساب کاربری خود شوید! </span>
+          <Link href="/dashboard" className={styles.redirect}>
+          👈 حساب کاربری
+          </Link>
+        </>,
+        {
+          position: "top-right",
+          autoClose: false,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+          transition: Bounce,
+        }
+      );
     } else {
       const storedToken = localStorage.getItem("token").replace(/"/g, "");
       setToken(storedToken);
@@ -54,7 +75,25 @@ const Index = () => {
         })
         .catch((message) => {
           if (message.message === "Request failed with status code 401") {
-            setShowMessage("token expired");
+            toast.warning(
+              <>
+                <span className='message'> لطفا وارد حساب خود شوید! </span>
+                <Link href="/login" className='redirect'>
+                👈  صفحه ورود
+                </Link>
+              </>,
+              {
+                position: "bottom-right",
+                autoClose: false,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+                transition: Bounce,
+              }
+            );
           }
         });
     }
@@ -110,16 +149,11 @@ const Index = () => {
 
   return (
     <>
-      {messsage === "token expired" ? (
-        <PopMessage
-          message="لطفا مجددا وارد حساب خود شوید!"
-          tryAgain="انتقال خودکار در"
-          imageSrc={"/assets/icons/thumbs-down.gif"}
-        />
-      ) : (
-        ""
-      )}
       <div className={styles.container}>
+      <ToastContainer
+        rtl
+        toastClassName={styles.toast}
+      />
         <div className={styles.title}>
           <h1>- پنل کاربری</h1>
           <h3>خوش اومدی {name} عزیز 👋 </h3>

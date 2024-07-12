@@ -1,0 +1,16 @@
+.message {
+  font-family: dana !important;
+  color: #111;
+}
+
+.redirect {
+  font-family: dana !important;
+  display: block;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  width: max-content;
+  background-color: #111;
+  color: #fff;
+  font-size: 0.8rem;
+  margin-top: 0.5rem;
+}
