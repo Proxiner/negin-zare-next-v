@@ -1,0 +1,9 @@
+@use "/src/utils/media-queries" as responsive;
+@use "/src/base/colors" as colors;
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}

@@ -36,6 +36,12 @@ const PopMessage = ({ warning, message, imageSrc, tryAgain, again }) => {
         setShow(false);
         break;
 
+      case "برای خرید باید وارد شوید":
+        content.current.children[1].style.color = "orange";
+        line.current.style.backgroundColor = "white";
+        setShow(false);
+        break;
+
       case "توکن شما منقضی شده":
         content.current.children[1].style.color = "red";
         line.current.style.backgroundColor = "red";
@@ -68,9 +74,11 @@ const PopMessage = ({ warning, message, imageSrc, tryAgain, again }) => {
           case "لطفا مجددا وارد حساب خود شوید!":
             router.push("/login");
             break;
+          case "برای خرید باید وارد شوید":
+            break;
           case "این حساب کاربری قبلا ایجاد شده است :(":
             break;
-            case "لطفا وارد حساب خود شوید" : 
+          case "لطفا وارد حساب خود شوید":
             router.push("/login");
             break;
           default:

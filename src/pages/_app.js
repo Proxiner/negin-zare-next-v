@@ -31,6 +31,7 @@ const App = ({ Component, pageProps }) => {
     "/apply",
     "/cart",
     "/courses/[slug]",
+    "/check-out"
   ].includes(router.pathname);
   return (
     <>
