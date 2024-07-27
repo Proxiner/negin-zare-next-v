@@ -21,6 +21,7 @@ const CheckOut = () => {
   const [course, setCourse] = useState([]);
   const [summition, setSummition] = useState({});
   const [token, setToken] = useState();
+  const [purchaseID, setPurchaseID] = useState();
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token")?.replace(/"/g, "");
@@ -64,24 +65,37 @@ const CheckOut = () => {
     }
   }, []);
 
-  const handlePurchase = () => {
+  const handlePurchase = async () => {
     const storedToken = localStorage.getItem("token")?.replace(/"/g, "");
-    axios.post(`${base_url}/order/create`, {
-      headers: {
-        Authorization: `Bearer ${storedToken}`,
-      },
-    });
+    const request = await axios.post(
+      `${base_url}/order/create`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    const response = await request.data;
+    setPurchaseID(response.orderId);
+    if (purchaseID) {
+      router.push(`${base_url}/purchase/${purchaseID}`);
+    }
   };
 
   const removeCourse = async (courseId) => {
-    console.log(courseId)
-    if(token){
+    console.log(courseId);
+    if (token) {
       try {
-        await axios.post(`${base_url}/cart/remove`, {productId : courseId} , {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        await axios.post(
+          `${base_url}/cart/remove`,
+          { productId: courseId },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         setCourse(course.filter((course) => course.id !== courseId));
       } catch (error) {
         console.error("Error removing course:", error);

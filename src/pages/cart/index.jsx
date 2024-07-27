@@ -85,6 +85,11 @@ function Cart() {
               خانه{" "}
             </Link>
             /
+            <Link style={{ color: "#111", textDecoration: "none" }} href={"/courses"}>
+              {" "}
+              دوره ها{" "}
+            </Link>
+            /
             <Link
               style={{ color: "#111", textDecoration: "none" }}
               href={"/cart"}

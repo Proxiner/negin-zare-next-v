@@ -7,10 +7,8 @@ import Link from "next/link";
 import Image from "next/image";
 
 import BluredBlob from "@/components/bluredBlob";
-import { base_url } from "@/api/url";
 
 import styles from "./_navbar.module.scss";
-import axios from "axios";
 
 const Navbar = ({ hrefRoute }) => {
   const menuContent = useRef();
@@ -19,45 +17,6 @@ const Navbar = ({ hrefRoute }) => {
   const [showBadge, setShowBadge] = useState(false);
   const [cartCount, setCartCount] = useState(0);
 
-  // useEffect(() => {
-  //   const token = localStorage.getItem("token")?.replace(/"/g, "");
-
-  //   const removeCart = async () => {
-  //     try {
-  //       const response = await axios.post(
-  //         `${base_url}/cart/remove`,
-  //         { ProductId: 1 },
-  //         {
-  //           headers: {
-  //             Authorization: `Bearer ${token}`,
-  //           },
-  //         }
-  //       );
-  //       const data = response.data;
-  //       console.log(data);
-  //     } catch (error) {
-  //       console.error(error.message);
-  //     }
-  //   };
-  
-  //   // removeCart();
-    
-
-  //   const checkCart = async () => {
-  //     try {
-  //       const response = await axios.get(`${base_url}/cart/list`, {
-  //         headers: {
-  //           Authorization: `Bearer ${token}`,
-  //         },
-  //       });
-  //       const data = await response.data;
-  //       console.log(data);
-  //     } catch (message) {
-  //       console.error(message.message);
-  //     }
-  //   };
-  //   checkCart();
-  // }, []);
 
   useEffect(() => {
     if (cartCount === 0) {

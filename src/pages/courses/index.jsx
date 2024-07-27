@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 
 import useStripHtml from "@/hooks/useStripHtml";
 
+import { IoEye } from "react-icons/io5";
+
 import styles from "./_courses.module.scss";
 import axios from "axios";
 
@@ -36,7 +38,7 @@ function Courses() {
           <p> {stripHtml(course.body)} </p>
           <div className={styles.row}>
             <span> {course.price.toLocaleString("fa-IR")} تومان</span>
-            <Link href={`/courses/${course.slug}`}> مشاهده دوره </Link>
+            <Link href={`/courses/${course.slug}`}> <IoEye/> مشاهده دوره </Link>
           </div>
         </div>
       ))}
