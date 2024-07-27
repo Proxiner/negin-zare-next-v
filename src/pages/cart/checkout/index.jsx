@@ -66,7 +66,6 @@ const CheckOut = () => {
   }, []);
 
   const handlePurchase = async () => {
-    const storedToken = localStorage.getItem("token")?.replace(/"/g, "");
     const request = await axios.post(
       `${base_url}/order/create`,
       {},

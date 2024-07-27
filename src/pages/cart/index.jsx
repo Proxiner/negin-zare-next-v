@@ -59,14 +59,18 @@ function Cart() {
   }, []);
 
   const removeCourse = async (courseId) => {
-    console.log(courseId)
+    console.log(courseId);
     try {
-      await axios.post(`${base_url}/cart/remove`, {productId : courseId} , {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      setCartData(cartData.filter(course => course.id !== courseId));
+      await axios.post(
+        `${base_url}/cart/remove`,
+        { productId: courseId },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setCartData(cartData.filter((course) => course.id !== courseId));
     } catch (error) {
       console.error("Error removing course:", error);
       toast.error("خطا در حذف دوره!");
@@ -74,6 +78,51 @@ function Cart() {
   };
 
   const router = useRouter();
+
+  if (!cartData.length) {
+    return (
+      <div className={styles.container}>
+        <BreadCrumb
+          title={
+            <>
+              <Link
+                style={{ color: "#111", textDecoration: "none" }}
+                href={"/"}
+              >
+                {" "}
+                خانه{" "}
+              </Link>
+              /
+              <Link
+                style={{ color: "#111", textDecoration: "none" }}
+                href={"/courses"}
+              >
+                {" "}
+                دوره ها{" "}
+              </Link>
+              /
+              <Link
+                style={{ color: "#111", textDecoration: "none" }}
+                href={"/cart"}
+              >
+                {" "}
+                سبد خرید{" "}
+              </Link>
+              /
+            </>
+          }
+          currentHref={router.route}
+          proceedTitle={"مرحله بعد"}
+          hrefProceed={router.route + "/checkout"}
+          proceedIcon={<FaArrowLeftLong />}
+        />
+        <div className={styles.notify}>
+          <h1> هیچ دوره های رو به سبد خرید اضافه نکردید! </h1>
+          <Link href={'/courses'}> صفحه دوره ها </Link>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.container}>
@@ -85,7 +134,10 @@ function Cart() {
               خانه{" "}
             </Link>
             /
-            <Link style={{ color: "#111", textDecoration: "none" }} href={"/courses"}>
+            <Link
+              style={{ color: "#111", textDecoration: "none" }}
+              href={"/courses"}
+            >
               {" "}
               دوره ها{" "}
             </Link>
@@ -106,7 +158,6 @@ function Cart() {
         proceedIcon={<FaArrowLeftLong />}
       />
       <ToastContainer rtl toastClassName={styles.toast} />
-      <h1> لیست دوره های افزوده شده </h1>
       <div className={styles.list}>
         {cartData.map((course) => (
           <CourseData

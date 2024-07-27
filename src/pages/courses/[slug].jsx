@@ -44,6 +44,7 @@ const CourseDetail = ({ course }) => {
             },
           });
           const data = response.data.items;
+          console.log(response.data)
           const cartLength = response.data.items.length;
           const listCourses = data.map((item) => item.slug);
           const courseSlug = listCourses.find((slug) => slug === course.slug);

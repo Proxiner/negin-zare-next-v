@@ -96,6 +96,18 @@
       width: 100%;
     }
 
+    h3{
+      margin-bottom: 1rem;
+    }
+
+    .link{
+      text-decoration: none;
+      color: #ffffff;
+      background-color: #c25d23;
+      width: max-content;
+      padding: 0.5rem 1rem;
+    }
+
     p {
       width: 80%;
       background-color: rgba(241, 202, 180, 0.391);
@@ -104,7 +116,7 @@
       padding: 0 0.5rem;
 
       span {
-        color: #a8510e;
+        color: #d08051;
         font-style: normal;
         padding: 0 0.2rem;
         cursor: pointer;
