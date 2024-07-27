@@ -8,34 +8,31 @@ import axios from "axios";
 import useStripHtml from "@/hooks/useStripHtml";
 import useTitle from "@/hooks/useTitle";
 
-import { toast, ToastContainer, Flip } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FaArrowLeftLong } from "react-icons/fa6";
 
 import { base_url } from "@/api/url";
 
-import Link from "next/link";
 import { useRouter } from "next/router";
 
 const CourseDetail = ({ course }) => {
+  const router = useRouter();
   const stripHtml = useStripHtml();
-
-  useTitle(`دوره | ${course.title} 💄`);
+  useTitle(`دوره ${course?.title || ""}`);
 
   const [exist, setExist] = useState(false);
   const [token, setToken] = useState();
-
-  const router = useRouter();
 
   useEffect(() => {
     const getToken = localStorage.getItem("token")?.replace(/"/g, "");
     if (getToken !== null) {
       setToken(getToken);
     }
-  }, [token]);
+  }, []);
 
   useEffect(() => {
-    if (token) {
+    if (token && course) {
       const cartList = async () => {
         try {
           const response = await axios.get(`${base_url}/cart/list`, {
@@ -44,15 +41,11 @@ const CourseDetail = ({ course }) => {
             },
           });
           const data = response.data.items;
-          console.log(response.data)
-          const cartLength = response.data.items.length;
           const listCourses = data.map((item) => item.slug);
           const courseSlug = listCourses.find((slug) => slug === course.slug);
 
-          if(courseSlug === course.slug){
-            if(cartLength > 0){
-              setExist(true)
-            }
+          if (courseSlug === course.slug) {
+            setExist(true);
           }
         } catch (error) {
           console.error(error.message);
@@ -61,24 +54,32 @@ const CourseDetail = ({ course }) => {
 
       cartList();
     }
-  }, [token , exist]);
+  }, [token, course]);
 
   const addCourse = async () => {
     try {
-      const response = await axios.post(`${base_url}/cart/add`, {productId : course.id} , {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await axios.post(
+        `${base_url}/cart/add`,
+        { productId: course.id },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       const data = response.data.status;
-      if(data){
-        setExist(true);
-      }else{
-        setExist(false)
-      }
+      setExist(data);
     } catch (error) {
       console.error(error.message);
     }
+  };
+
+  if (router.isFallback) {
+    return <div>Loading...</div>;
+  }
+
+  if (!course) {
+    return <div>Error: Course not found</div>;
   }
 
   return (
@@ -99,24 +100,13 @@ const CourseDetail = ({ course }) => {
               type={course.type}
             />
             {exist ? (
-              <button
-                className={styles.remove}
-                onClick={() => router.push('/cart')}
-              >
+              <button className={styles.remove} onClick={() => router.push("/cart")}>
                 ادامه خرید دوره
-               <FaArrowLeftLong/>
+                <FaArrowLeftLong />
               </button>
             ) : (
-              <button
-                className={styles.buy}
-                onClick={addCourse}
-              >
-                <Image
-                  width={30}
-                  height={30}
-                  src={"/assets/icons/add.svg"}
-                  alt="add-to-cart"
-                />
+              <button className={styles.buy} onClick={addCourse}>
+                <Image width={30} height={30} src={"/assets/icons/add.svg"} alt="add-to-cart" />
                 افزودن به سبد خرید
               </button>
             )}
@@ -124,12 +114,7 @@ const CourseDetail = ({ course }) => {
         </div>
 
         <div className={styles.courseModel}>
-          <Image
-            width={400}
-            height={600}
-            src={`/assets/images/${course.thumbnail}`}
-            alt="course image"
-          />
+          <Image width={400} height={600} src={`/assets/images/${course.thumbnail}`} alt="course image" />
         </div>
       </div>
     </>
@@ -137,20 +122,38 @@ const CourseDetail = ({ course }) => {
 };
 
 export async function getStaticPaths() {
-  const response = await axios.get(`${base_url}/products`);
-  const courses = response.data;
-  const paths = courses.map((course) => ({
-    params: { slug: course.slug },
-  }));
+  try {
+    const response = await axios.get(`${base_url}/products`);
+    const courses = response.data;
+    const paths = courses.map((course) => ({
+      params: { slug: course.slug },
+    }));
 
-  return { paths, fallback: true };
+    return { paths, fallback: true };
+  } catch (error) {
+    console.error(error);
+    return { paths: [], fallback: true };
+  }
 }
 
 export async function getStaticProps({ params }) {
-  const response = await axios.get(`${base_url}/product/${params.slug}`);
-  const course = response.data;
+  try {
+    const response = await axios.get(`${base_url}/product/${params.slug}`);
+    const course = response.data;
 
-  return { props: { course } };
+    if (!course) {
+      return {
+        notFound: true,
+      };
+    }
+
+    return { props: { course } };
+  } catch (error) {
+    console.error(error);
+    return {
+      notFound: true,
+    };
+  }
 }
 
 export default CourseDetail;

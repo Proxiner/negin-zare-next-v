@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 
 import styles from "./_comments.module.scss";
 
+import Image from "next/image";
+
 import WindowsImage from "../components/windowsImage";
 import Comment from "../components/comment";
 
@@ -334,7 +336,7 @@ const Comments = () => {
             ref={prevBtn}
             onClick={handlePrev}
           >
-            <img src='assets/icons/next-navigation.svg' alt="next slide" />
+            <Image width={20} height={20} src='assets/icons/next-navigation.svg' alt="next slide" />
           </div>
           <div
             className={`${styles.nextBtn} ${
@@ -343,7 +345,7 @@ const Comments = () => {
             ref={nextBtn}
             onClick={handleNext}
           >
-            <img src='assets/icons/prev-navigation.svg' alt="prev slide" />
+            <Image width={20} height={20} src='assets/icons/prev-navigation.svg' alt="prev slide" />
           </div>
         </div>
       </div>

@@ -1,7 +1,6 @@
 "use client";
 import React, { useState } from "react";
 
-import PopMessage from "@/components/popMessage";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 
 import Input from "../../components/Input";
@@ -17,6 +16,7 @@ import Image from "next/image";
 //Styles
 import styles from "./_register.module.scss";
 import useTitle from "@/hooks/useTitle";
+import { base_url } from "@/api/url";
 
 const schema = yup.object({
   username: yup.string().required("لطفا نام کامل خود را وارد کنید"),
@@ -34,12 +34,8 @@ const schema = yup.object({
     .oneOf([yup.ref("password")], "رمز عبور یکسان نیست"),
 });
 
-const Login = () => {
+const Register = () => {
   useTitle("نگین | ثبت نام 💄");
-
-  const url = "http://45.139.10.86:8080/api";
-
-  const [message, setMessage] = useState("");
 
   const {
     handleSubmit,
@@ -51,7 +47,7 @@ const Login = () => {
 
   const formSubmit = (data) => {
     axios
-      .post(`${url}/register`, {
+      .post(`${base_url}/register`, {
         name: data.username,
         phone: data.phoneNumber,
         password: data.password,
@@ -59,39 +55,16 @@ const Login = () => {
       })
       .then((response) => {
         if (response.data.message === "User before exist") {
-          setMessage("userExist");
         } else {
-          setMessage("success");
         }
       })
-      .catch(() => setMessage("failed"));
+      .catch();
   };
 
   const [showPass, setShowPass] = useState(true);
 
   return (
     <div className={styles.wrapper}>
-      {message === "success" ? (
-        <PopMessage
-          message="حساب کاربری با موفقیت ساخته شد :)"
-          imageSrc={"/assets/icons/thumbs-up.gif"}
-          tryAgain="انتقال خودکار در"
-        />
-      ) : message === "failed" ? (
-        <PopMessage
-          message="متاسفانه حساب کاربری ایجاد نشد :("
-          imageSrc={"/assets/icons/thumbs-down.gif"}
-          tryAgain="امتحان مجدد در"
-        />
-      ) : message === "userExist" ? (
-        <PopMessage
-          message="این حساب کاربری قبلا ایجاد شده است :("
-          imageSrc={"/assets/icons/warning.svg"}
-          again="لطفا وارد شوید"
-        />
-      ) : (
-        ""
-      )}
       <div className={styles.loginContainer}>
         <Image
           width={100}
@@ -204,4 +177,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;

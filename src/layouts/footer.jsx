@@ -3,6 +3,8 @@ import React from 'react';
 //Styles
 import styles from "./_footer.module.scss";
 
+import Image from 'next/image';
+
 const Footer = () => {
     return (
         <section className={styles.footerContainer}>
@@ -32,7 +34,7 @@ const Footer = () => {
 
                 <div className={styles.bioNeginContainer}>
                     <div className={styles.bioNegin}>
-                        <img src='assets/images/negin-logo.png' alt='neginLogo'/>
+                        <Image width={120} height={120} src='/assets/images/negin-logo.png' alt='neginLogo'/>
                         <p>
                         نگین زارع ،میکاپ آرتیست، کارآفرین، مدرس گریم عروس و فشن 
                         و چهره پردازی تخصصی و استایلیست بسیار حرفه ای است .او در 

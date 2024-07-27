@@ -140,7 +140,7 @@ const Navbar = ({ hrefRoute }) => {
         <div className={styles.logoContainer}>
           <Image
             width={100}
-            height={100}
+            height={50}
             className={styles.logo}
             src="/assets/images/logo.png"
             alt="logo negin zare"

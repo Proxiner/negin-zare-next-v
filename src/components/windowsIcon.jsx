@@ -2,6 +2,8 @@ import React from "react";
 
 import styles from "./_windowsIcon.module.scss";
 
+import Image from "next/image";
+
 const WindowsIcon = ({
   width,
   height,
@@ -28,8 +30,10 @@ const WindowsIcon = ({
         backgroundColor: `${backgroundColor}`,
       }}
     >
-      <img
+      <Image
         src={iconSrc}
+        width={100}
+        height={100}
         alt="icon"
         style={{
           display: `${iconVisibility}`,

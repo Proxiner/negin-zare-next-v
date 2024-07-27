@@ -2,13 +2,15 @@ import React from "react";
 
 import styles from "./_comment.module.scss";
 
+import Image from "next/image";
+
 const Comment = ({ imgSrc, customerName, userTag, commentMessage }) => {
   return (
     <div className={styles.container}>
 
       <section className={styles.profile}>
         
-        <img src={imgSrc} alt="commenter profile" />
+        <Image width={100} height={100} src={imgSrc} alt="commenter profile" />
 
         <div className={styles.line}></div>
 
@@ -27,7 +29,7 @@ const Comment = ({ imgSrc, customerName, userTag, commentMessage }) => {
       </section>
 
       <section className={styles.comment}>
-        <img src='assets/icons/quotes.svg' className={styles.quotes} alt="icon" />
+        <Image width={20} height={20} src='assets/icons/quotes.svg' className={styles.quotes} alt="icon" />
 
         <h3>{customerName}</h3>
 

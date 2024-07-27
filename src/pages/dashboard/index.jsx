@@ -29,11 +29,12 @@ const Index = () => {
     router.push("/");
   };
 
-  const push_user = () => {
-    router.push("/login");
-  };
-
   useEffect(() => {
+
+    const push_user = () => {
+      router.push("/login");
+    };
+
     if (localStorage.getItem("token") === null) {
       toast.warning(
         <>
@@ -52,7 +53,7 @@ const Index = () => {
           progress: undefined,
           theme: "colored",
           transition: Bounce,
-          onClose: push_user,
+          onClose: () => push_user,
         }
       );
       setLoading(false);
@@ -60,7 +61,7 @@ const Index = () => {
       const storedToken = localStorage.getItem("token").replace(/"/g, "");
       setToken(storedToken);
     }
-  }, []);
+  }, [token , router]);
 
   useEffect(() => {
     if (token) {

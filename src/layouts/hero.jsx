@@ -98,6 +98,7 @@ const Hero = () => {
               height={700}
               src="/assets/images/hero.svg"
               alt="hero-model"
+              priority={true}
             />
         </div>
       </div>
