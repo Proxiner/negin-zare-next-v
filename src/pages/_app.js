@@ -28,7 +28,6 @@ const App = ({ Component, pageProps }) => {
     "/register",
     "/coming-soon",
     "/_error",
-    "/dashboard",
     "/apply",
     "/cart",
     "/cart/checkout"

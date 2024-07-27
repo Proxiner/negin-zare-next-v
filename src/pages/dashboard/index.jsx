@@ -2,9 +2,6 @@ import React, { useEffect, useState } from "react";
 
 import styles from "./_dashboard.module.scss";
 
-import { IoIosLogOut } from "react-icons/io";
-import { MdContentCopy } from "react-icons/md";
-
 import { useRouter } from "next/router";
 
 import axios from "axios";
@@ -12,6 +9,13 @@ import { toast, ToastContainer, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Link from "next/link";
 import useTitle from "@/hooks/useTitle";
+
+import { base_url } from "@/api/url";
+
+import { GoHomeFill } from "react-icons/go";
+import { HiAcademicCap } from "react-icons/hi2";
+import { IoIosLogOut } from "react-icons/io";
+import { MdContentCopy } from "react-icons/md";
 
 const Index = () => {
   useTitle("نگین | پنل کاربری 💄");
@@ -21,15 +25,12 @@ const Index = () => {
   const [license, setLicense] = useState();
   const [output, set_out_put] = useState(true);
   const [showLicense, setShowLicense] = useState(false);
-
   const router = useRouter();
 
   const logout = () => {
     localStorage.removeItem("token");
     router.push("/");
   };
-
-  const url = "http://45.139.10.86:8080/api";
 
   const push_user = () => {
     router.push("/login");
@@ -68,7 +69,7 @@ const Index = () => {
     if (token) {
       axios
         .post(
-          `${url}/getLicense`,
+          `${base_url}/getLicense`,
           {},
           {
             headers: {
@@ -108,7 +109,7 @@ const Index = () => {
   useEffect(() => {
     if (token) {
       axios
-        .get(`${url}/getUser`, {
+        .get(`${base_url}/getUser`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -151,8 +152,6 @@ const Index = () => {
     }
   };
 
-  const { name, email, phone } = userData;
-
   if (output === false) {
     return (
       <div className={styles.wrapper}>
@@ -166,50 +165,28 @@ const Index = () => {
     <>
       <div className={styles.container}>
         <ToastContainer rtl toastClassName={styles.toast} />
-        <div className={styles.title}>
-          <h1>- پنل کاربری</h1>
-          <h3>خوش اومدی {name} عزیز 👋 </h3>
-          <button onClick={logout}>
-            <IoIosLogOut
-              className={styles.logoutIco}
-              color="red"
-              fontSize="1.2rem"
-            />
-            <span>خروج از حساب</span>
-          </button>
+        <div className={styles.sidePanel}>
+          <div className={styles.info}>
+            <img style={styles.avatar} src="none" alt="" />
+            <span> مهدی علیخانی </span>
+            <span> ۰۹۰۵۴۴۷۶۴۴۱ </span>
+          </div>
+          <ul>
+            <li>
+              <GoHomeFill fontSize={22} /> حساب کاربری
+            </li>
+            <li>
+              <HiAcademicCap fontSize={22} />
+              دوره های من
+            </li>
+            <li className={styles.logout} onClick={logout}>
+              <IoIosLogOut fontSize={22} fill="#ff0000" /> خروج
+            </li>
+          </ul>
         </div>
-        <div className={styles.panelContent}>
-          <div className={styles.sidePanel}>
-            <ul>
-              <li>اطلاعات کاربری</li>
-              <li>نام کاربری : {name} </li>
-              <li>شماره همراه : {phone}</li>
-              <li>ایمیل : {email}</li>
-            </ul>
-            <button onClick={() => setShowLicense(!showLicense)}>
-              {!showLicense ? "نمایش" : "مخفی کردن"} لایسنس دوره من
-            </button>
-            {showLicense ? (
-              <div className={styles.userLicense}>
-                <MdContentCopy
-                  onClick={copyLicense}
-                  fontSize="1.2rem"
-                  style={{ marginleft: "1rem", cursor: "pointer" }}
-                />{" "}
-                کد لایسنس : <span>{license}</span>
-              </div>
-            ) : (
-              ""
-            )}
-          </div>
-          <div className={styles.videoContainer}>
-            <a href="https://spotplayer.ir/help/guide" target="_blank">
-              <h2>نحوه اضافه کردن دوره :</h2>
-              <video loop autoPlay>
-                <source src="/assets/license-vid.mp4" type="video/mp4" />
-              </video>
-            </a>
-          </div>
+        <div className={styles.mainContent}>
+          <h1> سلام مهدی علیخانی عزیز ❤️ </h1>
+          <p>در قسمت <span>دوره های من</span> میتوانید تمام دوره هایی که شرکت کردید و نحوه دسترسی به آن را ببنید.</p>
         </div>
       </div>
     </>

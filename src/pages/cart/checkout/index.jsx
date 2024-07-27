@@ -66,7 +66,7 @@ const CheckOut = () => {
 
   const handlePurchase = () => {
     const storedToken = localStorage.getItem("token")?.replace(/"/g, "");
-    axios.post(`${url}/order/create`, {
+    axios.post(`${base_url}/order/create`, {
       headers: {
         Authorization: `Bearer ${storedToken}`,
       },
