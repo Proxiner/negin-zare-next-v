@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from "react";
 import styles from "./_cart.module.scss";
-
+import { useRouter } from "next/router";
 import Link from "next/link";
 import axios from "axios";
-
 import useTitle from "@/hooks/useTitle";
 import { toast, ToastContainer, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { FaArrowLeftLong } from "react-icons/fa6";
 import CourseData from "@/components/courseData";
+import BreadCrumb from "@/components/breadcrumb";
+import { base_url } from "@/api/url";
 
 function Cart() {
-  const url = "http://45.139.10.86:8080/api";
   const [token, setToken] = useState();
   const [cartData, setCartData] = useState([]);
 
@@ -20,25 +21,23 @@ function Cart() {
     const storedToken = localStorage.getItem("token")?.replace(/"/g, "");
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${url}/cart/list`, {
+        const response = await axios.get(`${base_url}/cart/list`, {
           headers: {
-            "Content-Type": "application/json",
             Authorization: `Bearer ${storedToken}`,
           },
         });
         setCartData(response.data.items);
-        console.log(response.data.items);
       } catch (error) {
         if (error.response?.status === 401) {
           toast.info(
             <>
               <span className="message"> لطفا وارد حساب کاربری خود شوید! </span>
-              <Link href="/dashboard" className="redirect">
+              <Link href="/login" className="redirect">
                 👈 حساب کاربری
               </Link>
             </>,
             {
-              position: "top-right",
+              position: "bottom-right",
               autoClose: false,
               hideProgressBar: false,
               closeOnClick: true,
@@ -59,18 +58,64 @@ function Cart() {
     }
   }, []);
 
+  const removeCourse = async (courseId) => {
+    console.log(courseId)
+    try {
+      await axios.post(`${base_url}/cart/remove`, {productId : courseId} , {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setCartData(cartData.filter(course => course.id !== courseId));
+    } catch (error) {
+      console.error("Error removing course:", error);
+      toast.error("خطا در حذف دوره!");
+    }
+  };
+
+  const router = useRouter();
+
   return (
     <div className={styles.container}>
+      <BreadCrumb
+        title={
+          <>
+            <Link style={{ color: "#111", textDecoration: "none" }} href={"/"}>
+              {" "}
+              خانه{" "}
+            </Link>
+            /
+            <Link
+              style={{ color: "#111", textDecoration: "none" }}
+              href={"/cart"}
+            >
+              {" "}
+              سبد خرید{" "}
+            </Link>
+            /
+          </>
+        }
+        currentHref={router.route}
+        proceedTitle={"مرحله بعد"}
+        hrefProceed={router.route + "/checkout"}
+        proceedIcon={<FaArrowLeftLong />}
+      />
       <ToastContainer rtl toastClassName={styles.toast} />
-      {cartData.map((course) => (
-        <CourseData
-          key={course.id}
-          title={course.title}
-          imageSrc={`/assets/images/${course.thumbnail}`}
-          type={course.type}
-          price={course.price}
-        />
-      ))}
+      <h1> لیست دوره های افزوده شده </h1>
+      <div className={styles.list}>
+        {cartData.map((course) => (
+          <CourseData
+            key={course.id}
+            courseId={course.id}
+            title={course.title}
+            teacher="مدرس"
+            imageSrc={`/assets/images/${course.thumbnail}`}
+            type={course.type}
+            price={course.price}
+            removeCourse={removeCourse}
+          />
+        ))}
+      </div>
     </div>
   );
 }

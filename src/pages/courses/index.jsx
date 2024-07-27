@@ -9,14 +9,13 @@ import Image from "next/image";
 
 import Link from "next/link";
 import useTitle from "@/hooks/useTitle";
+import { base_url } from "@/api/url";
 
 function Courses() {
   const [courses, setCourses] = useState([]);
 
-  const url = "http://45.139.10.86:8080/api";
-
   useEffect(() => {
-    axios.get(`${url}/products`).then((response) => setCourses(response.data));
+    axios.get(`${base_url}/products`).then((response) => setCourses(response.data));
   }, []);
 
   useTitle("نگین | دوره ها 💄");

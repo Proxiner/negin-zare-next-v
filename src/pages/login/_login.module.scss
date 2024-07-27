@@ -158,7 +158,7 @@
           color: #fff;
           font-size: 1.3rem;
 
-          @media #{responsive.$phone} {
+          @media #{responsive.$phone} , #{responsive.$tablet-landscape} {
             left: 20px;
             bottom: 28px;
           }
@@ -222,8 +222,9 @@
         }
 
         a {
-          color: #8e8e8e;
+          color: #efc931;
           font-family: dana;
+          text-decoration: none;
         }
 
         button {

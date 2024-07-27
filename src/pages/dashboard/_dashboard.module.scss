@@ -1,6 +1,22 @@
 @use "/src/base/colors" as color;
 @use "/src/utils/media-queries" as responsive;
 
+
+.wrapper{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100dvh;
+  background-color: #111;
+
+  h1{
+    font-size: 2rem;
+    color: #fff;
+    font-family: Dana-Black;
+  }
+}
+
 .container {
   display: flex;
   flex-direction: column;

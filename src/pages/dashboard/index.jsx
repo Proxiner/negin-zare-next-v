@@ -19,6 +19,7 @@ const Index = () => {
   const [userData, setData] = useState([]);
   const [token, setToken] = useState();
   const [license, setLicense] = useState();
+  const [output, set_out_put] = useState(true);
   const [showLicense, setShowLicense] = useState(false);
 
   const router = useRouter();
@@ -30,19 +31,22 @@ const Index = () => {
 
   const url = "http://45.139.10.86:8080/api";
 
+  const push_user = () => {
+    router.push("/login");
+  };
 
   useEffect(() => {
     if (localStorage.getItem("token") === null) {
-      toast.info(
+      toast.warning(
         <>
-          <span> لطفا وارد حساب کاربری خود شوید! </span>
-          <Link href="/dashboard" className={styles.redirect}>
-          👈 حساب کاربری
+          <span className="message"> لطفا وارد حساب خود شوید! </span>
+          <Link href="/login" className="redirect">
+            👈 صفحه ورود
           </Link>
         </>,
         {
           position: "top-right",
-          autoClose: false,
+          autoClose: 4000,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -50,8 +54,10 @@ const Index = () => {
           progress: undefined,
           theme: "colored",
           transition: Bounce,
+          onClose: push_user,
         }
       );
+      set_out_put(false);
     } else {
       const storedToken = localStorage.getItem("token").replace(/"/g, "");
       setToken(storedToken);
@@ -77,9 +83,9 @@ const Index = () => {
           if (message.message === "Request failed with status code 401") {
             toast.warning(
               <>
-                <span className='message'> لطفا وارد حساب خود شوید! </span>
-                <Link href="/login" className='redirect'>
-                👈  صفحه ورود
+                <span className="message"> لطفا وارد حساب خود شوید! </span>
+                <Link href="/login" className="redirect">
+                  👈 صفحه ورود
                 </Link>
               </>,
               {
@@ -147,13 +153,19 @@ const Index = () => {
 
   const { name, email, phone } = userData;
 
+  if (output === false) {
+    return (
+      <div className={styles.wrapper}>
+        <ToastContainer rtl toastClassName={styles.toast} />
+        <h1> موردی برای نمایش موجود نیست! </h1>
+      </div>
+    );
+  }
+
   return (
     <>
       <div className={styles.container}>
-      <ToastContainer
-        rtl
-        toastClassName={styles.toast}
-      />
+        <ToastContainer rtl toastClassName={styles.toast} />
         <div className={styles.title}>
           <h1>- پنل کاربری</h1>
           <h3>خوش اومدی {name} عزیز 👋 </h3>

@@ -16,9 +16,11 @@
   }
 
   img {
-    width: 150px;
-    height: 150px;
-    border-radius: 0 50% 50% 0;
+    object-fit: cover;
+    width: 100px;
+    height: 120px;
+    border-radius: 0 0.2rem 0.2rem 0;
+    box-shadow: 1px 1px 10px #1111115e;
   }
 
   .column {

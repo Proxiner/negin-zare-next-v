@@ -2,8 +2,85 @@
 @use "/src/base/colors" as colors;
 
 .container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 1rem 8%;
+
+  .receiptPart {
     display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
+    gap: 12px;
     width: 100%;
+    margin-top: 1rem;
+
+    .textAndNumberCourse {
+      display: flex;
+      justify-content: space-between;
+      width: 95%;
+
+      .text,
+      .numberCourse {
+        font-family: dana-medium;
+        font-size: 1.2rem;
+
+        @media #{responsive.$phone} {
+          font-size: 1.1rem;
+        }
+      }
+    }
+
+    .totalPriceContainer {
+      display: flex;
+      justify-content: space-between;
+      width: 95%;
+    }
+
+    .totalPriceText,
+    .totalPrice {
+      font-family: dana-medium;
+      font-size: 1.2rem;
+
+      @media #{responsive.$phone} {
+        font-size: 1.1rem;
+
+        i {
+          font-size: 0.8rem;
+        }
+      }
+    }
+  }
+
+  .payOff {
+    width: 450px;
+    height: 45px;
+    border: 0px;
+    border-radius: 8px;
+    font-family: dana-medium;
+    font-size: 1.2rem;
+    background-color: colors.$main;
+    color: #fff;
+    box-shadow: 10px 15px 15px rgba(0, 0, 0, 0.057);
+    transition: all linear 0.5s;
+
+    @media #{responsive.$phone} {
+      width: 300px;
+      font-size: 1.1rem;
+    }
+  }
+
+  .payOff:hover {
+    cursor: pointer;
+    width: 460px;
+    height: 48px;
+    box-shadow: 10px 15px 15px rgba(0, 0, 0, 0.057);
+
+    @media #{responsive.$phone} {
+      width: 330px;
+      font-size: 1.1rem;
+    }
+  }
 }

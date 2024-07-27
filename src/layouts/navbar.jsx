@@ -7,6 +7,7 @@ import Link from "next/link";
 import Image from "next/image";
 
 import BluredBlob from "@/components/bluredBlob";
+import { base_url } from "@/api/url";
 
 import styles from "./_navbar.module.scss";
 import axios from "axios";
@@ -14,30 +15,57 @@ import axios from "axios";
 const Navbar = ({ hrefRoute }) => {
   const menuContent = useRef();
 
-  const url = "http://45.139.10.86:8080/api";
-
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showBadge, setShowBadge] = useState(false);
-  const [cartCount, setCartCount] = useState(null);
+  const [cartCount, setCartCount] = useState(0);
+
+  // useEffect(() => {
+  //   const token = localStorage.getItem("token")?.replace(/"/g, "");
+
+  //   const removeCart = async () => {
+  //     try {
+  //       const response = await axios.post(
+  //         `${base_url}/cart/remove`,
+  //         { ProductId: 1 },
+  //         {
+  //           headers: {
+  //             Authorization: `Bearer ${token}`,
+  //           },
+  //         }
+  //       );
+  //       const data = response.data;
+  //       console.log(data);
+  //     } catch (error) {
+  //       console.error(error.message);
+  //     }
+  //   };
+  
+  //   // removeCart();
+    
+
+  //   const checkCart = async () => {
+  //     try {
+  //       const response = await axios.get(`${base_url}/cart/list`, {
+  //         headers: {
+  //           Authorization: `Bearer ${token}`,
+  //         },
+  //       });
+  //       const data = await response.data;
+  //       console.log(data);
+  //     } catch (message) {
+  //       console.error(message.message);
+  //     }
+  //   };
+  //   checkCart();
+  // }, []);
 
   useEffect(() => {
-    const storedToken = localStorage.getItem("token").replace(/"/g, "");
-
-    if (cartCount === null) {
+    if (cartCount === 0) {
       setShowBadge(false);
     } else {
-      axios
-        .get(`${url}/cart/list`, {
-          headers: {
-            Authorization: `Bearer ${storedToken}`,
-          },
-        })
-        .then((response) => {
-          setShowBadge(true)
-          setCartCount(response.data.count)
-        });
+      setShowBadge(true);
     }
-  }, []);
+  }, [cartCount]);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -162,9 +190,11 @@ const Navbar = ({ hrefRoute }) => {
 
         <div className={styles.callToAction}>
           <Link className={styles.cart} href={"/cart"}>
-          <span className={`${styles.badge} ${showBadge ? styles.animate : ''}`}> 
-            {cartCount}
-          </span>
+            <span
+              className={`${styles.badge} ${showBadge ? styles.animate : ""}`}
+            >
+              {cartCount}
+            </span>
             <PiShoppingCartSimpleFill fill="#111" />
           </Link>
           <div className={styles.verticalLine}></div>

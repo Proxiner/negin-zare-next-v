@@ -1,0 +1,55 @@
+@use '/src/base/colors' as color;
+@use '/src/utils/media-queries' as responsive;
+
+.checkoutNav .fixed{
+    position: fixed;
+    top: 0;
+    transition: all linear 0.3s;
+    background-color: #d9d8d8;
+}
+
+.checkoutNav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 100px;
+
+
+    .navText {
+        font-family: dana-medium;
+        font-size: 1rem;
+        color: color.$main;
+        border-bottom: 1px solid color.$main;
+
+        @media #{responsive.$phone} {
+            font-size: 0.8rem;
+        }
+
+    }
+
+    .navImage {
+        @media #{responsive.$phone} {
+            width: 60px;
+            height: 30px;
+        }
+    }
+
+    .navLink {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0.5rem;
+        font-family: dana-medium;
+        font-size: 1rem;
+        text-decoration: none;
+        background-color: color.$main;
+        padding: 10px 35px;
+        color: color.$accent;
+
+        @media #{responsive.$phone} {
+            font-size: 0.8rem;
+            padding: 10px 12px;
+        }
+    }
+}

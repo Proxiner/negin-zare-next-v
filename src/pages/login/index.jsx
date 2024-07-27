@@ -131,7 +131,7 @@ const Login = () => {
                   <button type="submit"> درخواست کد </button>
                   <button type="reset"> لغو </button>
                 </div>
-                <Link href="/register">حساب کاربری نداری؟</Link>
+                <Link href="/register">حساب کاربری نداری؟ ساخت حساب</Link>
               </div>
             </form>
           )}

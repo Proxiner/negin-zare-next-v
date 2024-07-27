@@ -4,122 +4,85 @@ import styles from "./_courseHeader.module.scss";
 import CourseDetails from "./courseDetails";
 import Image from "next/image";
 import axios from "axios";
-import PopMessage from "@/components/popMessage";
-import { FaPlus, FaMinus } from "react-icons/fa6";
 
 import useStripHtml from "@/hooks/useStripHtml";
 import useTitle from "@/hooks/useTitle";
+
+import { toast, ToastContainer, Flip } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { FaArrowLeftLong } from "react-icons/fa6";
+
+import { base_url } from "@/api/url";
+
+import Link from "next/link";
+import { useRouter } from "next/router";
 
 const CourseDetail = ({ course }) => {
   const stripHtml = useStripHtml();
 
   useTitle(`دوره | ${course.title} 💄`);
 
-  const url = "http://45.139.10.86:8080/api";
-
-  const [message, setMessage] = useState();
-  const [showButton, setShowButton] = useState(false);
-  const [buttonState, setButtonState] = useState("default");
   const [exist, setExist] = useState(false);
   const [token, setToken] = useState();
 
+  const router = useRouter();
+
   useEffect(() => {
-    const storedToken = localStorage.getItem("token")?.replace(/"/g, "");
-    if (storedToken) {
-      setToken(storedToken);
-    } else {
-      // setMessage("login-required");
+    const getToken = localStorage.getItem("token")?.replace(/"/g, "");
+    if (getToken !== null) {
+      setToken(getToken);
     }
-  }, []);
+  }, [token]);
 
   useEffect(() => {
     if (token) {
-      axios
-        .get(`${url}/cart/list`, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        })
-        .then((response) => {
-          const courseExists = response.data.items.some(
-            (item) => item.id === course.id
-          );
-          setExist(courseExists);
-        })
-        .catch((error) => {
-          if (error.response && error.response.status === 401) {
-            // setMessage("login-required");
-          } else {
-            console.error("Error fetching cart list:", error);
+      const cartList = async () => {
+        try {
+          const response = await axios.get(`${base_url}/cart/list`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+          const data = response.data.items;
+          const cartLength = response.data.items.length;
+          const listCourses = data.map((item) => item.slug);
+          const courseSlug = listCourses.find((slug) => slug === course.slug);
+
+          if(courseSlug === course.slug){
+            if(cartLength > 0){
+              setExist(true)
+            }
           }
-        });
+        } catch (error) {
+          console.error(error.message);
+        }
+      };
+
+      cartList();
     }
-  }, [token, course.id]);
+  }, [token , exist]);
 
-  useEffect(() => {
-    if (token) {
-      switch (buttonState) {
-        case "add":
-          axios
-            .post(
-              `${url}/cart/add`,
-              { productId: course.id },
-              {
-                headers: {
-                  "Content-Type": "application/json",
-                  Authorization: `Bearer ${token}`,
-                },
-              }
-            )
-            .then((response) => {
-              console.log(response.data);
-              setExist(true);
-              setShowButton(false);
-            })
-            .catch((error) => {
-              console.error("Error adding to cart:", error);
-            });
-          break;
-
-        case "remove":
-          axios
-            .post(
-              `${url}/cart/remove`,
-              { productId: course.id },
-              {
-                headers: {
-                  "Content-Type": "application/json",
-                  Authorization: `Bearer ${token}`,
-                },
-              }
-            )
-            .then((response) => {
-              console.log(response.data);
-              setExist(false);
-              setShowButton("default");
-            })
-            .catch((error) => {
-              console.error("Error removing from cart:", error);
-            });
-          break;
-
-        case "default":
-          setShowButton(true);
-          break;
+  const addCourse = async () => {
+    try {
+      const response = await axios.post(`${base_url}/cart/add`, {productId : course.id} , {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const data = response.data.status;
+      if(data){
+        setExist(true);
+      }else{
+        setExist(false)
       }
+    } catch (error) {
+      console.error(error.message);
     }
-  }, [buttonState, token]);
+  }
 
   return (
     <>
-      {message === "login-required" && (
-        <PopMessage
-          message="لطفا وارد حساب خود شوید"
-          tryAgain="انتقال خودکار در"
-          imageSrc={"/assets/icons/thumbs-down.gif"}
-        />
-      )}
+      <ToastContainer rtl toastClassName={styles.toast} />
       <div className={styles.container}>
         <div className={styles.information}>
           <header>
@@ -137,20 +100,15 @@ const CourseDetail = ({ course }) => {
             {exist ? (
               <button
                 className={styles.remove}
-                onClick={() => setButtonState("remove")}
+                onClick={() => router.push('/cart')}
               >
-                <Image
-                  width={30}
-                  height={30}
-                  src={"/assets/icons/remove.svg"}
-                  alt="remove-from-cart"
-                />
-                حذف از سبد خرید
+                ادامه خرید دوره
+               <FaArrowLeftLong/>
               </button>
             ) : (
               <button
                 className={styles.buy}
-                onClick={() => setButtonState("add")}
+                onClick={addCourse}
               >
                 <Image
                   width={30}
@@ -178,9 +136,7 @@ const CourseDetail = ({ course }) => {
 };
 
 export async function getStaticPaths() {
-  const url = "http://45.139.10.86:8080/api";
-
-  const response = await axios.get(`${url}/products`);
+  const response = await axios.get(`${base_url}/products`);
   const courses = response.data;
   const paths = courses.map((course) => ({
     params: { slug: course.slug },
@@ -190,9 +146,7 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }) {
-  const url = "http://45.139.10.86:8080/api";
-
-  const response = await axios.get(`${url}/product/${params.slug}`);
+  const response = await axios.get(`${base_url}/product/${params.slug}`);
   const course = response.data;
 
   return { props: { course } };
