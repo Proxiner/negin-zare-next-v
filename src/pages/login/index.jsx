@@ -59,9 +59,8 @@ const Login = () => {
         phone: data.phoneNumber,
         password: data.password,
       })
-      .then((response) => {
+      .then(() => {
         setAuthenticate(true);
-        console.log(response.data)
       })
       .catch(() => {
       });
