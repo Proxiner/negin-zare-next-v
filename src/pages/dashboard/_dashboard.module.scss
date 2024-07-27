@@ -27,6 +27,11 @@
   overflow: hidden;
   column-gap: 1rem;
 
+  @media #{responsive.$phone} {
+    flex-direction: column;
+    gap: 2rem;
+  }
+
   .sidePanel {
     padding: 1rem;
     width: 20%;
@@ -34,6 +39,10 @@
     background-color: #fff;
     font-family: dana-medium;
     box-shadow: rgba(243, 169, 109, 0.16) 0px 8px 24px;
+
+    @media #{responsive.$phone} {
+      width: 100%;
+    }
 
     .info {
       display: flex;
@@ -43,6 +52,11 @@
       gap: 0.5rem;
       font-size: 1.2rem;
       border-bottom: 1px solid #dcdada;
+    }
+
+    .phone {
+      font-size: 0.9rem;
+      color: #8e8e8e;
     }
 
     ul {
@@ -63,6 +77,7 @@
         gap: 0.3rem;
         font-family: dana-light;
         font-size: 0.9rem;
+        cursor: pointer;
       }
     }
   }
@@ -77,6 +92,10 @@
     padding: 1rem;
     box-shadow: rgba(243, 169, 109, 0.16) 0px 8px 24px;
 
+    @media #{responsive.$phone} {
+      width: 100%;
+    }
+
     p {
       width: 80%;
       background-color: rgba(241, 202, 180, 0.391);
@@ -88,6 +107,7 @@
         color: #a8510e;
         font-style: normal;
         padding: 0 0.2rem;
+        cursor: pointer;
       }
     }
   }

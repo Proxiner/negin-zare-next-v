@@ -10,21 +10,23 @@ import "react-toastify/dist/ReactToastify.css";
 import Link from "next/link";
 import useTitle from "@/hooks/useTitle";
 
+import Licence from "@/components/licence";
+
 import { base_url } from "@/api/url";
 
 import { GoHomeFill } from "react-icons/go";
 import { HiAcademicCap } from "react-icons/hi2";
 import { IoIosLogOut } from "react-icons/io";
-import { MdContentCopy } from "react-icons/md";
 
 const Index = () => {
   useTitle("نگین | پنل کاربری 💄");
 
-  const [userData, setData] = useState([]);
+  const [userData, setUserData] = useState([]);
   const [token, setToken] = useState();
   const [license, setLicense] = useState();
-  const [output, set_out_put] = useState(true);
+  const [loading, setLoading] = useState(true);
   const [showLicense, setShowLicense] = useState(false);
+  const [toggleLicense, setToggleLicense] = useState(false);
   const router = useRouter();
 
   const logout = () => {
@@ -58,17 +60,17 @@ const Index = () => {
           onClose: push_user,
         }
       );
-      set_out_put(false);
+      setLoading(false);
     } else {
       const storedToken = localStorage.getItem("token").replace(/"/g, "");
       setToken(storedToken);
     }
   }, []);
 
-  useEffect(() => {
-    if (token) {
-      axios
-        .post(
+  const fetchLicence = async () => {
+    try {
+      if (token) {
+        const request = await axios.post(
           `${base_url}/getLicense`,
           {},
           {
@@ -76,35 +78,16 @@ const Index = () => {
               Authorization: `Bearer ${token}`,
             },
           }
-        )
-        .then((response) => {
-          setLicense(response.data.license);
-        })
-        .catch((message) => {
-          if (message.message === "Request failed with status code 401") {
-            toast.warning(
-              <>
-                <span className="message"> لطفا وارد حساب خود شوید! </span>
-                <Link href="/login" className="redirect">
-                  👈 صفحه ورود
-                </Link>
-              </>,
-              {
-                position: "bottom-right",
-                autoClose: false,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "colored",
-                transition: Bounce,
-              }
-            );
-          }
-        });
+        );
+        const licence = await request.data.license;
+        setLicense(licence);
+        setToggleLicense(true);
+      }
+    } catch (error) {
+      console.error(error.message);
+      setToggleLicense(false);
     }
-  }, [token]);
+  };
 
   useEffect(() => {
     if (token) {
@@ -115,7 +98,7 @@ const Index = () => {
           },
         })
         .then((response) => {
-          setData(response.data);
+          setUserData(response.data);
         })
         .catch((message) => console.log(message));
     }
@@ -152,7 +135,7 @@ const Index = () => {
     }
   };
 
-  if (output === false) {
+  if (loading === false) {
     return (
       <div className={styles.wrapper}>
         <ToastContainer rtl toastClassName={styles.toast} />
@@ -161,21 +144,22 @@ const Index = () => {
     );
   }
 
+  const { name, phone } = userData;
+
   return (
     <>
       <div className={styles.container}>
         <ToastContainer rtl toastClassName={styles.toast} />
         <div className={styles.sidePanel}>
           <div className={styles.info}>
-            <img style={styles.avatar} src="none" alt="" />
-            <span> مهدی علیخانی </span>
-            <span> ۰۹۰۵۴۴۷۶۴۴۱ </span>
+            <span> {name} </span>
+            <span className={styles.phone}> {phone} </span>
           </div>
           <ul>
-            <li>
+            <li onClick={() => setToggleLicense(false)}>
               <GoHomeFill fontSize={22} /> حساب کاربری
             </li>
-            <li>
+            <li onClick={fetchLicence}>
               <HiAcademicCap fontSize={22} />
               دوره های من
             </li>
@@ -185,8 +169,17 @@ const Index = () => {
           </ul>
         </div>
         <div className={styles.mainContent}>
-          <h1> سلام مهدی علیخانی عزیز ❤️ </h1>
-          <p>در قسمت <span>دوره های من</span> میتوانید تمام دوره هایی که شرکت کردید و نحوه دسترسی به آن را ببنید.</p>
+          {toggleLicense ? (
+            <Licence licence={license} handleCopy={copyLicense} />
+          ) : (
+            <>
+              <h1> سلام {name} عزیز ❤️ </h1>
+              <p>
+                در قسمت <span onClick={fetchLicence}>دوره های من</span> میتوانید تمام دوره هایی که شرکت
+                کردید و نحوه دسترسی به آن را ببنید.
+              </p>
+            </>
+          )}
         </div>
       </div>
     </>
