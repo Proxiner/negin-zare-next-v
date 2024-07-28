@@ -68,14 +68,39 @@ const Index = () => {
   useEffect(() => {
     if (token) {
       const fetchDetails = async () => {
-        const request = await axios.get(`${base_url}/getUser`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        const data = await request.data;
-        setUserData(data);
-      };
+        try{
+          const request = await axios.get(`${base_url}/getUser`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+          const data = await request.data;
+          setUserData(data);
+        }catch(error){
+          if (error.response?.status === 401) {
+            toast.warning(
+              <div className="toast-container">
+                <span className="toast-message"> لطفا وارد حساب خود شوید! </span>
+                <Link href="/login" className="toast-link">
+                  👈 صفحه ورود
+                </Link>
+              </div>,
+              {
+                position: "top-right",
+                autoClose: 4000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+                transition: Bounce,
+              }
+            );
+            setLoading(false)
+          }
+        }
+      }
       fetchDetails();
     }
   }, [token]);
