@@ -216,7 +216,7 @@
               bottom: 28px;
             }
 
-            @media screen and (min-width : 391px) and (max-width : 430px) {
+            @media screen and (min-width: 391px) and (max-width: 430px) {
               left: 45px;
             }
           }
@@ -246,7 +246,7 @@
               bottom: 28px;
             }
 
-            @media screen and (min-width : 391px) and (max-width : 430px) {
+            @media screen and (min-width: 391px) and (max-width: 430px) {
               left: 45px;
             }
           }
@@ -273,11 +273,25 @@
 
       .btnFormContainer {
         display: flex;
+        flex-direction: column;
         justify-content: center;
-        align-items: center;
-        gap: 50px;
         width: 100%;
         margin-top: 15px;
+        gap: 2rem;
+
+        .btns {
+          display: flex;
+          gap: 50px;
+          @media #{responsive.$phone} {
+            gap: 1rem;
+          }
+        }
+
+        a {
+          color: #efc931;
+          font-family: dana;
+          text-decoration: none;
+        }
 
         @media #{responsive.$phone} {
           gap: 20px;

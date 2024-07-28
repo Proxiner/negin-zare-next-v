@@ -3,9 +3,14 @@ import React, { useState } from "react";
 
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 
+import { ToastContainer, toast, Slide } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import Input from "../../components/Input";
 
 import axios from "axios";
+
+import Link from "next/link";
 
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -54,7 +59,27 @@ const Register = () => {
         email: data.email,
       })
       .then((response) => {
+        console.log(response.data);
         if (response.data.message === "User before exist") {
+          toast.error(
+            <div className="toast-container">
+              <span className="toast-message">
+                {" "}
+                این حساب کاربری از قبل ایجاد شده است{" "}
+              </span>
+            </div>,
+            {
+              position: "top-right",
+              autoClose: 4000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+              transition: Slide,
+            }
+          );
         } else {
         }
       })
@@ -65,6 +90,7 @@ const Register = () => {
 
   return (
     <div className={styles.wrapper}>
+      <ToastContainer rtl />
       <div className={styles.loginContainer}>
         <Image
           width={100}
@@ -166,8 +192,11 @@ const Register = () => {
               </span>
 
               <div className={styles.btnFormContainer}>
-                <button type="submit"> ثبت نام </button>
-                <button type="reset"> لغو </button>
+                <div className={styles.btns}>
+                  <button type="submit"> ثبت نام </button>
+                  <button type="reset"> لغو </button>
+                </div>
+                <Link href="/login"> قبلا حساب ساختی؟ | ورود </Link>
               </div>
             </form>
           </div>

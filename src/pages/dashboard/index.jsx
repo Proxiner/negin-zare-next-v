@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import styles from "./_dashboard.module.scss";
 import { useRouter } from "next/router";
 import axios from "axios";
@@ -11,18 +11,24 @@ import { base_url } from "@/api/url";
 import { GoHomeFill } from "react-icons/go";
 import { HiAcademicCap } from "react-icons/hi2";
 import { IoIosLogOut } from "react-icons/io";
+import { LoginContext } from "@/context/LoginContext";
 
 const Index = () => {
   useTitle("نگین | پنل کاربری 💄");
 
-  // const [productsData, setProductsData] = useState([]);
+  const { token, setToken } = useContext(LoginContext);
+
   const [userData, setUserData] = useState([]);
   const [licenses, setLicenses] = useState([]);
   const [titles, setTitles] = useState([]);
-  const [token, setToken] = useState();
   const [toggleComponent, setToggleComponent] = useState(false);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
+
+  useEffect(() => {
+    const retriveToken = localStorage.getItem("token")?.replace(/"/g, "");
+    setToken(retriveToken);
+  }, [token]);
 
   const logout = () => {
     localStorage.removeItem("token");
@@ -30,19 +36,18 @@ const Index = () => {
   };
 
   useEffect(() => {
-
     const push_user = () => {
       router.push("/login");
     };
 
     if (localStorage.getItem("token") === null) {
       toast.warning(
-        <>
-          <span className="message"> لطفا وارد حساب خود شوید! </span>
-          <Link href="/login" className="redirect">
+        <div className="toast-container">
+          <span className="toast-message"> لطفا وارد حساب خود شوید! </span>
+          <Link href="/login" className="toast-link">
             👈 صفحه ورود
           </Link>
-        </>,
+        </div>,
         {
           position: "top-right",
           autoClose: 4000,
@@ -53,15 +58,12 @@ const Index = () => {
           progress: undefined,
           theme: "colored",
           transition: Bounce,
-          onClose: () => push_user,
+          onClose: push_user,
         }
       );
       setLoading(false);
-    } else {
-      const storedToken = localStorage.getItem("token").replace(/"/g, "");
-      setToken(storedToken);
     }
-  }, [token , router]);
+  }, [token, router]);
 
   useEffect(() => {
     if (token) {
@@ -137,71 +139,82 @@ const Index = () => {
   if (loading === false) {
     return (
       <div className={styles.wrapper}>
-        <ToastContainer rtl toastClassName={styles.toast} />
+        <ToastContainer rtl />
         <h1> موردی برای نمایش موجود نیست! </h1>
       </div>
     );
   }
 
-  return (
-    <>
-      <div className={styles.container}>
-        <ToastContainer rtl toastClassName={styles.toast} />
-        <div className={styles.sidePanel}>
-          <div className={styles.info}>
-            <span> {userData.name} </span>
-            <span className={styles.phone}> {userData.phone} </span>
-          </div>
-          <ul>
-            <li onClick={() => setToggleComponent(false)}>
-              <GoHomeFill fontSize={22} /> حساب کاربری
-            </li>
-            <li onClick={fetchUserData}>
-              <HiAcademicCap fontSize={22} />
-              دوره های من
-            </li>
-            <li className={styles.logout} onClick={logout}>
-              <IoIosLogOut fontSize={22} fill="#ff0000" /> خروج
-            </li>
-          </ul>
-        </div>
-        <div className={styles.mainContent}>
-          {toggleComponent ? (
-            <div>
-              {licenses.length > 0 ? (
-                <div>
-                  {licenses.map((licenseKey, index) => (
-                    <Licence
-                      key={licenseKey}
-                      licence={licenseKey}
-                      title={titles[index]}
-                      handleCopy={() => copyLicense(licenseKey)}
-                    />
-                  ))}
-                </div>
-              ) : (
-                <>
-                  <h3> هنوز دوره ای خریداری نکرده اید 😔</h3>
-                  <Link href="/courses" className={styles.link}>
-                    خرید دوره جدید
-                  </Link>
-                </>
-              )}
+  if (token) {
+    return (
+      <>
+        <div className={styles.container}>
+          <ToastContainer rtl />
+          <div className={styles.sidePanel}>
+            <div className={styles.info}>
+              <span> {userData.name} </span>
+              <span className={styles.phone}> {userData.phone} </span>
             </div>
-          ) : (
-            <>
-              <h1>سلام {userData.name} عزیز ❤️</h1>
-              <p>
-                در قسمت <span onClick={() => fetchUserData()}>دوره های من</span>{" "}
-                میتوانید تمام دوره هایی که شرکت کردید و نحوه دسترسی به آن را
-                ببنید.
-              </p>
-            </>
-          )}
+            <ul>
+              <li onClick={() => setToggleComponent(false)}>
+                <GoHomeFill fontSize={22} /> حساب کاربری
+              </li>
+              <li onClick={fetchUserData}>
+                <HiAcademicCap fontSize={22} />
+                دوره های من
+              </li>
+              <li className={styles.logout} onClick={logout}>
+                <IoIosLogOut fontSize={22} fill="#ff0000" /> خروج
+              </li>
+            </ul>
+          </div>
+          <div className={styles.mainContent}>
+            {toggleComponent ? (
+              <div>
+                {licenses.length > 0 ? (
+                  <div>
+                    {licenses.map((licenseKey, index) => (
+                      <Licence
+                        key={licenseKey}
+                        licence={licenseKey}
+                        title={titles[index]}
+                        handleCopy={() => copyLicense(licenseKey)}
+                      />
+                    ))}
+                  </div>
+                ) : (
+                  <>
+                    <h3> هنوز دوره ای خریداری نکرده اید 😔</h3>
+                    <Link href="/courses" className={styles.link}>
+                      خرید دوره جدید
+                    </Link>
+                  </>
+                )}
+              </div>
+            ) : (
+              <>
+                <h1>سلام {userData.name} عزیز ❤️</h1>
+                <p>
+                  در قسمت <span onClick={fetchUserData}>دوره های من</span>{" "}
+                  میتوانید تمام دوره هایی که شرکت کردید و نحوه دسترسی به آن را
+                  ببنید.
+                </p>
+              </>
+            )}
+          </div>
         </div>
-      </div>
-    </>
-  );
+      </>
+    );
+  } else {
+    return (
+      <>
+        <div className={styles.wrapper}>
+          <ToastContainer rtl toastClassName={styles.toast} />
+          <h1> در حال بارگذاری اطلاعات... </h1>
+        </div>
+      </>
+    );
+  }
 };
 
 export default Index;

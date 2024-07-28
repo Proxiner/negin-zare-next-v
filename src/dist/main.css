@@ -51,5 +51,21 @@ body {
   font-family: dana-thin;
   src: url("../fonts/dana-thin.woff");
 }
+.toast-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  font-family: dana;
+  gap: 0.5rem;
+  color: #111;
+}
+.toast-container .toast-link {
+  width: max-content;
+  background-color: #111;
+  padding: 0.5rem 1rem;
+  color: #fff;
+  text-decoration: none;
+}
 
 /*# sourceMappingURL=main.css.map */

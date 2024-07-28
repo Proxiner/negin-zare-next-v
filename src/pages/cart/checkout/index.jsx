@@ -97,11 +97,30 @@ const CheckOut = () => {
         );
         setCourse(course.filter((course) => course.id !== courseId));
       } catch (error) {
-        console.error("Error removing course:", error);
-        toast.error("خطا در حذف دوره!");
+        toast.error(
+          <div className="toast-container">
+            <span className="toast-message"> خطا در حذف دوره! </span>
+          </div>,
+          {
+            position: "top-right",
+            autoClose: 4000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+            transition: Bounce,
+            onClose: push_user,
+          }
+        );
       }
     }
   };
+
+  // if (!course.length) {
+  //   router.push("/cart");
+  // }
 
   return (
     <div className={styles.container}>
@@ -136,7 +155,7 @@ const CheckOut = () => {
         hrefProceed={router.route + "/checkout"}
         proceedIcon={<FaArrowLeftLong />}
       />
-      <ToastContainer rtl toastClassName={styles.toast} />
+      <ToastContainer rtl />
 
       {course.map((course) => (
         <CheckoutBox

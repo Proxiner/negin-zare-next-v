@@ -14,6 +14,7 @@ import { base_url } from "@/api/url";
 function Cart() {
   const [token, setToken] = useState();
   const [cartData, setCartData] = useState([]);
+  const [proceedLink , setProceedLink] = useState();
 
   useTitle("صفحه | سبد خرید 🛒");
 
@@ -29,16 +30,16 @@ function Cart() {
         setCartData(response.data.items);
       } catch (error) {
         if (error.response?.status === 401) {
-          toast.info(
-            <>
-              <span className="message"> لطفا وارد حساب کاربری خود شوید! </span>
-              <Link href="/login" className="redirect">
-                👈 حساب کاربری
+          toast.warning(
+            <div className="toast-container">
+              <span className="toast-message"> لطفا وارد حساب خود شوید! </span>
+              <Link href="/login" className="toast-link">
+                👈 صفحه ورود
               </Link>
-            </>,
+            </div>,
             {
-              position: "bottom-right",
-              autoClose: false,
+              position: "top-right",
+              autoClose: 4000,
               hideProgressBar: false,
               closeOnClick: true,
               pauseOnHover: true,
@@ -72,8 +73,22 @@ function Cart() {
       );
       setCartData(cartData.filter((course) => course.id !== courseId));
     } catch (error) {
-      console.error("Error removing course:", error);
-      toast.error("خطا در حذف دوره!");
+      toast.error(
+        <div className="toast-container">
+          <span className="toast-message"> خطا در حذف دوره! </span>
+        </div>,
+        {
+          position: "top-right",
+          autoClose: 4000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        }
+      );
     }
   };
 
@@ -113,7 +128,7 @@ function Cart() {
           }
           currentHref={router.route}
           proceedTitle={"مرحله بعد"}
-          hrefProceed={router.route + "/checkout"}
+          hrefProceed={"/cart"}
           proceedIcon={<FaArrowLeftLong />}
         />
         <div className={styles.notify}>
@@ -154,10 +169,10 @@ function Cart() {
         }
         currentHref={router.route}
         proceedTitle={"مرحله بعد"}
-        hrefProceed={router.route + "/checkout"}
+        hrefProceed={"/cart/checkout"}
         proceedIcon={<FaArrowLeftLong />}
       />
-      <ToastContainer rtl toastClassName={styles.toast} />
+      <ToastContainer rtl />
       <div className={styles.list}>
         {cartData.map((course) => (
           <CourseData

@@ -12,6 +12,9 @@ import axios from "axios";
 
 import Link from "next/link";
 
+import { ToastContainer, toast, Slide } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 //Components
 import OTP from "@/components/otp";
 
@@ -20,6 +23,7 @@ import Image from "next/image";
 //Styles
 import styles from "./_login.module.scss";
 import useTitle from "@/hooks/useTitle";
+import { base_url } from "@/api/url";
 
 const schema = yup.object({
   phoneNumber: yup
@@ -34,8 +38,6 @@ const schema = yup.object({
 
 const Login = () => {
   useTitle("نگین | ورود 💄");
-
-  const url = "http://45.139.10.86:8080/api";
 
   const {
     handleSubmit,
@@ -55,19 +57,40 @@ const Login = () => {
     setData({ phone: data.phoneNumber, password: data.password });
 
     axios
-      .post(`${url}/login`, {
+      .post(`${base_url}/login`, {
         phone: data.phoneNumber,
         password: data.password,
       })
       .then(() => {
         setAuthenticate(true);
       })
-      .catch(() => {
+      .catch((error) => {
+        console.error(error.message);
+        toast.error(
+          <div className="toast-container">
+            <span className="toast-message">
+              رمز عبور یا شماره همراه رو اشتباه وارد کردید!
+            </span>
+          </div>,
+          {
+            position: "top-right",
+            autoClose: 4000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            transition: Slide,
+          }
+        );
       });
   };
 
   return (
     <div className={styles.loginContainer}>
+      <ToastContainer rtl />
+
       <Image
         width={100}
         height={100}

@@ -8,7 +8,6 @@ import { useRouter } from "next/router";
 
 import Navbar from "@/layouts/navbar";
 import LoginProvider from "@/context/LoginContext";
-import './toastCss.css';
 
 const App = ({ Component, pageProps }) => {
   const router = useRouter();
@@ -30,7 +29,7 @@ const App = ({ Component, pageProps }) => {
     "/_error",
     "/apply",
     "/cart",
-    "/cart/checkout"
+    "/cart/checkout",
   ].includes(router.pathname);
   return (
     <>

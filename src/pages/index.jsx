@@ -1,3 +1,5 @@
+import styles from "../layouts/_home.module.scss";
+
 import Hero from "../layouts/hero";
 import Introduction from "../layouts/introduction";
 import Services from "../layouts/services";
@@ -7,7 +9,6 @@ import Guidance from "../layouts/guidance";
 import Comments from "../layouts/comments";
 import Footer from "../layouts/footer";
 
-import styles from "../layouts/_home.module.scss";
 import useTitle from "@/hooks/useTitle";
 
 const HomePage = () => {

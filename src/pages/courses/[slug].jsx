@@ -8,11 +8,13 @@ import axios from "axios";
 import useStripHtml from "@/hooks/useStripHtml";
 import useTitle from "@/hooks/useTitle";
 
-import { toast, ToastContainer } from "react-toastify";
+import { toast, ToastContainer, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FaArrowLeftLong } from "react-icons/fa6";
 
 import { base_url } from "@/api/url";
+
+import Link from "next/link";
 
 import { useRouter } from "next/router";
 
@@ -25,11 +27,34 @@ const CourseDetail = ({ course }) => {
   const [token, setToken] = useState();
 
   useEffect(() => {
-    const getToken = localStorage.getItem("token")?.replace(/"/g, "");
-    if (getToken !== null) {
-      setToken(getToken);
+    if (localStorage.getItem("token") === null) {
+      toast.info(
+        <div className="toast-container">
+          <span className="toast-message">
+            {" "}
+            برای خرید دوره باید وارد حساب خود شوید!{" "}
+          </span>
+          <Link href="/login" className="toast-link">
+            👈 صفحه ورود
+          </Link>
+        </div>,
+        {
+          position: "top-right",
+          autoClose: 4000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        }
+      );
+    } else {
+      const retriveToken = localStorage.getItem("token")?.replace(/"/g, "");
+      setToken(retriveToken);
     }
-  }, []);
+  }, [token]);
 
   useEffect(() => {
     if (token && course) {
@@ -70,7 +95,28 @@ const CourseDetail = ({ course }) => {
       const data = response.data.status;
       setExist(data);
     } catch (error) {
-      console.error(error.message);
+      toast.warning(
+        <div className="toast-container">
+          <span className="toast-message">
+            {" "}
+            برای خرید دوره باید وارد حساب خود شوید!{" "}
+          </span>
+          <Link href="/login" className="toast-link">
+            👈 صفحه ورود
+          </Link>
+        </div>,
+        {
+          position: "top-right",
+          autoClose: 4000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        }
+      );
     }
   };
 
@@ -100,13 +146,21 @@ const CourseDetail = ({ course }) => {
               type={course.type}
             />
             {exist ? (
-              <button className={styles.remove} onClick={() => router.push("/cart")}>
+              <button
+                className={styles.remove}
+                onClick={() => router.push("/cart")}
+              >
                 ادامه خرید دوره
                 <FaArrowLeftLong />
               </button>
             ) : (
               <button className={styles.buy} onClick={addCourse}>
-                <Image width={30} height={30} src={"/assets/icons/add.svg"} alt="add-to-cart" />
+                <Image
+                  width={30}
+                  height={30}
+                  src={"/assets/icons/add.svg"}
+                  alt="add-to-cart"
+                />
                 افزودن به سبد خرید
               </button>
             )}
@@ -114,7 +168,12 @@ const CourseDetail = ({ course }) => {
         </div>
 
         <div className={styles.courseModel}>
-          <Image width={400} height={600} src={`/assets/images/${course.thumbnail}`} alt="course image" />
+          <Image
+            width={400}
+            height={600}
+            src={`/assets/images/${course.thumbnail}`}
+            alt="course image"
+          />
         </div>
       </div>
     </>

@@ -4,13 +4,13 @@ import { LoginContext } from "@/context/LoginContext";
 
 import { useRouter } from "next/router";
 
+import { base_url } from "@/api/url";
+
 import axios from "axios";
 
 import styles from "./_otp.module.scss";
 
 const OTP = ({ userData }) => {
-  const url = "http://45.139.10.86:8080/api";
-
   const [code, setCode] = useState(Array(5).fill(""));
   const [error, setError] = useState(false);
   const [time, setTime] = useState(120);
@@ -75,15 +75,17 @@ const OTP = ({ userData }) => {
       setError(true);
     } else {
       axios
-        .post(`${url}/loginVerify`, {
+        .post(`${base_url}/loginVerify`, {
           verification_code_sms: code.join(""),
           password: password,
           phone: phone,
         })
         .then((response) => {
-          const tokenst = response.data.authorisation.token;
-          router.push('/dashboard')
-          setToken((token) => (token = tokenst));
+          const userToken = response.data.authorisation.token;
+          setToken(userToken);
+          setTime(() => {
+            router.push("/dashboard");
+          }, 1000);
         })
         .catch((message) => {
           console.error(message);
