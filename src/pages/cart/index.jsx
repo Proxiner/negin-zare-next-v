@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import styles from "./_cart.module.scss";
 import { useRouter } from "next/router";
 import Link from "next/link";
@@ -9,28 +9,34 @@ import "react-toastify/dist/ReactToastify.css";
 import CourseData from "@/components/courseData";
 import BreadCrumb from "@/components/breadcrumb";
 import { base_url } from "@/api/url";
+import { LoginContext } from "@/context/LoginContext";
 
 function Cart() {
-  const [token, setToken] = useState();
-  const [cartData, setCartData] = useState(null); // Initialize as null
+  const [cartData, setCartData] = useState([]);
+  const [loggedIn, setLoggedIn] = useState(true);
+
+  const { token } = useContext(LoginContext);
 
   useTitle("صفحه | سبد خرید 🛒");
 
   useEffect(() => {
-    const storedToken = localStorage.getItem("token")?.replace(/"/g, "");
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(`${base_url}/cart/list`, {
-          headers: {
-            Authorization: `Bearer ${storedToken}`,
-          },
-        });
-        setCartData(response.data.items);
-      } catch (error) {
-        if (error.response?.status === 401) {
+    if (token) {
+      console.log(token);
+      const fetchData = async () => {
+        try {
+          const response = await axios.get(`${base_url}/cart/list`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+          setCartData(response.data.items);
+        } catch (error) {
           toast.warning(
             <div className="toast-container">
-              <span className="toast-message"> لطفا وارد حساب خود شوید! </span>
+              <span className="toast-message">
+                {" "}
+                لطفا وارد حساب خود شوید!{" "}
+              </span>
               <Link href="/login" className="toast-link">
                 👈 صفحه ورود
               </Link>
@@ -47,18 +53,15 @@ function Cart() {
               transition: Bounce,
             }
           );
+          setLoggedIn(false)
         }
-      }
-    };
+      };
 
-    if (storedToken) {
-      setToken(storedToken);
       fetchData();
     }
-  }, []);
+  }, [token]);
 
   const removeCourse = async (courseId) => {
-    console.log(courseId);
     try {
       await axios.post(
         `${base_url}/cart/remove`,
@@ -107,21 +110,30 @@ function Cart() {
     );
   }
 
-  if (!cartData.length) {
+  if (loggedIn) {
     return (
       <div className={styles.container}>
         <BreadCrumb
           title={
             <>
-              <Link style={{ color: "#111", textDecoration: "none" }} href={"/"}>
+              <Link
+                style={{ color: "#111", textDecoration: "none" }}
+                href={"/"}
+              >
                 خانه
               </Link>
               /
-              <Link style={{ color: "#111", textDecoration: "none" }} href={"/courses"}>
+              <Link
+                style={{ color: "#111", textDecoration: "none" }}
+                href={"/courses"}
+              >
                 دوره ها
               </Link>
               /
-              <Link style={{ color: "#111", textDecoration: "none" }} href={"/cart"}>
+              <Link
+                style={{ color: "#111", textDecoration: "none" }}
+                href={"/cart"}
+              >
                 سبد خرید
               </Link>
               /
@@ -137,6 +149,13 @@ function Cart() {
         </div>
       </div>
     );
+  }else{
+    return (
+      <div className={styles.notify}>
+        <h1> لطفا وارد حساب خود شوید! </h1>
+        <Link href={'/login'}> صفحه ورود </Link>
+      </div>
+    );
   }
 
   return (
@@ -148,11 +167,17 @@ function Cart() {
               خانه
             </Link>
             /
-            <Link style={{ color: "#111", textDecoration: "none" }} href={"/courses"}>
+            <Link
+              style={{ color: "#111", textDecoration: "none" }}
+              href={"/courses"}
+            >
               دوره ها
             </Link>
             /
-            <Link style={{ color: "#111", textDecoration: "none" }} href={"/cart"}>
+            <Link
+              style={{ color: "#111", textDecoration: "none" }}
+              href={"/cart"}
+            >
               سبد خرید
             </Link>
             /
@@ -171,7 +196,8 @@ function Cart() {
             course.discount_type,
             course.discount_value
           );
-          const hasDiscount = course.discount_type === "percent" && course.discount_value;
+          const hasDiscount =
+            course.discount_type === "percent" && course.discount_value;
 
           return (
             <React.Fragment key={`course-${course.id}`}>
@@ -186,8 +212,8 @@ function Cart() {
                     <span>
                       <span className={styles.originalPrice}>
                         {course.price.toLocaleString("fa-IR")} تومان
-                      </span>
-                      {" "} | با تخفیف :
+                      </span>{" "}
+                      | با تخفیف :
                       <span className={styles.discountedPrice}>
                         {discountedPrice.toLocaleString("fa-IR")}
                       </span>

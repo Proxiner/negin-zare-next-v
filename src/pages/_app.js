@@ -1,17 +1,15 @@
 "use client";
 
 import "@/dist/main.css";
-
-import React, { useEffect, useState } from "react";
-
+import React, { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/router";
-
 import Navbar from "@/layouts/navbar";
-import LoginProvider from "@/context/LoginContext";
+import LoginProvider, { LoginContext } from "@/context/LoginContext";
 import CartProvider from "@/context/CartContext";
 
-const App = ({ Component, pageProps }) => {
+const AppContent = ({ Component, pageProps }) => {
   const router = useRouter();
+  const { token, setToken } = useContext(LoginContext);
 
   const [route, setRoute] = useState(false);
 
@@ -23,6 +21,10 @@ const App = ({ Component, pageProps }) => {
     }
   }, [route]);
 
+  useEffect(() => {
+    setToken(localStorage.getItem("token")?.replace(/"/g, ""));
+  }, [token]);
+
   const showNavbar = ![
     "/login",
     "/register",
@@ -32,15 +34,22 @@ const App = ({ Component, pageProps }) => {
     "/cart",
     "/cart/checkout",
   ].includes(router.pathname);
+
   return (
     <>
-      <LoginProvider>
-        <CartProvider>
-          {showNavbar && <Navbar hrefRoute={route ? "/dashboard" : "/login"} />}
-          <Component {...pageProps} />
-        </CartProvider>
-      </LoginProvider>
+      {showNavbar && <Navbar hrefRoute={route ? "/dashboard" : "/login"} />}
+      <Component {...pageProps} />
     </>
+  );
+};
+
+const App = ({ Component, pageProps }) => {
+  return (
+    <LoginProvider>
+      <CartProvider>
+        <AppContent Component={Component} pageProps={pageProps} />
+      </CartProvider>
+    </LoginProvider>
   );
 };
 
