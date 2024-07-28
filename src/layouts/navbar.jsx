@@ -1,22 +1,35 @@
 import React, { useEffect, useRef, useState } from "react";
-
 import { FaRegUser } from "react-icons/fa6";
 import { PiShoppingCartSimpleFill } from "react-icons/pi";
-
 import Link from "next/link";
 import Image from "next/image";
-
 import BluredBlob from "@/components/bluredBlob";
-
 import styles from "./_navbar.module.scss";
+import { useRouter } from "next/router";
 
 const Navbar = ({ hrefRoute }) => {
   const menuContent = useRef();
-
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showBadge, setShowBadge] = useState(false);
   const [cartCount, setCartCount] = useState(0);
 
+  const router = useRouter();
+
+  useEffect(() => {
+    const handleRouteChange = (url) => {
+      if (url === "/courses" || url === "/") {
+        setIsMenuOpen(false);
+        menuContent.current.style.right = "-512px";
+        document.body.style.overflowY = "auto";
+        document.documentElement.style.overflowY = "auto";
+      }
+    };
+
+    router.events.on("routeChangeComplete", handleRouteChange);
+    return () => {
+      router.events.off("routeChangeComplete", handleRouteChange);
+    };
+  }, [router.events]);
 
   useEffect(() => {
     if (cartCount === 0) {
@@ -43,13 +56,12 @@ const Navbar = ({ hrefRoute }) => {
     <div className={styles.wrapper}>
       <div className={styles.phoneNavContent} ref={menuContent}>
         <BluredBlob right={-30} top={-130} zIndex={-1} opacity={0.8} />
-
         <ul>
-          <Link href="/">خانه</Link>
-          <Link href="/coming-soon">خدمات</Link>
-          <Link href="/courses">دوره ها</Link>
-          <Link href="/coming-soon">وبلاگ</Link>
-          <Link href="/coming-soon">درباره ما</Link>
+          <li><Link href="/">خانه</Link></li>
+          <li><Link href="/coming-soon">خدمات</Link></li>
+          <li><Link href="/courses">دوره ها</Link></li>
+          <li><Link href="/coming-soon">وبلاگ</Link></li>
+          <li><Link href="/coming-soon">درباره ما</Link></li>
         </ul>
         <div className={styles.callToAction}>
           <Link href={hrefRoute}>
@@ -61,9 +73,8 @@ const Navbar = ({ hrefRoute }) => {
       </div>
 
       <div className={styles.phoneMenuContainer}>
-        <div className={styles.hamMenu}>
+        <div className={styles.hamMenu} onClick={toggleMenu}>
           <svg
-            onClick={toggleMenu}
             xmlns="http://www.w3.org/2000/svg"
             width="20"
             height="20"
@@ -130,11 +141,11 @@ const Navbar = ({ hrefRoute }) => {
 
       <div className={styles.container}>
         <ul>
-          <Link href="/">خانه</Link>
-          <Link href="/coming-soon">خدمات</Link>
-          <Link href="/courses">دوره ها</Link>
-          <Link href="/coming-soon">وبلاگ</Link>
-          <Link href="/coming-soon">درباره ما</Link>
+          <li><Link href="/">خانه</Link></li>
+          <li><Link href="/coming-soon">خدمات</Link></li>
+          <li><Link href="/courses">دوره ها</Link></li>
+          <li><Link href="/coming-soon">وبلاگ</Link></li>
+          <li><Link href="/coming-soon">درباره ما</Link></li>
         </ul>
 
         <div className={styles.logoContainer}>
@@ -149,9 +160,7 @@ const Navbar = ({ hrefRoute }) => {
 
         <div className={styles.callToAction}>
           <Link className={styles.cart} href={"/cart"}>
-            <span
-              className={`${styles.badge} ${showBadge ? styles.animate : ""}`}
-            >
+            <span className={`${styles.badge} ${showBadge ? styles.animate : ""}`}>
               {cartCount}
             </span>
             <PiShoppingCartSimpleFill fill="#111" />
