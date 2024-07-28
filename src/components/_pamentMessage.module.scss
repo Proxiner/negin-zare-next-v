@@ -25,10 +25,13 @@
         }
 
         .textPaymentContainer {
+            display: flex;
             flex-direction: column;
             font-family: dana-medium;
             font-size: 1.1rem;
             text-align: center;
+            line-height: 40px;
+            gap: 100px;
 
             @media #{responsive.$phone} {
                 font-size: 1rem;
@@ -37,6 +40,15 @@
 
         .linkPaymentContent {
             text-decoration: none;
+            font-family: dana-medium;
+            font-size: 1.1rem;
+
+            @media #{responsive.$phone} {
+                font-size: 1rem;
+            }
+        }
+
+        .countdownText {
             font-family: dana-medium;
             font-size: 1.1rem;
 

@@ -9,9 +9,9 @@ const Index = () => {
                 <PaymentMessage 
                     imagePayment="/assets/icons/correct.png"
                     textPayment ="خرید با موفقیت انجام شد :)"
-                    statusPayment =" "
-                    linkPayment="/cart"
+                    linkPayment="/dashbord"
                     linkTitlePayment = "رفتن به حساب کاربری"
+                    seconds={15}
                 />
             </>
         </div>

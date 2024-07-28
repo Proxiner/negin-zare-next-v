@@ -11,6 +11,7 @@ const Failed = () => {
                 statusPayment ="در صورت کسر وجه تا ۷۲ ساعت آینده برگشت میخورد."
                 linkPayment="/cart"
                 linkTitlePayment = "بازگشت به سبد خرید"
+                seconds={15}
             />
         </>
     );

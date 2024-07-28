@@ -30,7 +30,8 @@ const App = ({ Component, pageProps }) => {
     "/dashboard",
     "/apply",
     "/check-out",
-    "/purchase/failed"
+    "/purchase/failed",
+    "/purchase/success"
   ].includes(router.pathname);
   return (
     <>
