@@ -1,9 +1,11 @@
 import React from 'react';
 
+import FAQTitles from './faqTitles';
+
 const FAQ = () => {
     return (
         <div>
-            <h1>h111</h1>
+            <FAQTitles />
         </div>
     );
 };
