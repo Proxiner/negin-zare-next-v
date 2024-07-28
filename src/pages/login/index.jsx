@@ -61,8 +61,26 @@ const Login = () => {
         phone: data.phoneNumber,
         password: data.password,
       })
-      .then(() => {
-        setAuthenticate(true);
+      .then((response) => {
+        if (response.statusText === "OK") {
+          toast.info(
+            <div className="toast-container">
+              <span className="toast-message">کد ۵ رقمی ارسال شد!</span>
+            </div>,
+            {
+              position: "top-right",
+              autoClose: 2000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+              transition: Slide,
+              onClose: () => setAuthenticate(true),
+            }
+          );
+        }
       })
       .catch((error) => {
         console.error(error.message);

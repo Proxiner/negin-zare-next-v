@@ -11,7 +11,7 @@ function CourseData({ imageSrc, title, type, price, teacher, courseId, removeCou
 
   return (
     <div className={styles.container}>
-      <Image width={150} height={150} src={imageSrc} alt="image-model" />
+      <Image width={150} height={150} src={imageSrc} priority alt="image-model" />
       <div className={styles.column}>
         <h2>{title}</h2>
         <span className={styles.teacher}>مدرس : {teacher}</span>

@@ -6,15 +6,13 @@ import axios from "axios";
 import useTitle from "@/hooks/useTitle";
 import { toast, ToastContainer, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { FaArrowLeftLong } from "react-icons/fa6";
 import CourseData from "@/components/courseData";
 import BreadCrumb from "@/components/breadcrumb";
 import { base_url } from "@/api/url";
 
 function Cart() {
   const [token, setToken] = useState();
-  const [cartData, setCartData] = useState([]);
-  const [proceedLink , setProceedLink] = useState();
+  const [cartData, setCartData] = useState(null); // Initialize as null
 
   useTitle("صفحه | سبد خرید 🛒");
 
@@ -92,7 +90,22 @@ function Cart() {
     }
   };
 
+  const calculateDiscountedPrice = (price, discountType, discountValue) => {
+    if (discountType === "percent" && discountValue) {
+      return price - (price * discountValue) / 100;
+    }
+    return price;
+  };
+
   const router = useRouter();
+
+  if (cartData === null) {
+    return (
+      <div className={styles.notify}>
+        <h1>در حال بارگذاری سبد خرید شما...</h1>
+      </div>
+    );
+  }
 
   if (!cartData.length) {
     return (
@@ -100,28 +113,16 @@ function Cart() {
         <BreadCrumb
           title={
             <>
-              <Link
-                style={{ color: "#111", textDecoration: "none" }}
-                href={"/"}
-              >
-                {" "}
-                خانه{" "}
+              <Link style={{ color: "#111", textDecoration: "none" }} href={"/"}>
+                خانه
               </Link>
               /
-              <Link
-                style={{ color: "#111", textDecoration: "none" }}
-                href={"/courses"}
-              >
-                {" "}
-                دوره ها{" "}
+              <Link style={{ color: "#111", textDecoration: "none" }} href={"/courses"}>
+                دوره ها
               </Link>
               /
-              <Link
-                style={{ color: "#111", textDecoration: "none" }}
-                href={"/cart"}
-              >
-                {" "}
-                سبد خرید{" "}
+              <Link style={{ color: "#111", textDecoration: "none" }} href={"/cart"}>
+                سبد خرید
               </Link>
               /
             </>
@@ -129,11 +130,10 @@ function Cart() {
           currentHref={router.route}
           proceedTitle={"مرحله بعد"}
           hrefProceed={"/cart"}
-          proceedIcon={<FaArrowLeftLong />}
         />
         <div className={styles.notify}>
           <h1> هیچ دوره های رو به سبد خرید اضافه نکردید! </h1>
-          <Link href={'/courses'}> صفحه دوره ها </Link>
+          <Link href={"/courses"}> صفحه دوره ها </Link>
         </div>
       </div>
     );
@@ -145,24 +145,15 @@ function Cart() {
         title={
           <>
             <Link style={{ color: "#111", textDecoration: "none" }} href={"/"}>
-              {" "}
-              خانه{" "}
+              خانه
             </Link>
             /
-            <Link
-              style={{ color: "#111", textDecoration: "none" }}
-              href={"/courses"}
-            >
-              {" "}
-              دوره ها{" "}
+            <Link style={{ color: "#111", textDecoration: "none" }} href={"/courses"}>
+              دوره ها
             </Link>
             /
-            <Link
-              style={{ color: "#111", textDecoration: "none" }}
-              href={"/cart"}
-            >
-              {" "}
-              سبد خرید{" "}
+            <Link style={{ color: "#111", textDecoration: "none" }} href={"/cart"}>
+              سبد خرید
             </Link>
             /
           </>
@@ -170,22 +161,47 @@ function Cart() {
         currentHref={router.route}
         proceedTitle={"مرحله بعد"}
         hrefProceed={"/cart/checkout"}
-        proceedIcon={<FaArrowLeftLong />}
+        show={true}
       />
       <ToastContainer rtl />
       <div className={styles.list}>
-        {cartData.map((course) => (
-          <CourseData
-            key={course.id}
-            courseId={course.id}
-            title={course.title}
-            teacher="مدرس"
-            imageSrc={`/assets/images/${course.thumbnail}`}
-            type={course.type}
-            price={course.price}
-            removeCourse={removeCourse}
-          />
-        ))}
+        {cartData.map((course, index) => {
+          const discountedPrice = calculateDiscountedPrice(
+            course.price,
+            course.discount_type,
+            course.discount_value
+          );
+          const hasDiscount = course.discount_type === "percent" && course.discount_value;
+
+          return (
+            <React.Fragment key={`course-${course.id}`}>
+              <CourseData
+                courseId={course.id}
+                title={course.title}
+                teacher={course.teacher.name}
+                imageSrc={`/assets/images/${course.thumbnail}`}
+                type={course.type}
+                price={
+                  hasDiscount ? (
+                    <span>
+                      <span className={styles.originalPrice}>
+                        {course.price.toLocaleString("fa-IR")} تومان
+                      </span>
+                      {" "} | با تخفیف :
+                      <span className={styles.discountedPrice}>
+                        {discountedPrice.toLocaleString("fa-IR")}
+                      </span>
+                    </span>
+                  ) : (
+                    `${course.price.toLocaleString("fa-IR")}`
+                  )
+                }
+                removeCourse={removeCourse}
+              />
+              <div key={`line-${index}`} className={styles.line}></div>
+            </React.Fragment>
+          );
+        })}
       </div>
     </div>
   );

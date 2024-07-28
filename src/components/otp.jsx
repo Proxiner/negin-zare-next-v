@@ -8,6 +8,9 @@ import { base_url } from "@/api/url";
 
 import axios from "axios";
 
+import { ToastContainer, toast, Slide } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import styles from "./_otp.module.scss";
 
 const OTP = ({ userData }) => {
@@ -81,11 +84,29 @@ const OTP = ({ userData }) => {
           phone: phone,
         })
         .then((response) => {
-          const userToken = response.data.authorisation.token;
-          setToken(userToken);
-          setTime(() => {
-            router.push("/dashboard");
-          }, 1000);
+          if (response.statusText === "OK") {
+            const userToken = response.data.authorisation.token;
+            setToken(userToken);
+            toast.success(
+              <div className="toast-container">
+                <span className="toast-message">
+                  با موفقیت وارد شدید!
+                </span>
+              </div>,
+              {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+                transition: Slide,
+                onClose: () => router.push("/dashboard"),
+              }
+            );
+          }
         })
         .catch((message) => {
           console.error(message);
@@ -99,6 +120,7 @@ const OTP = ({ userData }) => {
 
   return (
     <div className={styles.container}>
+      <ToastContainer rtl />
       <label htmlFor={`code1`}>کد پیامک شده</label>
       <div className={styles.digitsContainer}>
         {code.map((value, index) => (

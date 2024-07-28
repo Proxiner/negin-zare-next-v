@@ -1,22 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import styles from "./_courseHeader.module.scss";
-
 import CourseDetails from "./courseDetails";
 import Image from "next/image";
 import axios from "axios";
-
 import useStripHtml from "@/hooks/useStripHtml";
 import useTitle from "@/hooks/useTitle";
-
 import { toast, ToastContainer, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FaArrowLeftLong } from "react-icons/fa6";
-
 import { base_url } from "@/api/url";
-
 import Link from "next/link";
-
 import { useRouter } from "next/router";
+import { CartContext } from "@/context/CartContext"; // Import CartContext
 
 const CourseDetail = ({ course }) => {
   const router = useRouter();
@@ -25,6 +20,8 @@ const CourseDetail = ({ course }) => {
 
   const [exist, setExist] = useState(false);
   const [token, setToken] = useState();
+
+  const { setCartLength } = useContext(CartContext); // Use CartContext
 
   useEffect(() => {
     if (localStorage.getItem("token") === null) {
@@ -51,8 +48,8 @@ const CourseDetail = ({ course }) => {
         }
       );
     } else {
-      const retriveToken = localStorage.getItem("token")?.replace(/"/g, "");
-      setToken(retriveToken);
+      const retrieveToken = localStorage.getItem("token")?.replace(/"/g, "");
+      setToken(retrieveToken);
     }
   }, [token]);
 
@@ -94,6 +91,15 @@ const CourseDetail = ({ course }) => {
       );
       const data = response.data.status;
       setExist(data);
+
+      // Fetch the updated cart list to get the new length
+      const cartResponse = await axios.get(`${base_url}/cart/list`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const newCartLength = cartResponse.data.items.length;
+      setCartLength(newCartLength); // Update the cart length in the context
     } catch (error) {
       toast.warning(
         <div className="toast-container">

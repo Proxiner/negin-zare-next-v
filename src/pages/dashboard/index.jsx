@@ -24,6 +24,7 @@ const Index = () => {
   const [toggleComponent, setToggleComponent] = useState(false);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
+  const [showLicenses, setShowLicenses] = useState(false);
 
   useEffect(() => {
     const retriveToken = localStorage.getItem("token")?.replace(/"/g, "");
@@ -68,7 +69,7 @@ const Index = () => {
   useEffect(() => {
     if (token) {
       const fetchDetails = async () => {
-        try{
+        try {
           const request = await axios.get(`${base_url}/getUser`, {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -76,11 +77,14 @@ const Index = () => {
           });
           const data = await request.data;
           setUserData(data);
-        }catch(error){
+        } catch (error) {
           if (error.response?.status === 401) {
             toast.warning(
               <div className="toast-container">
-                <span className="toast-message"> لطفا وارد حساب خود شوید! </span>
+                <span className="toast-message">
+                  {" "}
+                  لطفا وارد حساب خود شوید!{" "}
+                </span>
                 <Link href="/login" className="toast-link">
                   👈 صفحه ورود
                 </Link>
@@ -97,10 +101,10 @@ const Index = () => {
                 transition: Bounce,
               }
             );
-            setLoading(false)
+            setLoading(false);
           }
         }
-      }
+      };
       fetchDetails();
     }
   }, [token]);
@@ -113,6 +117,7 @@ const Index = () => {
         },
       });
       const data = await request.data;
+
       if (data.length) {
         const licensesArray = data.map(
           (product) => product.infoLicense.license_key
@@ -121,9 +126,12 @@ const Index = () => {
         setLicenses(licensesArray);
         setTitles(titlesArray);
         setToggleComponent(true);
+        setShowLicenses(true);
       } else {
         setLicenses([]);
         setTitles([]);
+        setToggleComponent(true);
+        setShowLicenses(false);
       }
     } catch (error) {
       console.error(error.message);
@@ -195,18 +203,16 @@ const Index = () => {
           </div>
           <div className={styles.mainContent}>
             {toggleComponent ? (
-              <div>
-                {licenses.length > 0 ? (
-                  <div>
-                    {licenses.map((licenseKey, index) => (
-                      <Licence
-                        key={licenseKey}
-                        licence={licenseKey}
-                        title={titles[index]}
-                        handleCopy={() => copyLicense(licenseKey)}
-                      />
-                    ))}
-                  </div>
+              <>
+                {showLicenses ? (
+                  licenses.map((licenseKey, index) => (
+                    <Licence
+                      key={licenseKey}
+                      licence={licenseKey}
+                      title={titles[index]}
+                      handleCopy={() => copyLicense(licenseKey)}
+                    />
+                  ))
                 ) : (
                   <>
                     <h3> هنوز دوره ای خریداری نکرده اید 😔</h3>
@@ -215,7 +221,7 @@ const Index = () => {
                     </Link>
                   </>
                 )}
-              </div>
+              </>
             ) : (
               <>
                 <h1>سلام {userData.name} عزیز ❤️</h1>

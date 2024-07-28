@@ -8,6 +8,7 @@ import { useRouter } from "next/router";
 
 import Navbar from "@/layouts/navbar";
 import LoginProvider from "@/context/LoginContext";
+import CartProvider from "@/context/CartContext";
 
 const App = ({ Component, pageProps }) => {
   const router = useRouter();
@@ -34,8 +35,10 @@ const App = ({ Component, pageProps }) => {
   return (
     <>
       <LoginProvider>
-        {showNavbar && <Navbar hrefRoute={route ? "/dashboard" : "/login"} />}
-        <Component {...pageProps} />
+        <CartProvider>
+          {showNavbar && <Navbar hrefRoute={route ? "/dashboard" : "/login"} />}
+          <Component {...pageProps} />
+        </CartProvider>
       </LoginProvider>
     </>
   );

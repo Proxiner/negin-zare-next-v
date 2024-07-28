@@ -22,6 +22,7 @@ import Image from "next/image";
 import styles from "./_register.module.scss";
 import useTitle from "@/hooks/useTitle";
 import { base_url } from "@/api/url";
+import { useRouter } from "next/router";
 
 const schema = yup.object({
   username: yup.string().required("لطفا نام کامل خود را وارد کنید"),
@@ -50,6 +51,8 @@ const Register = () => {
     resolver: yupResolver(schema),
   });
 
+  const router = useRouter();
+
   const formSubmit = (data) => {
     axios
       .post(`${base_url}/register`, {
@@ -59,28 +62,49 @@ const Register = () => {
         email: data.email,
       })
       .then((response) => {
-        console.log(response.data);
-        if (response.data.message === "User before exist") {
-          toast.error(
-            <div className="toast-container">
-              <span className="toast-message">
-                {" "}
-                این حساب کاربری از قبل ایجاد شده است{" "}
-              </span>
-            </div>,
-            {
-              position: "top-right",
-              autoClose: 4000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "light",
-              transition: Slide,
-            }
-          );
-        } else {
+        switch (response.data.message) {
+          case "User created successfully" :
+            toast.success(
+              <div className="toast-container">
+                <span className="toast-message">
+                  حساب کاربری شما با موفقیت ساخته شد
+                </span>
+              </div>,
+              {
+                position: "top-right",
+                autoClose: 4000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+                transition: Slide,
+                onClose : () => router.push('/login')
+              }
+            );
+            break;
+          case "User before exist":
+            toast.error(
+              <div className="toast-container">
+                <span className="toast-message">
+                  {" "}
+                  این حساب کاربری از قبل ایجاد شده است{" "}
+                </span>
+              </div>,
+              {
+                position: "top-right",
+                autoClose: 4000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+                transition: Slide,
+              }
+            );
+            break;
         }
       })
       .catch();

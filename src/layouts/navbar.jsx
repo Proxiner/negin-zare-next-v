@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useContext } from "react";
 import { FaRegUser } from "react-icons/fa6";
 import { PiShoppingCartSimpleFill } from "react-icons/pi";
 import Link from "next/link";
@@ -7,17 +7,50 @@ import BluredBlob from "@/components/bluredBlob";
 import styles from "./_navbar.module.scss";
 import { useRouter } from "next/router";
 
+import { LoginContext } from "@/context/LoginContext";
+import { CartContext } from "@/context/CartContext"; // Import CartContext
+import axios from "axios";
+import { base_url } from "@/api/url";
+
 const Navbar = ({ hrefRoute }) => {
   const menuContent = useRef();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [showBadge, setShowBadge] = useState(false);
-  const [cartCount, setCartCount] = useState(0);
 
   const router = useRouter();
 
+  const { token, setToken } = useContext(LoginContext);
+  const { cartLength, setCartLength } = useContext(CartContext); // Use CartContext
+
+  useEffect(() => {
+    const retrieveToken = localStorage.getItem("token")?.replace(/"/g, "");
+    setToken(retrieveToken);
+  }, [token]);
+
+  useEffect(() => {
+    if (token) {
+      const fetchCartList = async () => {
+        try {
+          const request = await axios.get(`${base_url}/cart/list`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+          const length = request.data.items.length;
+          console.log(length);
+          setCartLength(length); // Update the cart length in the context
+        } catch (error) {
+          if (error.message === "Request failed with status code 401") {
+            console.clear();
+          }
+        }
+      };
+      fetchCartList();
+    }
+  }, [token, setCartLength]);
+
   useEffect(() => {
     const handleRouteChange = (url) => {
-      if (url === "/courses" || url === "/") {
+      if (url === "/courses" || url === "/" || url === "/dashboard") {
         setIsMenuOpen(false);
         menuContent.current.style.right = "-512px";
         document.body.style.overflowY = "auto";
@@ -30,14 +63,6 @@ const Navbar = ({ hrefRoute }) => {
       router.events.off("routeChangeComplete", handleRouteChange);
     };
   }, [router.events]);
-
-  useEffect(() => {
-    if (cartCount === 0) {
-      setShowBadge(false);
-    } else {
-      setShowBadge(true);
-    }
-  }, [cartCount]);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -57,11 +82,21 @@ const Navbar = ({ hrefRoute }) => {
       <div className={styles.phoneNavContent} ref={menuContent}>
         <BluredBlob right={-30} top={-130} zIndex={-1} opacity={0.8} />
         <ul>
-          <li><Link href="/">خانه</Link></li>
-          <li><Link href="/coming-soon">خدمات</Link></li>
-          <li><Link href="/courses">دوره ها</Link></li>
-          <li><Link href="/coming-soon">وبلاگ</Link></li>
-          <li><Link href="/coming-soon">درباره ما</Link></li>
+          <li>
+            <Link href="/">خانه</Link>
+          </li>
+          <li>
+            <Link href="/coming-soon">خدمات</Link>
+          </li>
+          <li>
+            <Link href="/courses">دوره ها</Link>
+          </li>
+          <li>
+            <Link href="/coming-soon">وبلاگ</Link>
+          </li>
+          <li>
+            <Link href="/coming-soon">درباره ما</Link>
+          </li>
         </ul>
         <div className={styles.callToAction}>
           <Link href={hrefRoute}>
@@ -127,25 +162,35 @@ const Navbar = ({ hrefRoute }) => {
           />
         </div>
 
-        <div className={styles.cart}>
-          <Link href={"/cart"}>
-            <Image
-              width={25}
-              height={25}
-              src={"/assets/icons/cart.svg"}
-              alt="myCart"
-            />
-          </Link>
-        </div>
+        <Link className={styles.cart} href={"/cart"}>
+          <span
+            className={`${styles.badge} ${
+              cartLength > 0 ? styles.animate : ""
+            }`}
+          >
+            {cartLength}
+          </span>
+          <PiShoppingCartSimpleFill fill="#111" />
+        </Link>
       </div>
 
       <div className={styles.container}>
         <ul>
-          <li><Link href="/">خانه</Link></li>
-          <li><Link href="/coming-soon">خدمات</Link></li>
-          <li><Link href="/courses">دوره ها</Link></li>
-          <li><Link href="/coming-soon">وبلاگ</Link></li>
-          <li><Link href="/coming-soon">درباره ما</Link></li>
+          <li>
+            <Link href="/">خانه</Link>
+          </li>
+          <li>
+            <Link href="/coming-soon">خدمات</Link>
+          </li>
+          <li>
+            <Link href="/courses">دوره ها</Link>
+          </li>
+          <li>
+            <Link href="/coming-soon">وبلاگ</Link>
+          </li>
+          <li>
+            <Link href="/coming-soon">درباره ما</Link>
+          </li>
         </ul>
 
         <div className={styles.logoContainer}>
@@ -160,8 +205,12 @@ const Navbar = ({ hrefRoute }) => {
 
         <div className={styles.callToAction}>
           <Link className={styles.cart} href={"/cart"}>
-            <span className={`${styles.badge} ${showBadge ? styles.animate : ""}`}>
-              {cartCount}
+            <span
+              className={`${styles.badge} ${
+                cartLength > 0 ? styles.animate : ""
+              }`}
+            >
+              {cartLength}
             </span>
             <PiShoppingCartSimpleFill fill="#111" />
           </Link>

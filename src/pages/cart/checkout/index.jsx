@@ -1,27 +1,23 @@
 import React, { useEffect, useState } from "react";
-
 import styles from "./_checkout.module.scss";
-
-import CheckoutBox from "./checkoutBox";
+import CourseData from "@/components/courseData";
 import axios from "axios";
 import useTitle from "@/hooks/useTitle";
 import BreadCrumb from "@/components/breadcrumb";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { FaArrowLeftLong } from "react-icons/fa6";
 import { toast, ToastContainer, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
 import { base_url } from "@/api/url";
 
 const CheckOut = () => {
   useTitle("صفحه | تکمیل خرید 🛒");
   const router = useRouter();
 
-  const [course, setCourse] = useState([]);
-  const [summition, setSummition] = useState({});
+  const [course, setCourse] = useState(null);
+  const [summition, setSummition] = useState(null);
   const [token, setToken] = useState();
-  const [purchaseID, setPurchaseID] = useState();
+  const [purchaseID, setPurchaseID] = useState(null);
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token")?.replace(/"/g, "");
@@ -37,12 +33,12 @@ const CheckOut = () => {
       } catch (error) {
         if (error.response?.status === 401) {
           toast.info(
-            <>
-              <span className="message"> لطفا وارد حساب کاربری خود شوید! </span>
-              <Link href="/login" className="redirect">
+            <div className="toast-container">
+              <span className="toast-message"> لطفا وارد حساب کاربری خود شوید! </span>
+              <Link href="/login" className="toast-link">
                 👈 حساب کاربری
               </Link>
-            </>,
+            </div>,
             {
               position: "bottom-right",
               autoClose: false,
@@ -51,7 +47,7 @@ const CheckOut = () => {
               pauseOnHover: true,
               draggable: true,
               progress: undefined,
-              theme: "colored",
+              theme: "light",
               transition: Bounce,
             }
           );
@@ -66,25 +62,48 @@ const CheckOut = () => {
   }, []);
 
   const handlePurchase = async () => {
-    const request = await axios.post(
-      `${base_url}/order/create`,
-      {},
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+    const handlePromise = new Promise(async (resolve, reject) => {
+      try {
+        const request = await axios.post(
+          `${base_url}/order/create`,
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        const response = await request.data;
+        setPurchaseID(response.orderId);
+        resolve(response.orderId);
+      } catch (error) {
+        reject(error);
       }
-    );
-    const response = await request.data;
-    setPurchaseID(response.orderId);
-    if (purchaseID) {
-      router.push(`${base_url}/purchase/${purchaseID}`);
-    }
+    });
+
+    toast.promise(handlePromise, {
+      pending: {
+        render() {
+          return <div style={{ fontFamily: 'dana' }}>در حال انتقال  به درگاه پرداخت...</div>;
+        },
+      },
+      success: {
+        render() {
+          return <div className="toast-container">انتقال به درگاه پرداخت 👌</div>;
+        },
+      },
+      error: {
+        render() {
+          return <div className="toast-container">عدم انتقال به درگاه پرداخت</div>;
+        },
+      },
+    }).then((orderId) => {
+      router.push(`${base_url}/purchase/${orderId}`);
+    });
   };
 
   const removeCourse = async (courseId) => {
-    console.log(courseId);
-    if (token) {
+    const handlePromise = new Promise(async (resolve, reject) => {
       try {
         await axios.post(
           `${base_url}/cart/remove`,
@@ -95,32 +114,57 @@ const CheckOut = () => {
             },
           }
         );
-        setCourse(course.filter((course) => course.id !== courseId));
+        const updatedCourses = course.filter((course) => course.id !== courseId);
+        setCourse(updatedCourses);
+        if (updatedCourses.length === 0) {
+          router.push("/courses");
+        } else {
+          const updatedSummition = {
+            ...summition,
+            count: updatedCourses.length,
+            sum: updatedCourses.reduce((acc, curr) => acc + curr.price, 0),
+          };
+          setSummition(updatedSummition);
+        }
+        resolve();
       } catch (error) {
-        toast.error(
-          <div className="toast-container">
-            <span className="toast-message"> خطا در حذف دوره! </span>
-          </div>,
-          {
-            position: "top-right",
-            autoClose: 4000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "colored",
-            transition: Bounce,
-            onClose: push_user,
-          }
-        );
+        reject(error);
       }
-    }
+    });
+
+    toast.promise(handlePromise, {
+      pending: {
+        render() {
+          return <div style={{ fontFamily: 'dana' }}>در حال حذف دوره...</div>;
+        },
+      },
+      success: {
+        render() {
+          return <div className="toast-container">دوره با موفقیت حذف شد 👌</div>;
+        },
+      },
+      error: {
+        render() {
+          return <div className="toast-container">خطا در حذف دوره</div>;
+        },
+      },
+    });
   };
 
-  // if (!course.length) {
-  //   router.push("/cart");
-  // }
+  const calculateDiscountedPrice = (price, discountType, discountValue) => {
+    if (discountType === "percent" && discountValue) {
+      return price - (price * discountValue) / 100;
+    }
+    return price;
+  };
+
+  if (course === null || summition === null) {
+    return (
+      <div className={styles.notify}>
+        <h1>در حال بارگذاری صفحه...</h1>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.container}>
@@ -128,47 +172,64 @@ const CheckOut = () => {
         title={
           <>
             <Link style={{ color: "#111", textDecoration: "none" }} href={"/"}>
-              {" "}
-              خانه{" "}
+              خانه
             </Link>
             /
-            <Link
-              style={{ color: "#111", textDecoration: "none" }}
-              href={"/cart"}
-            >
-              {" "}
-              سبد خرید{" "}
+            <Link style={{ color: "#111", textDecoration: "none" }} href={"/courses"}>
+              دوره ها
             </Link>
             /
-            <Link
-              style={{ color: "#111", textDecoration: "none" }}
-              href={"/cart/checkout"}
-            >
-              {" "}
-              تکمیل پرداخت{" "}
+            <Link style={{ color: "#111", textDecoration: "none" }} href={"/cart"}>
+              سبد خرید
             </Link>
             /
           </>
         }
         currentHref={router.route}
-        proceedTitle={"مرحله بعد"}
-        hrefProceed={router.route + "/checkout"}
-        proceedIcon={<FaArrowLeftLong />}
+        proceedTitle={"پرداخت"}
+        handlePurchase={handlePurchase}
+        show={true}
       />
       <ToastContainer rtl />
+      <div className={styles.list}>
+        {course.map((course, index) => {
+          const discountedPrice = calculateDiscountedPrice(
+            course.price,
+            course.discount_type,
+            course.discount_value
+          );
+          const hasDiscount = course.discount_type === "percent" && course.discount_value;
 
-      {course.map((course) => (
-        <CheckoutBox
-          key={course.id}
-          courseId={course.id}
-          image={`/assets/images/${course.thumbnail}`}
-          productName={course.title}
-          productdescript={`نگین زارع ــ مدرس دوره`}
-          price={course.price.toLocaleString("fa-IR")}
-          removeCourse={removeCourse}
-        />
-      ))}
-
+          return (
+            <React.Fragment key={`course-${course.id}`}>
+              <CourseData
+                courseId={course.id}
+                title={course.title}
+                teacher={course.teacher.name}
+                imageSrc={course.thumbnail ? `/assets/images/${course.thumbnail}` : '/assets/images/intro_3.jpg'}
+                type={course.type}
+                price={
+                  hasDiscount ? (
+                    <span>
+                      <span className={styles.originalPrice}>
+                        {course.price.toLocaleString("fa-IR")} تومان
+                      </span>
+                      {" "} | با تخفیف :
+                      <span className={styles.discountedPrice}>
+                        {discountedPrice.toLocaleString("fa-IR")}
+                      </span>
+                    </span>
+                  ) : (
+                    `${course.price.toLocaleString("fa-IR")}`
+                  )
+                }
+                removeCourse={removeCourse}
+              />
+              <div key={`line-${index}`} className={styles.line}></div>
+            </React.Fragment>
+          );
+        })}
+      </div>
       <div className={styles.receiptPart}>
         <div className={styles.textAndNumberCourse}>
           <span className={styles.text}> تعداد دوره ها</span>
@@ -178,14 +239,16 @@ const CheckOut = () => {
         <div className={styles.totalPriceContainer}>
           <span className={styles.totalPriceText}> قیمت کل </span>
           <span className={styles.totalPrice}>
-            {summition.sum} <i>تومان</i>
+            {summition.sum.toLocaleString("fa-IR")} <i>تومان</i>
           </span>
         </div>
-      </div>
 
-      <button className={styles.payOff} onClick={handlePurchase}>
-        پــرداخت
-      </button>
+        <div className={styles.purchaseContainer}>
+          <button className={styles.payOff} onClick={handlePurchase}>
+            پــرداخت
+          </button>
+        </div>
+      </div>
     </div>
   );
 };
