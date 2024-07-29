@@ -27,10 +27,13 @@ const Dashboard = () => {
 
   const [loading, setLoading] = useState(true);
 
+  const {setToken} = useContext(LoginContext)
+
   const router = useRouter();
 
   const logout = () => {
     localStorage.removeItem("token");
+    setToken("")
     router.push("/");
   };
 

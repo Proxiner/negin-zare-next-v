@@ -11,16 +11,6 @@ const AppContent = ({ Component, pageProps }) => {
   const router = useRouter();
   const { token, setToken } = useContext(LoginContext);
 
-  const [route, setRoute] = useState(false);
-
-  useEffect(() => {
-    if (localStorage.getItem("token") === null) {
-      setRoute(false);
-    } else {
-      setRoute(true);
-    }
-  }, [route]);
-
   useEffect(() => {
     setToken(localStorage.getItem("token")?.replace(/"/g, ""));
   }, [token, setToken]);
@@ -37,7 +27,7 @@ const AppContent = ({ Component, pageProps }) => {
 
   return (
     <>
-      {showNavbar && <Navbar hrefRoute={route ? "/dashboard" : "/login"} />}
+      {showNavbar && <Navbar hrefRoute={token ? "/dashboard" : "/login"} />}
       <Component {...pageProps} />
     </>
   );

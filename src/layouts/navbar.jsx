@@ -36,7 +36,6 @@ const Navbar = ({ hrefRoute }) => {
             },
           });
           const length = request.data.items.length;
-          console.log(length);
           setCartLength(length); // Update the cart length in the context
         } catch (error) {
           if (error.message === "Request failed with status code 401") {
