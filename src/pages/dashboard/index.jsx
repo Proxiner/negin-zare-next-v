@@ -49,7 +49,10 @@ const Dashboard = () => {
           const response = await request.data;
           setUserInformation(response);
         } catch (error) {
-          console.error(error.message);
+          if(error.message  === "Request failed with status code 401"){
+            setToken("")
+            localStorage.removeItem("token")
+          }
         } finally {
           setLoading(false);
         }
