@@ -27,13 +27,13 @@ const Dashboard = () => {
 
   const [loading, setLoading] = useState(true);
 
-  const {setToken} = useContext(LoginContext)
+  const { setToken } = useContext(LoginContext);
 
   const router = useRouter();
 
   const logout = () => {
     localStorage.removeItem("token");
-    setToken("")
+    setToken("");
     router.push("/");
   };
 
@@ -48,12 +48,19 @@ const Dashboard = () => {
           });
           const response = await request.data;
           setUserInformation(response);
+          setLoading(false)
         } catch (error) {
-          if(error.message  === "Request failed with status code 401"){
+          if (error.message === "Request failed with status code 401") {
             toast.error(
               <div className="toast-container">
-                <span className="toast-message"> لطفا دوباره وارد حساب خود شوید! </span>
-                <Link className="toast-link" href={'/login'}> صفحه ورود </Link>
+                <span className="toast-message">
+                  {" "}
+                  لطفا دوباره وارد حساب خود شوید!{" "}
+                </span>
+                <Link className="toast-link" href={"/login"}>
+                  {" "}
+                  صفحه ورود{" "}
+                </Link>
               </div>,
               {
                 position: "top-right",
@@ -67,7 +74,6 @@ const Dashboard = () => {
                 transition: Bounce,
               }
             );
-            setLoading(true)
           }
         }
       };
@@ -84,15 +90,15 @@ const Dashboard = () => {
           },
         });
         const response = await request.data;
-
-        if (response.length) {
+        console.log(response)
+        if (response.length > 0) {
           const licensesArray = response.map(
             (product) => product.infoLicense.license_key
           );
           const titlesArray = response.map((product) => product.product.title);
           setLicenses(licensesArray);
           setTitles(titlesArray);
-          setShowLicenses(false);
+          setShowLicenses(true);
           setShowBought(true);
         } else {
           setLicenses([]);
@@ -153,61 +159,61 @@ const Dashboard = () => {
         <h1> در حال بارگذاری اطلاعات... </h1>
       </div>
     );
-  }
-
-  return (
-    <div className={styles.container}>
-      <ToastContainer rtl />
-      <div className={styles.sidePanel}>
-        <div className={styles.info}>
-          <span> {userInformations.name} </span>
-          <span className={styles.phone}> {userInformations.phone} </span>
+  } else {
+    return (
+      <div className={styles.container}>
+        <ToastContainer rtl />
+        <div className={styles.sidePanel}>
+          <div className={styles.info}>
+            <span> {userInformations.name} </span>
+            <span className={styles.phone}> {userInformations.phone} </span>
+          </div>
+          <ul>
+            <li onClick={() => setShowLicenses(false)}>
+              <GoHomeFill fontSize={22} /> حساب کاربری
+            </li>
+            <li onClick={fetchPurchasedInfo}>
+              <HiAcademicCap fontSize={22} />
+              دوره های من
+            </li>
+            <li className={styles.logout} onClick={logout}>
+              <IoIosLogOut fontSize={22} fill="#ff0000" /> خروج
+            </li>
+          </ul>
         </div>
-        <ul>
-          <li onClick={() => setShowLicenses(false)}>
-            <GoHomeFill fontSize={22} /> حساب کاربری
-          </li>
-          <li onClick={fetchPurchasedInfo}>
-            <HiAcademicCap fontSize={22} />
-            دوره های من
-          </li>
-          <li className={styles.logout} onClick={logout}>
-            <IoIosLogOut fontSize={22} fill="#ff0000" /> خروج
-          </li>
-        </ul>
-      </div>
-      <div className={styles.mainContent}>
-        {showLicenses ? (
-          showBought ? (
-            licenses.map((licenseKey, index) => (
-              <Licence
-                key={licenseKey}
-                licence={licenseKey}
-                title={titles[index]}
-                handleCopy={() => copyLicense(licenseKey)}
-              />
-            ))
+        <div className={styles.mainContent}>
+          {showLicenses ? (
+            showBought ? (
+              licenses.map((licenseKey, index) => (
+                <Licence
+                  key={licenseKey}
+                  licence={licenseKey}
+                  title={titles[index]}
+                  handleCopy={() => copyLicense(licenseKey)}
+                />
+              ))
+            ) : (
+              <>
+                <h3> هنوز دوره ای خریداری نکرده اید 😔</h3>
+                <Link href="/courses" className={styles.link}>
+                  خرید دوره جدید
+                </Link>
+              </>
+            )
           ) : (
             <>
-              <h3> هنوز دوره ای خریداری نکرده اید 😔</h3>
-              <Link href="/courses" className={styles.link}>
-                خرید دوره جدید
-              </Link>
+              <h1>سلام {userInformations.name} عزیز ❤️</h1>
+              <p>
+                در قسمت <span onClick={fetchPurchasedInfo}>دوره های من</span>{" "}
+                میتوانید تمام دوره هایی که شرکت کردید و نحوه دسترسی به آن را
+                ببنید.
+              </p>
             </>
-          )
-        ) : (
-          <>
-            <h1>سلام {userInformations.name} عزیز ❤️</h1>
-            <p>
-              در قسمت <span onClick={fetchPurchasedInfo}>دوره های من</span>{" "}
-              میتوانید تمام دوره هایی که شرکت کردید و نحوه دسترسی به آن را
-              ببنید.
-            </p>
-          </>
-        )}
+          )}
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
 };
 
 export default Dashboard;
