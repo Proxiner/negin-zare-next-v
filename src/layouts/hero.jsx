@@ -67,7 +67,7 @@ const Hero = () => {
             <div className={styles.happyCustomers}>
               <div className={styles.profileContainer}>
                 {[
-                  "/assets/images/customer_1.jpg",
+                  "/assets/images/courses_2.jpg",
                   "/assets/images/customer_3.jpg",
                   "/assets/images/customer_2.jpg",
                 ].map((src, index) => (
