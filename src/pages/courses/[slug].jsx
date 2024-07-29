@@ -65,6 +65,7 @@ const CourseDetail = ({ course }) => {
           const data = response.data.items;
           const listCourses = data.map((item) => item.slug);
           const courseSlug = listCourses.find((slug) => slug === course.slug);
+          console.log(response)
 
           if (courseSlug === course.slug) {
             setExist(true);

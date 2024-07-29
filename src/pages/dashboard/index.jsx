@@ -13,23 +13,21 @@ import { HiAcademicCap } from "react-icons/hi2";
 import { IoIosLogOut } from "react-icons/io";
 import { LoginContext } from "@/context/LoginContext";
 
-const Index = () => {
+const Dashboard = () => {
   useTitle("نگین | پنل کاربری 💄");
 
-  const { token, setToken } = useContext(LoginContext);
+  const { token } = useContext(LoginContext);
 
-  const [userData, setUserData] = useState([]);
+  const [userInformations, setUserInformation] = useState({});
   const [licenses, setLicenses] = useState([]);
   const [titles, setTitles] = useState([]);
-  const [toggleComponent, setToggleComponent] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const router = useRouter();
+
+  const [showBought, setShowBought] = useState(false);
   const [showLicenses, setShowLicenses] = useState(false);
 
-  useEffect(() => {
-    const retriveToken = localStorage.getItem("token")?.replace(/"/g, "");
-    setToken(retriveToken);
-  }, [token]);
+  const [loading, setLoading] = useState(true);
+
+  const router = useRouter();
 
   const logout = () => {
     localStorage.removeItem("token");
@@ -37,104 +35,54 @@ const Index = () => {
   };
 
   useEffect(() => {
-    const push_user = () => {
-      router.push("/login");
-    };
-
-    if (localStorage.getItem("token") === null) {
-      toast.warning(
-        <div className="toast-container">
-          <span className="toast-message"> لطفا وارد حساب خود شوید! </span>
-          <Link href="/login" className="toast-link">
-            👈 صفحه ورود
-          </Link>
-        </div>,
-        {
-          position: "top-right",
-          autoClose: 4000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-          transition: Bounce,
-          onClose: push_user,
-        }
-      );
-      setLoading(false);
-    }
-  }, [token, router]);
-
-  useEffect(() => {
     if (token) {
-      const fetchDetails = async () => {
+      const fetchUserInformation = async () => {
         try {
           const request = await axios.get(`${base_url}/getUser`, {
             headers: {
               Authorization: `Bearer ${token}`,
             },
           });
-          const data = await request.data;
-          setUserData(data);
+          const response = await request.data;
+          setUserInformation(response);
         } catch (error) {
-          if (error.response?.status === 401) {
-            toast.warning(
-              <div className="toast-container">
-                <span className="toast-message">
-                  {" "}
-                  لطفا وارد حساب خود شوید!{" "}
-                </span>
-                <Link href="/login" className="toast-link">
-                  👈 صفحه ورود
-                </Link>
-              </div>,
-              {
-                position: "top-right",
-                autoClose: 4000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "colored",
-                transition: Bounce,
-              }
-            );
-            setLoading(false);
-          }
+          console.error(error.message);
+        } finally {
+          setLoading(false);
         }
       };
-      fetchDetails();
+      fetchUserInformation();
     }
   }, [token]);
 
-  const fetchUserData = async () => {
-    try {
-      const request = await axios.get(`${base_url}/user-products/list`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      const data = await request.data;
+  const fetchPurchasedInfo = async () => {
+    if (token) {
+      try {
+        const request = await axios.get(`${base_url}/user-products/list`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const response = await request.data;
 
-      if (data.length) {
-        const licensesArray = data.map(
-          (product) => product.infoLicense.license_key
-        );
-        const titlesArray = data.map((product) => product.product.title);
-        setLicenses(licensesArray);
-        setTitles(titlesArray);
-        setToggleComponent(true);
-        setShowLicenses(true);
-      } else {
-        setLicenses([]);
-        setTitles([]);
-        setToggleComponent(true);
-        setShowLicenses(false);
+        if (response.length) {
+          const licensesArray = response.map(
+            (product) => product.infoLicense.license_key
+          );
+          const titlesArray = response.map((product) => product.product.title);
+          setLicenses(licensesArray);
+          setTitles(titlesArray);
+          setShowLicenses(false);
+          setShowBought(true);
+        } else {
+          setLicenses([]);
+          setTitles([]);
+          setShowLicenses(true);
+          setShowBought(false);
+        }
+      } catch (error) {
+        console.error(error.message);
       }
-    } catch (error) {
-      console.error(error.message);
     }
   };
 
@@ -169,7 +117,7 @@ const Index = () => {
     document.body.removeChild(textArea);
   };
 
-  if (loading === false) {
+  if (!loading && !token) {
     return (
       <div className={styles.wrapper}>
         <ToastContainer rtl />
@@ -178,74 +126,68 @@ const Index = () => {
     );
   }
 
-  if (token) {
+  if (loading) {
     return (
-      <>
-        <div className={styles.container}>
-          <ToastContainer rtl />
-          <div className={styles.sidePanel}>
-            <div className={styles.info}>
-              <span> {userData.name} </span>
-              <span className={styles.phone}> {userData.phone} </span>
-            </div>
-            <ul>
-              <li onClick={() => setToggleComponent(false)}>
-                <GoHomeFill fontSize={22} /> حساب کاربری
-              </li>
-              <li onClick={fetchUserData}>
-                <HiAcademicCap fontSize={22} />
-                دوره های من
-              </li>
-              <li className={styles.logout} onClick={logout}>
-                <IoIosLogOut fontSize={22} fill="#ff0000" /> خروج
-              </li>
-            </ul>
-          </div>
-          <div className={styles.mainContent}>
-            {toggleComponent ? (
-              <>
-                {showLicenses ? (
-                  licenses.map((licenseKey, index) => (
-                    <Licence
-                      key={licenseKey}
-                      licence={licenseKey}
-                      title={titles[index]}
-                      handleCopy={() => copyLicense(licenseKey)}
-                    />
-                  ))
-                ) : (
-                  <>
-                    <h3> هنوز دوره ای خریداری نکرده اید 😔</h3>
-                    <Link href="/courses" className={styles.link}>
-                      خرید دوره جدید
-                    </Link>
-                  </>
-                )}
-              </>
-            ) : (
-              <>
-                <h1>سلام {userData.name} عزیز ❤️</h1>
-                <p>
-                  در قسمت <span onClick={fetchUserData}>دوره های من</span>{" "}
-                  میتوانید تمام دوره هایی که شرکت کردید و نحوه دسترسی به آن را
-                  ببنید.
-                </p>
-              </>
-            )}
-          </div>
-        </div>
-      </>
-    );
-  } else {
-    return (
-      <>
-        <div className={styles.wrapper}>
-          <ToastContainer rtl toastClassName={styles.toast} />
-          <h1> در حال بارگذاری اطلاعات... </h1>
-        </div>
-      </>
+      <div className={styles.wrapper}>
+        <ToastContainer rtl />
+        <h1> در حال بارگذاری اطلاعات... </h1>
+      </div>
     );
   }
+
+  return (
+    <div className={styles.container}>
+      <ToastContainer rtl />
+      <div className={styles.sidePanel}>
+        <div className={styles.info}>
+          <span> {userInformations.name} </span>
+          <span className={styles.phone}> {userInformations.phone} </span>
+        </div>
+        <ul>
+          <li onClick={() => setShowLicenses(false)}>
+            <GoHomeFill fontSize={22} /> حساب کاربری
+          </li>
+          <li onClick={fetchPurchasedInfo}>
+            <HiAcademicCap fontSize={22} />
+            دوره های من
+          </li>
+          <li className={styles.logout} onClick={logout}>
+            <IoIosLogOut fontSize={22} fill="#ff0000" /> خروج
+          </li>
+        </ul>
+      </div>
+      <div className={styles.mainContent}>
+        {showLicenses ? (
+          showBought ? (
+            licenses.map((licenseKey, index) => (
+              <Licence
+                key={licenseKey}
+                licence={licenseKey}
+                title={titles[index]}
+                handleCopy={() => copyLicense(licenseKey)}
+              />
+            ))
+          ) : (
+            <>
+              <h3> هنوز دوره ای خریداری نکرده اید 😔</h3>
+              <Link href="/courses" className={styles.link}>
+                خرید دوره جدید
+              </Link>
+            </>
+          )
+        ) : (
+          <>
+            <h1>سلام {userInformations.name} عزیز ❤️</h1>
+            <p>
+              در قسمت <span onClick={fetchPurchasedInfo}>دوره های من</span>{" "}
+              میتوانید تمام دوره هایی که شرکت کردید و نحوه دسترسی به آن را
+              ببنید.
+            </p>
+          </>
+        )}
+      </div>
+    </div>
+  );
 };
 
-export default Index;
+export default Dashboard;

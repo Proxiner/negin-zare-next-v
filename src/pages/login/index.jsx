@@ -83,7 +83,6 @@ const Login = () => {
         }
       })
       .catch((error) => {
-        console.error(error.message);
         toast.error(
           <div className="toast-container">
             <span className="toast-message">

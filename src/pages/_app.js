@@ -23,7 +23,7 @@ const AppContent = ({ Component, pageProps }) => {
 
   useEffect(() => {
     setToken(localStorage.getItem("token")?.replace(/"/g, ""));
-  }, [token]);
+  }, [token, setToken]);
 
   const showNavbar = ![
     "/login",
