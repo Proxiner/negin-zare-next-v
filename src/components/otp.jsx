@@ -86,12 +86,10 @@ const OTP = ({ userData }) => {
         .then((response) => {
           if (response.statusText === "OK") {
             const userToken = response.data.authorisation.token;
-            localStorage.setItem('token' , userToken)
+            localStorage.setItem("token", userToken);
             toast.success(
               <div className="toast-container">
-                <span className="toast-message">
-                  با موفقیت وارد شدید!
-                </span>
+                <span className="toast-message">با موفقیت وارد شدید!</span>
               </div>,
               {
                 position: "top-right",
@@ -108,9 +106,7 @@ const OTP = ({ userData }) => {
             );
           }
         })
-        .catch((message) => {
-          console.error(message);
-        });
+        .catch((message) => {});
     }
   };
 

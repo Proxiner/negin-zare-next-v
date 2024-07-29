@@ -65,14 +65,11 @@ const CourseDetail = ({ course }) => {
           const data = response.data.items;
           const listCourses = data.map((item) => item.slug);
           const courseSlug = listCourses.find((slug) => slug === course.slug);
-          console.log(response)
 
           if (courseSlug === course.slug) {
             setExist(true);
           }
-        } catch (error) {
-          console.error(error.message);
-        }
+        } catch (error) {}
       };
 
       cartList();
@@ -197,7 +194,6 @@ export async function getStaticPaths() {
 
     return { paths, fallback: true };
   } catch (error) {
-    console.error(error);
     return { paths: [], fallback: true };
   }
 }
@@ -215,7 +211,6 @@ export async function getStaticProps({ params }) {
 
     return { props: { course } };
   } catch (error) {
-    console.error(error);
     return {
       notFound: true,
     };

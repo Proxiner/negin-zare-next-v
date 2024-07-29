@@ -48,7 +48,7 @@ const Dashboard = () => {
           });
           const response = await request.data;
           setUserInformation(response);
-          setLoading(false)
+          setLoading(false);
         } catch (error) {
           if (error.message === "Request failed with status code 401") {
             toast.error(
@@ -90,7 +90,6 @@ const Dashboard = () => {
           },
         });
         const response = await request.data;
-        console.log(response)
         if (response.length > 0) {
           const licensesArray = response.map(
             (product) => product.infoLicense.license_key
@@ -106,9 +105,7 @@ const Dashboard = () => {
           setShowLicenses(true);
           setShowBought(false);
         }
-      } catch (error) {
-        console.error(error.message);
-      }
+      } catch (error) {}
     }
   };
 

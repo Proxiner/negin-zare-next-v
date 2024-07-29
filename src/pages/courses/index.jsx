@@ -18,7 +18,24 @@ function Courses() {
         setCourses(response.data);
         console.clear();
       } catch (error) {
-        console.error("Error fetching courses:", error);
+        toast.error(
+          <div className="toast-container">
+            <span className="toast-message">
+              خطا در نمایش دوره ها
+            </span>
+          </div>,
+          {
+            position: "bottom-right",
+            autoClose: false,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            transition: Bounce,
+          }
+        );
       }
     };
 

@@ -127,17 +127,23 @@ const CheckOut = () => {
             },
           }
         );
-        const updatedCourses = course.filter(
-          (course) => course.id !== courseId
-        );
+        const updatedCourses = course.filter((course) => course.id !== courseId);
         setCourse(updatedCourses);
+  
         if (updatedCourses.length === 0) {
           router.push("/courses");
         } else {
           const updatedSummition = {
             ...summition,
             count: updatedCourses.length,
-            sum: updatedCourses.reduce((acc, curr) => acc + curr.price, 0),
+            sum: updatedCourses.reduce((acc, curr) => {
+              const discountedPrice = calculateDiscountedPrice(
+                curr.price,
+                curr.discount_type,
+                curr.discount_value
+              );
+              return acc + discountedPrice;
+            }, 0),
           };
           setSummition(updatedSummition);
         }
@@ -146,7 +152,7 @@ const CheckOut = () => {
         reject(error);
       }
     });
-
+  
     toast.promise(handlePromise, {
       pending: {
         render() {
@@ -155,9 +161,7 @@ const CheckOut = () => {
       },
       success: {
         render() {
-          return (
-            <div className="toast-container">دوره با موفقیت حذف شد 👌</div>
-          );
+          return <div className="toast-container">دوره با موفقیت حذف شد 👌</div>;
         },
       },
       error: {
