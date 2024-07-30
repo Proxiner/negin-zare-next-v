@@ -7,22 +7,21 @@ import Image from "next/image";
 import Link from "next/link";
 import useTitle from "@/hooks/useTitle";
 import { base_url } from "@/api/url";
+import { toast, Bounce } from "react-toastify";
 
 function Courses() {
   const [courses, setCourses] = useState([]);
+  const [coursePrices, setCoursePrices] = useState({});
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(`${base_url}/products`);
         setCourses(response.data);
-        console.clear();
       } catch (error) {
         toast.error(
           <div className="toast-container">
-            <span className="toast-message">
-              خطا در نمایش دوره ها
-            </span>
+            <span className="toast-message">خطا در نمایش دوره ها</span>
           </div>,
           {
             position: "bottom-right",
@@ -46,23 +45,44 @@ function Courses() {
 
   const stripHtml = useStripHtml();
 
-  const calculateDiscountedPrice = (price, discountType, discountValue) => {
-    if (discountType === "percent" && discountValue) {
-      return price - (price * discountValue) / 100;
-    }
-    return price;
-  };
+  useEffect(() => {
+    const updatedCoursePrices = {};
+
+    courses.forEach((course) => {
+      let discountPrice;
+      switch (course.discount_type) {
+        case "percent":
+          const calculateDiscount =
+            course.price * (course.discount_value / 100);
+          discountPrice = course.price - calculateDiscount;
+          updatedCoursePrices[course.id] = {
+            price: discountPrice.toLocaleString("fa-IR"),
+            hasDiscount: true,
+          };
+          break;
+        case "static":
+          discountPrice = course.discount_value;
+          updatedCoursePrices[course.id] = {
+            price: discountPrice.toLocaleString("fa-IR"),
+            hasDiscount: true,
+          };
+          break;
+        default:
+          updatedCoursePrices[course.id] = {
+            price: course.price.toLocaleString("fa-IR"),
+            hasDiscount: false,
+          };
+          break;
+      }
+    });
+
+    setCoursePrices(updatedCoursePrices);
+  }, [courses]);
 
   return (
     <div className={styles.container}>
       {courses.map((course) => {
-        const discountedPrice = calculateDiscountedPrice(
-          course.price,
-          course.discount_type,
-          course.discount_value
-        );
-        const hasDiscount = course.discount_type === "percent" && course.discount_value;
-
+        const { price, hasDiscount } = coursePrices[course.id] || {};
         return (
           <div key={course.id} className={styles.courseContainer}>
             <Image
@@ -71,18 +91,14 @@ function Courses() {
               src={`/assets/images/${course.thumbnail}`}
               alt=""
             />
-            <h2> {stripHtml(course.headline)} </h2>
-            <p> {stripHtml(course.body)} </p>
+            <h2>{stripHtml(course.headline)}</h2>
+            <p>{stripHtml(course.body)}</p>
             <div className={styles.row}>
               <div className={styles.priceContainer}>
-                {hasDiscount && (
-                  <span className={styles.originalPrice}>
-                    {course.price.toLocaleString("fa-IR")} تومان
-                  </span>
-                )}
-                <span className={hasDiscount ? styles.discountedPrice : ""}>
-                  {discountedPrice.toLocaleString("fa-IR")} تومان
+                <span className={styles.discountedPrice}>
+                  {course.price.toLocaleString("fa-IR")} تومان
                 </span>
+                <span className={styles.originalPrice}>7,000,000 تومان</span>
               </div>
               <Link href={`/courses/${course.slug}`}>
                 <IoEye /> مشاهده دوره

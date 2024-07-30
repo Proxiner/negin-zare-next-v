@@ -129,7 +129,7 @@ const CheckOut = () => {
         );
         const updatedCourses = course.filter((course) => course.id !== courseId);
         setCourse(updatedCourses);
-  
+
         if (updatedCourses.length === 0) {
           router.push("/courses");
         } else {
@@ -152,7 +152,7 @@ const CheckOut = () => {
         reject(error);
       }
     });
-  
+
     toast.promise(handlePromise, {
       pending: {
         render() {
@@ -175,6 +175,9 @@ const CheckOut = () => {
   const calculateDiscountedPrice = (price, discountType, discountValue) => {
     if (discountType === "percent" && discountValue) {
       return price - (price * discountValue) / 100;
+    }
+    if (discountType === "static" && discountValue) {
+      return discountValue;
     }
     return price;
   };
@@ -219,8 +222,7 @@ const CheckOut = () => {
                 course.discount_type,
                 course.discount_value
               );
-              const hasDiscount =
-                course.discount_type === "percent" && course.discount_value;
+              const hasDiscount = course.discount_type !== null;
 
               return (
                 <React.Fragment key={`course-${course.id}`}>
@@ -235,10 +237,10 @@ const CheckOut = () => {
                     }
                     type={course.type}
                     price={
-                      hasDiscount ? (
+                      !hasDiscount ? (
                         <span>
                           <span className={styles.originalPrice}>
-                            {course.price.toLocaleString("fa-IR")} تومان
+                            7,000,000 تومان
                           </span>{" "}
                           | با تخفیف :
                           <span className={styles.discountedPrice}>
@@ -266,7 +268,7 @@ const CheckOut = () => {
               <div className={styles.totalPriceContainer}>
                 <span className={styles.totalPriceText}> قیمت کل </span>
                 <span className={styles.totalPrice}>
-                  {summition.sum.toLocaleString("fa-IR")} <i>تومان</i>
+                  {course.reduce((acc, curr) => acc + calculateDiscountedPrice(curr.price, curr.discount_type, curr.discount_value), 0).toLocaleString("fa-IR")}
                 </span>
               </div>
 

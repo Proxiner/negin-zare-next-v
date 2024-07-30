@@ -2,24 +2,26 @@ import React, { useEffect, useState, useContext } from "react";
 import styles from "./_courseHeader.module.scss";
 import CourseDetails from "./courseDetails";
 import Image from "next/image";
-import axios from "axios";
 import useStripHtml from "@/hooks/useStripHtml";
 import useTitle from "@/hooks/useTitle";
 import { toast, ToastContainer, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FaArrowLeftLong } from "react-icons/fa6";
-import { base_url } from "@/api/url";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { CartContext } from "@/context/CartContext"; // Import CartContext
+import axios from "axios";
+import { base_url } from "@/api/url";
 
 const CourseDetail = ({ course }) => {
   const router = useRouter();
   const stripHtml = useStripHtml();
+  const [courseDiscountPrice, setCourseDiscountPrice] = useState(null);
   useTitle(`دوره ${course?.title || ""}`);
 
   const [exist, setExist] = useState(false);
   const [token, setToken] = useState();
+  const [discountState, setDiscountState] = useState(false);
 
   const { setCartLength } = useContext(CartContext); // Use CartContext
 
@@ -51,30 +53,31 @@ const CourseDetail = ({ course }) => {
       const retrieveToken = localStorage.getItem("token")?.replace(/"/g, "");
       setToken(retrieveToken);
     }
-  }, [token]);
+  }, []);
 
   useEffect(() => {
-    if (token && course) {
-      const cartList = async () => {
-        try {
-          const response = await axios.get(`${base_url}/cart/list`, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
-          const data = response.data.items;
-          const listCourses = data.map((item) => item.slug);
-          const courseSlug = listCourses.find((slug) => slug === course.slug);
+    if (course) {
+      let discountPrice;
+      switch (course.discount_type) {
+        case "percent":
+          const calculateDiscount = course.price * (course.discount_value / 100);
+          discountPrice = course.price - calculateDiscount;
+          setDiscountState(true);
+          break;
 
-          if (courseSlug === course.slug) {
-            setExist(true);
-          }
-        } catch (error) {}
-      };
+        case "static":
+          discountPrice = course.discount_value;
+          setDiscountState(true);
+          break;
 
-      cartList();
+        default:
+          discountPrice = course.price;
+          setDiscountState(false);
+          break;
+      }
+      setCourseDiscountPrice(discountPrice.toLocaleString('fa-IR'));
     }
-  }, [token, course]);
+  }, [course]);
 
   const addCourse = async () => {
     try {
@@ -143,11 +146,11 @@ const CourseDetail = ({ course }) => {
           </header>
           <section>
             <CourseDetails
-              price={course.price.toLocaleString("fa-IR")}
-              hours="۱ ساعت آموزش"
+              price={courseDiscountPrice}
               sessions={`${course.number_of_session} جلسه`}
               instructor={course.teacher.name}
               type={course.type}
+              hasDiscount={!discountState}
             />
             {exist ? (
               <button
@@ -209,7 +212,7 @@ export async function getStaticProps({ params }) {
       };
     }
 
-    return { props: { course } };
+    return { props: { course }, revalidate: 60 }; // revalidate every 60 seconds
   } catch (error) {
     return {
       notFound: true,

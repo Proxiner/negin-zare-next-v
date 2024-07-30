@@ -68,6 +68,10 @@
   justify-content: center;
   align-items: center;
   width: 100%;
+
+  @media #{responsive.$phone} {
+    margin-bottom: 2rem;
+  }
 }
 
 .receiptPart {
@@ -82,7 +86,7 @@
 
   @media #{responsive.$phone} {
     margin-top: 2rem;
-    width: 100%;
+    width: 90%;
   }
 
   .textAndNumberCourse {

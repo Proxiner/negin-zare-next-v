@@ -14,7 +14,7 @@ import { LoginContext } from "@/context/LoginContext";
 function Cart() {
   const [cartData, setCartData] = useState("empty");
   const [isLogged, setIsLogged] = useState("");
-  const [cartLength , setCartLength] = useState();
+  const [cartLength, setCartLength] = useState();
 
   const { token } = useContext(LoginContext);
 
@@ -115,21 +115,24 @@ function Cart() {
     }
   };
 
-  useEffect(()=>{
-
-    if(token){
-      axios.get(`${base_url}/cart/list` , {
-        headers : {
-          Authorization : `Bearer ${token}`
-        }
-      }).then(request => setCartLength(request.data.items.length))
+  useEffect(() => {
+    if (token) {
+      axios
+        .get(`${base_url}/cart/list`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((request) => setCartLength(request.data.items.length));
     }
-
-  },[removeCourse , token])
+  }, [removeCourse, token]);
 
   const calculateDiscountedPrice = (price, discountType, discountValue) => {
     if (discountType === "percent" && discountValue) {
       return price - (price * discountValue) / 100;
+    }
+    if (discountType === "static" && discountValue) {
+      return discountValue;
     }
     return price;
   };
@@ -189,8 +192,7 @@ function Cart() {
                 course.discount_type,
                 course.discount_value
               );
-              const hasDiscount =
-                course.discount_type === "percent" && course.discount_value;
+              const hasDiscount = course.discount_type !== null;
 
               return (
                 <React.Fragment key={`course-${course.id}`}>
@@ -201,10 +203,10 @@ function Cart() {
                     imageSrc={`/assets/images/${course.thumbnail}`}
                     type={course.type}
                     price={
-                      hasDiscount ? (
+                      !hasDiscount ? (
                         <span>
                           <span className={styles.originalPrice}>
-                            {course.price.toLocaleString("fa-IR")} تومان
+                            7,000,000 تومان
                           </span>{" "}
                           | با تخفیف :
                           <span className={styles.discountedPrice}>
@@ -224,7 +226,6 @@ function Cart() {
           </div>
         </div>
       );
-      break;
 
     case "not-logged-in":
       return (
@@ -233,7 +234,9 @@ function Cart() {
           <Link href={"/login"}> صفحه ورود به حساب </Link>
         </div>
       );
-      break;
+
+    default:
+      return null;
   }
 }
 

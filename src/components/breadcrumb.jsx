@@ -21,6 +21,7 @@ function BreadCrumb({
           <FaArrowRightLong />
         </Link>
       )}
+
       <span className={styles.navText}>{title}</span>
 
       {show ? (

@@ -50,6 +50,7 @@ const Dashboard = () => {
           setUserInformation(response);
           setLoading(false);
         } catch (error) {
+          setTimeout(() => {}, 3000);
           if (error.message === "Request failed with status code 401") {
             toast.error(
               <div className="toast-container">
