@@ -60,7 +60,8 @@ const CourseDetail = ({ course }) => {
       let discountPrice;
       switch (course.discount_type) {
         case "percent":
-          const calculateDiscount = course.price * (course.discount_value / 100);
+          const calculateDiscount =
+            course.price * (course.discount_value / 100);
           discountPrice = course.price - calculateDiscount;
           setDiscountState(true);
           break;
@@ -75,7 +76,7 @@ const CourseDetail = ({ course }) => {
           setDiscountState(false);
           break;
       }
-      setCourseDiscountPrice(discountPrice.toLocaleString('fa-IR'));
+      setCourseDiscountPrice(discountPrice.toLocaleString("fa-IR"));
     }
   }, [course]);
 
@@ -91,7 +92,28 @@ const CourseDetail = ({ course }) => {
         }
       );
       const data = response.data.status;
-      console.log(response.data)
+      console.log(response.data);
+      if (response.data.message === "شما قبلا این دوره را خریداری کرده اید") {
+        toast.error(
+          <div className="toast-container">
+            <span className="toast-message">
+              شما قبلا دوره را خریداری کرده اید!
+              <Link href={"/dashboard"}> دوره های من </Link>
+            </span>
+          </div>,
+          {
+            position: "top-right",
+            autoClose: 4000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            transition: Bounce,
+          }
+        );
+      }
       setExist(data);
 
       // Fetch the updated cart list to get the new length

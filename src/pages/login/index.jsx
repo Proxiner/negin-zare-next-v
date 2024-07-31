@@ -65,7 +65,7 @@ const Login = () => {
         if (response.statusText === "OK") {
           toast.info(
             <div className="toast-container">
-              <span className="toast-message">کد ۵ رقمی ارسال شد!</span>
+              <span className="toast-message"> کد ۵ رقمی برایتان ارسال میشود! </span>
             </div>,
             {
               position: "top-right",
