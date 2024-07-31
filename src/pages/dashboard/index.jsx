@@ -50,32 +50,32 @@ const Dashboard = () => {
           setUserInformation(response);
           setLoading(false);
         } catch (error) {
-          setTimeout(() => {}, 3000);
-          if (error.message === "Request failed with status code 401") {
-            toast.error(
-              <div className="toast-container">
-                <span className="toast-message">
-                  {" "}
-                  لطفا دوباره وارد حساب خود شوید!{" "}
-                </span>
-                <Link className="toast-link" href={"/login"}>
-                  {" "}
-                  صفحه ورود{" "}
-                </Link>
-              </div>,
-              {
-                position: "top-right",
-                autoClose: 4000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-                transition: Bounce,
-              }
-            );
-          }
+          // setTimeout(() => {}, 3000);
+          // if (error.message === "Request failed with status code 401") {
+          //   toast.error(
+          //     <div className="toast-container">
+          //       <span className="toast-message">
+          //         {" "}
+          //         لطفا دوباره وارد حساب خود شوید!{" "}
+          //       </span>
+          //       <Link className="toast-link" href={"/login"}>
+          //         {" "}
+          //         صفحه ورود{" "}
+          //       </Link>
+          //     </div>,
+          //     {
+          //       position: "top-right",
+          //       autoClose: 4000,
+          //       hideProgressBar: false,
+          //       closeOnClick: true,
+          //       pauseOnHover: true,
+          //       draggable: true,
+          //       progress: undefined,
+          //       theme: "light",
+          //       transition: Bounce,
+          //     }
+          //   );
+          // }
         }
       };
       fetchUserInformation();

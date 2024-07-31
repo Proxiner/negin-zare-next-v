@@ -105,11 +105,9 @@ function Courses() {
                     </span>
                   </>
                 ) : (
-                  <>
-                    <span className={styles.originalPrice}>
-                      {course.price.toLocaleString("fa-IR")} تومان
-                    </span>
-                  </>
+                  <span className={styles.originalPrice}>
+                    {course.price.toLocaleString("fa-IR")} تومان
+                  </span>
                 )}
               </div>
               <Link href={`/courses/${course.slug}`}>
