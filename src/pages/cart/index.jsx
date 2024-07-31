@@ -10,6 +10,7 @@ import CourseData from "@/components/courseData";
 import BreadCrumb from "@/components/breadcrumb";
 import { base_url } from "@/api/url";
 import { LoginContext } from "@/context/LoginContext";
+import NotifyIphoneUsers from "@/components/notifyIphoneUsers";
 
 function Cart() {
   const [cartData, setCartData] = useState("empty");
@@ -235,7 +236,7 @@ function Cart() {
                       hasDiscount ? (
                         <span>
                           <span className={styles.originalPrice}>
-                            {course.price.toLocaleString('fa-IR')} تومان
+                            {course.price.toLocaleString("fa-IR")} تومان
                           </span>{" "}
                           | با تخفیف :
                           <span className={styles.discountedPrice}>
@@ -253,6 +254,7 @@ function Cart() {
               );
             })}
           </div>
+          <NotifyIphoneUsers />
         </div>
       );
 

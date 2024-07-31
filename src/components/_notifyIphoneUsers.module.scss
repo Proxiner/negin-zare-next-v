@@ -1,0 +1,101 @@
+@use '../utils/media-queries' as responsive;
+
+.container {
+  padding: 1rem 8%;
+
+  @media #{responsive.$phone} {
+    padding: 1rem 4%;
+  }
+
+  section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 1rem;
+    background-color: #ffffff;
+    border-radius: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    font-family: dana;
+    gap: 1rem;
+
+    @media #{responsive.$phone} {
+      padding: 0.5rem;
+    }
+  }
+}
+
+.title {
+  font-size: 1.2rem;
+  color: #d43232;
+  background-color: #ffebee;
+  width: fit-content;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+
+  @media #{responsive.$phone} {
+    font-size: 1rem;
+  }
+}
+
+.important {
+  font-size: 1.2rem;
+  color: #333;
+
+  @media #{responsive.$phone} {
+    font-size: 1rem;
+  }
+}
+
+.help {
+  color: #1818ef;
+  text-decoration: none;
+}
+
+.iphone,
+.windows,
+.mac,
+.android {
+  font-family: dana-bold;
+  text-decoration: underline;
+}
+
+.spotplayer {
+  text-decoration: none;
+  color: #6611dd;
+}
+
+.sibapp,
+.iapps,
+.spotplayer {
+  font-family: dana-bold;
+}
+
+.notice {
+  font-size: 1.2rem;
+  width: fit-content;
+  padding: 0.5rem;
+  color: #333;
+
+  @media #{responsive.$phone} {
+    font-size: 1rem;
+  }
+}
+
+.caution {
+  color: #f89d3e;
+  background-color: #fff3e0;
+  font-size: 1.2rem;
+  width: max-content;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  margin-top: 1rem;
+
+  @media #{responsive.$phone} {
+    font-size: 1rem;
+  }
+}
+
+.web {
+  font-family: dana-bold;
+  text-decoration: underline;
+}

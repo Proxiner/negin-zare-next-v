@@ -12,6 +12,7 @@ import { useRouter } from "next/router";
 import { CartContext } from "@/context/CartContext"; // Import CartContext
 import axios from "axios";
 import { base_url } from "@/api/url";
+import NotifyIphoneUsers from "@/components/notifyIphoneUsers";
 
 const CourseDetail = ({ course }) => {
   const router = useRouter();
@@ -206,6 +207,8 @@ const CourseDetail = ({ course }) => {
           />
         </div>
       </div>
+
+      <NotifyIphoneUsers />
     </>
   );
 };
