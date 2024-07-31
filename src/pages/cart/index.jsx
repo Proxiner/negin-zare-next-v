@@ -115,17 +115,46 @@ function Cart() {
     }
   };
 
-  useEffect(() => {
-    if (token) {
-      axios
-        .get(`${base_url}/cart/list`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
-        .then((request) => setCartLength(request.data.items.length));
-    }
-  }, [removeCourse, token]);
+  // useEffect(() => {
+  //   if (token) {
+  //     axios
+  //       .get(`${base_url}/cart/list`, {
+  //         headers: {
+  //           Authorization: `Bearer ${token}`,
+  //         },
+  //       })
+  //       .then((request) => {
+  //         console.log(request)
+  //         if (request.status === 401) {
+  //           toast.warning(
+  //             <div className="toast-container">
+  //               <span className="toast-message">
+  //                 {" "}
+  //                 لطفا وارد حساب خود شوید!{" "}
+  //               </span>
+  //               <Link href="/login" className="toast-link">
+  //                 👈 صفحه ورود
+  //               </Link>
+  //             </div>,
+  //             {
+  //               position: "top-right",
+  //               autoClose: 4000,
+  //               hideProgressBar: false,
+  //               closeOnClick: true,
+  //               pauseOnHover: true,
+  //               draggable: true,
+  //               progress: undefined,
+  //               theme: "colored",
+  //               transition: Bounce,
+  //             }
+  //           );
+  //           setIsLogged("not-logged-in");
+  //         }else{
+  //           setCartLength(request.data.items.length);
+  //         }
+  //       });
+  //   }
+  // }, [removeCourse, token]);
 
   const calculateDiscountedPrice = (price, discountType, discountValue) => {
     if (discountType === "percent" && discountValue) {
@@ -203,10 +232,10 @@ function Cart() {
                     imageSrc={`/assets/images/${course.thumbnail}`}
                     type={course.type}
                     price={
-                      !hasDiscount ? (
+                      hasDiscount ? (
                         <span>
                           <span className={styles.originalPrice}>
-                            7,000,000 تومان
+                            {course.price.toLocaleString('fa-IR')} تومان
                           </span>{" "}
                           | با تخفیف :
                           <span className={styles.discountedPrice}>

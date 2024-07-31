@@ -95,10 +95,22 @@ function Courses() {
             <p>{stripHtml(course.body)}</p>
             <div className={styles.row}>
               <div className={styles.priceContainer}>
-                <span className={styles.discountedPrice}>
-                  {course.price.toLocaleString("fa-IR")} تومان
-                </span>
-                <span className={styles.originalPrice}>7,000,000 تومان</span>
+                {hasDiscount ? (
+                  <>
+                    <span className={styles.discountedPrice}>
+                      {price} تومان
+                    </span>
+                    <span className={styles.originalPrice}>
+                      {course.price.toLocaleString("fa-IR")} تومان
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    <span className={styles.originalPrice}>
+                      {course.price.toLocaleString("fa-IR")} تومان
+                    </span>
+                  </>
+                )}
               </div>
               <Link href={`/courses/${course.slug}`}>
                 <IoEye /> مشاهده دوره

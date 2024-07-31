@@ -237,10 +237,10 @@ const CheckOut = () => {
                     }
                     type={course.type}
                     price={
-                      !hasDiscount ? (
+                      hasDiscount ? (
                         <span>
                           <span className={styles.originalPrice}>
-                            7,000,000 تومان
+                            {course.price.toLocaleString('fa-IR')} تومان
                           </span>{" "}
                           | با تخفیف :
                           <span className={styles.discountedPrice}>

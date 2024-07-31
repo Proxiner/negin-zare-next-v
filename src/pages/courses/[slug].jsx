@@ -91,6 +91,7 @@ const CourseDetail = ({ course }) => {
         }
       );
       const data = response.data.status;
+      console.log(response.data)
       setExist(data);
 
       // Fetch the updated cart list to get the new length
@@ -150,7 +151,7 @@ const CourseDetail = ({ course }) => {
               sessions={`${course.number_of_session} جلسه`}
               instructor={course.teacher.name}
               type={course.type}
-              hasDiscount={!discountState}
+              hasDiscount={discountState}
             />
             {exist ? (
               <button
