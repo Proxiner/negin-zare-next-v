@@ -66,7 +66,7 @@ const CourseDetail = ({ course }) => {
           break;
 
         case "static":
-          discountPrice = course.discount_value;
+          discountPrice = course.price - course.discount_value;
           setDiscountState(true);
           break;
 

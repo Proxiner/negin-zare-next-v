@@ -177,7 +177,7 @@ const CheckOut = () => {
       return price - (price * discountValue) / 100;
     }
     if (discountType === "static" && discountValue) {
-      return discountValue;
+      return price - discountValue;
     }
     return price;
   };

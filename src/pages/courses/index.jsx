@@ -61,7 +61,7 @@ function Courses() {
           };
           break;
         case "static":
-          discountPrice = course.discount_value;
+          discountPrice = course.price - course.discount_value;
           updatedCoursePrices[course.id] = {
             price: discountPrice.toLocaleString("fa-IR"),
             hasDiscount: true,
