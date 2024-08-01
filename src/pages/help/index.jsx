@@ -18,7 +18,7 @@ function Help() {
       </div>
       <div className={styles.row}>
         <p className={styles.steps}>قدم اول:</p>
-        <p class={styles.stepsBody}>
+        <p className={styles.stepsBody}>
           ابتدا از طریق لینک های زیر برنامه اسپات پلیر را متناسب با سیستم عامل
           خود دانلود و سپس نصب کنید.{" "}
         </p>
@@ -73,7 +73,7 @@ function Help() {
       </p>
       <p className={`${styles.helpTitle} ${styles.caution}`}>مشکلات احتمالی:</p>
       <p className={styles.helpBody}>
-        اگر با خطای 'دفعات مجاز استفاده از این لایسنس تمام شده است.' برخورد
+        اگر با خطای &apos;دفعات مجاز استفاده از این لایسنس تمام شده است.&apos; برخورد
         کردید به این معنی است که قبلا از لایسنس استفاده شده و یا در سیستم عامل
         اشتباهی وارد میشود(در صورت حل نشدن مشکل با پشتیبانی در تماس باشید)
       </p>
