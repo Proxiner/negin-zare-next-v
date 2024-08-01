@@ -28,6 +28,16 @@ const NotifyIphoneUsers = () => {
           </Link>{" "}
           به صورت رایگان این برنامه رو تهیه کنند!
         </p>
+        <hr />
+        <h3>
+          {" "}
+          برای راهنمایی بیشتر به صفحه{" "}
+          <Link className={styles.help} href={"/help"}>
+            {" "}
+            راهنمای لایسنس{" "}
+          </Link>{" "}
+          بروید!{" "}
+        </h3>
       </section>
     </div>
   );
