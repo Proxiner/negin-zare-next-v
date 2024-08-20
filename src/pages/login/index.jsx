@@ -62,7 +62,6 @@ const Login = () => {
         password: data.password,
       })
       .then((response) => {
-        console.log(response);
         if (response.status === 200) {
           toast.info(
             <div className="toast-container">
