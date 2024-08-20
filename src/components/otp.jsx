@@ -84,7 +84,7 @@ const OTP = ({ userData }) => {
           phone: phone,
         })
         .then((response) => {
-          if (response.statusText === "OK") {
+          if (response.status === 200) {
             const userToken = response.data.authorisation.token;
             localStorage.setItem("token", userToken);
             toast.success(
