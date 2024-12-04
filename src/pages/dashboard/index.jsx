@@ -135,7 +135,6 @@ const Dashboard = () => {
       document.execCommand("copy");
       alert("کد لایسنس با موفقیت کپی شد");
     } catch (err) {
-      console.error("Unable to copy to clipboard", err);
       alert("لایسنس کپی نشد دستی اقدام کنید ");
     }
     document.body.removeChild(textArea);

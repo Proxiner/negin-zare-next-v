@@ -93,7 +93,6 @@ const CourseDetail = ({ course }) => {
         }
       );
       const data = response.data.status;
-      console.log(response.data);
       if (response.data.message === "شما قبلا این دوره را خریداری کرده اید") {
         toast.error(
           <div className="toast-container">
