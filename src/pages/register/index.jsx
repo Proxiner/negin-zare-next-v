@@ -20,9 +20,9 @@ import Image from "next/image";
 
 //Styles
 import styles from "./_register.module.scss";
-import useTitle from "@/hooks/useTitle";
 import { base_url } from "@/api/url";
 import { useRouter } from "next/router";
+import Head from "next/head";
 
 const schema = yup.object({
   username: yup.string().required("لطفا نام کامل خود را وارد کنید"),
@@ -41,8 +41,6 @@ const schema = yup.object({
 });
 
 const Register = () => {
-  useTitle("نگین | ثبت نام 💄");
-
   const {
     handleSubmit,
     register,
@@ -63,7 +61,7 @@ const Register = () => {
       })
       .then((response) => {
         switch (response.data.message) {
-          case "User created successfully" :
+          case "User created successfully":
             toast.success(
               <div className="toast-container">
                 <span className="toast-message">
@@ -80,7 +78,7 @@ const Register = () => {
                 progress: undefined,
                 theme: "light",
                 transition: Slide,
-                onClose : () => router.push('/login')
+                onClose: () => router.push("/login"),
               }
             );
             break;
@@ -114,6 +112,9 @@ const Register = () => {
 
   return (
     <div className={styles.wrapper}>
+      <Head>
+        <title> نگین | ثبت نام 💄 </title>
+      </Head>
       <ToastContainer rtl />
       <div className={styles.loginContainer}>
         <Image

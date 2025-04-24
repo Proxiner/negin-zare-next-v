@@ -262,9 +262,9 @@
             line-height: 1.875rem;
           }
 
-          @media #{responsive.$tablet-portrait}{
-           font-size: 1.2rem; 
-           line-height: 2.4rem;
+          @media #{responsive.$tablet-portrait} {
+            font-size: 1.2rem;
+            line-height: 2.4rem;
           }
 
           @media #{responsive.$phone} {
@@ -399,21 +399,6 @@
             height: 100%;
             border-right: 1px solid color.$main;
 
-            // .arrow {
-            //   position: absolute;
-            //   bottom: 30px;
-            //   left: 160px;
-
-            //   @media #{responsive.$laptop} {
-            //     bottom: 20px;
-            //     left: 160px;
-            //   }
-
-            //   @media #{responsive.$tablet-landscape} {
-            //     display: none;
-            //   }
-            // }
-
             button {
               display: flex;
               flex-direction: column;
@@ -458,11 +443,13 @@
       align-items: center;
       width: 100%;
       height: 100%;
+      padding-top: 1rem;
 
-      .heroImage{
+      .heroImage {
         width: 60%;
         min-width: 50%;
-        height: 88%;
+        height: 100%;
+        position: relative;
 
         @media #{responsive.$tablet-landscape} {
           width: 80%;

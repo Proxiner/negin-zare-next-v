@@ -96,7 +96,7 @@ const Carousel = () => {
             instructor="نگین زارع"
             type="حضوری و آنلاین"
             description="لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز "
-            image='/assets/images/courses_1.jpg'
+            image="/assets/images/courses_1.jpg"
           />
         </SwiperSlide>
         <SwiperSlide>
@@ -108,7 +108,7 @@ const Carousel = () => {
             instructor="نگین زارع"
             type="آنلاین"
             description="لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز "
-            image='/assets/images/courses_2.jpg'
+            image="/assets/images/courses_2.jpg"
           />
         </SwiperSlide>
       </Swiper>
@@ -121,14 +121,24 @@ const Carousel = () => {
           ref={prevBtn}
           onClick={handlePrev}
         >
-          <Image width={13} height={24} src='/assets/icons/next-navigation.svg' alt="next slide" />
+          <Image
+            width={13}
+            height={24}
+            src="/assets/icons/next-navigation.svg"
+            alt="next slide"
+          />
         </div>
         <div
           className={`${styles.nextBtn} ${isLastSlide ? styles.disabled : ""}`}
           ref={nextBtn}
           onClick={handleNext}
         >
-          <Image width={13} height={24} src='/assets/icons/prev-navigation.svg' alt="prev slide" />
+          <Image
+            width={13}
+            height={24}
+            src="/assets/icons/prev-navigation.svg"
+            alt="prev slide"
+          />
         </div>
       </div>
     </div>
