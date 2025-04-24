@@ -270,9 +270,7 @@ const Introduction = () => {
     }
   };
 
-
   useEffect(() => {
-    
     window.addEventListener("resize", handleResize);
 
     handleResize();
@@ -280,7 +278,7 @@ const Introduction = () => {
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  },[]);
+  }, []);
 
   return (
     <>
@@ -350,7 +348,7 @@ const Introduction = () => {
           <div className={styles.aboutNeginRightImage}>
             <WindowsImage
               iconVisibility="none"
-              imageSrc="/assets/images/intro_2.jpg"
+              imageSrc="/assets/images/courses_1.webp"
               width={secondModelImageProperties.width}
               height={secondModelImageProperties.height}
               imageWidth={secondModelImageProperties.imageWidth}

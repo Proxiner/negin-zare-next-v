@@ -9,13 +9,14 @@ import Guidance from "../layouts/guidance";
 import Comments from "../layouts/comments";
 import Footer from "../layouts/footer";
 
-import useTitle from "@/hooks/useTitle";
+import Head from "next/head";
 
 const HomePage = () => {
-  useTitle("نگین | آرایش میکاپ 💄");
-
   return (
     <>
+      <Head>
+        <title> نگین | آرایش میکاپ 💄 </title>
+      </Head>
       <section className={styles.heroAndIntro}>
         <Hero />
         <Introduction />

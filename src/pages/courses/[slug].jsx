@@ -3,7 +3,6 @@ import styles from "./_courseHeader.module.scss";
 import CourseDetails from "./courseDetails";
 import Image from "next/image";
 import useStripHtml from "@/hooks/useStripHtml";
-import useTitle from "@/hooks/useTitle";
 import { toast, ToastContainer, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FaArrowLeftLong } from "react-icons/fa6";
@@ -13,12 +12,12 @@ import { CartContext } from "@/context/CartContext"; // Import CartContext
 import axios from "axios";
 import { base_url } from "@/api/url";
 import NotifyIphoneUsers from "@/components/notifyIphoneUsers";
+import Head from "next/head";
 
 const CourseDetail = ({ course }) => {
   const router = useRouter();
   const stripHtml = useStripHtml();
   const [courseDiscountPrice, setCourseDiscountPrice] = useState(null);
-  useTitle(`دوره ${course?.title || ""}`);
 
   const [exist, setExist] = useState(false);
   const [token, setToken] = useState();
@@ -31,8 +30,7 @@ const CourseDetail = ({ course }) => {
       toast.info(
         <div className="toast-container">
           <span className="toast-message">
-            {" "}
-            برای خرید دوره باید وارد حساب خود شوید!{" "}
+            برای خرید دوره باید وارد حساب خود شوید!
           </span>
           <Link href="/login" className="toast-link">
             👈 صفحه ورود
@@ -82,6 +80,31 @@ const CourseDetail = ({ course }) => {
   }, [course]);
 
   const addCourse = async () => {
+    if (!token) {
+      toast.info(
+        <div className="toast-container">
+          <span className="toast-message">
+            برای خرید دوره باید وارد حساب خود شوید!
+          </span>
+          <Link href="/login" className="toast-link">
+            👈 صفحه ورود
+          </Link>
+        </div>,
+        {
+          position: "top-right",
+          autoClose: 4000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        }
+      );
+      return; // Prevent further actions if no token
+    }
+
     try {
       const response = await axios.post(
         `${base_url}/cart/add`,
@@ -92,7 +115,9 @@ const CourseDetail = ({ course }) => {
           },
         }
       );
+
       const data = response.data.status;
+
       if (response.data.message === "شما قبلا این دوره را خریداری کرده اید") {
         toast.error(
           <div className="toast-container">
@@ -125,15 +150,13 @@ const CourseDetail = ({ course }) => {
       const newCartLength = cartResponse.data.items.length;
       setCartLength(newCartLength); // Update the cart length in the context
     } catch (error) {
+      // Error handling for the add course request
       toast.warning(
         <div className="toast-container">
           <span className="toast-message">
-            {" "}
-            برای خرید دوره باید وارد حساب خود شوید!{" "}
+            مشکلی در اضافه کردن دوره به سبد خرید به وجود آمد، لطفا دوباره تلاش
+            کنید.
           </span>
-          <Link href="/login" className="toast-link">
-            👈 صفحه ورود
-          </Link>
         </div>,
         {
           position: "top-right",
@@ -151,15 +174,23 @@ const CourseDetail = ({ course }) => {
   };
 
   if (router.isFallback) {
-    return <div>Loading...</div>;
+    return (
+      <div className={styles.loading}>
+        در حال بارگذاری...
+        {/* You can add a spinner here */}
+      </div>
+    );
   }
 
   if (!course) {
-    return <div>Error: Course not found</div>;
+    return <div className={styles.error}>خطا: دوره مورد نظر پیدا نشد.</div>;
   }
 
   return (
     <>
+      <Head>
+        <title>دوره {course?.title || ""}</title>
+      </Head>
       <ToastContainer rtl toastClassName={styles.toast} />
       <div className={styles.container}>
         <div className={styles.information}>
@@ -201,12 +232,12 @@ const CourseDetail = ({ course }) => {
           <Image
             width={400}
             height={600}
-            src={`/assets/images/${course.thumbnail}`}
+            src={`http://neginzare.com:8080/storage/${course.thumbnail}`}
             alt="course image"
+            onError={(e) => (e.target.src = "/assets/images/placeholder.png")} // Fallback image
           />
         </div>
       </div>
-
       <NotifyIphoneUsers />
     </>
   );
@@ -237,7 +268,7 @@ export async function getStaticProps({ params }) {
       };
     }
 
-    return { props: { course }, revalidate: 60 }; // revalidate every 60 seconds
+    return { props: { course }, revalidate: 60 };
   } catch (error) {
     return {
       notFound: true,

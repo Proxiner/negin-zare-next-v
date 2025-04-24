@@ -22,8 +22,8 @@ import Image from "next/image";
 
 //Styles
 import styles from "./_login.module.scss";
-import useTitle from "@/hooks/useTitle";
 import { base_url } from "@/api/url";
+import Head from "next/head";
 
 const schema = yup.object({
   phoneNumber: yup
@@ -37,8 +37,6 @@ const schema = yup.object({
 });
 
 const Login = () => {
-  useTitle("نگین | ورود 💄");
-
   const {
     handleSubmit,
     register,
@@ -110,7 +108,9 @@ const Login = () => {
   return (
     <div className={styles.loginContainer}>
       <ToastContainer rtl />
-
+      <Head>
+        <title> نگین | ورود 💄 </title>
+      </Head>
       <Image
         width={100}
         height={100}

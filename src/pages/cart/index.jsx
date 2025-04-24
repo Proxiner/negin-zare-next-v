@@ -3,7 +3,6 @@ import styles from "./_cart.module.scss";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import axios from "axios";
-import useTitle from "@/hooks/useTitle";
 import { toast, ToastContainer, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import CourseData from "@/components/courseData";
@@ -11,6 +10,7 @@ import BreadCrumb from "@/components/breadcrumb";
 import { base_url } from "@/api/url";
 import { LoginContext } from "@/context/LoginContext";
 import NotifyIphoneUsers from "@/components/notifyIphoneUsers";
+import Head from "next/head";
 
 function Cart() {
   const [cartData, setCartData] = useState("empty");
@@ -18,8 +18,6 @@ function Cart() {
   const [cartLength, setCartLength] = useState();
 
   const { token } = useContext(LoginContext);
-
-  useTitle("صفحه | سبد خرید 🛒");
 
   useEffect(() => {
     if (localStorage.getItem("token") === null) {
@@ -116,47 +114,6 @@ function Cart() {
     }
   };
 
-  // useEffect(() => {
-  //   if (token) {
-  //     axios
-  //       .get(`${base_url}/cart/list`, {
-  //         headers: {
-  //           Authorization: `Bearer ${token}`,
-  //         },
-  //       })
-  //       .then((request) => {
-  //         console.log(request)
-  //         if (request.status === 401) {
-  //           toast.warning(
-  //             <div className="toast-container">
-  //               <span className="toast-message">
-  //                 {" "}
-  //                 لطفا وارد حساب خود شوید!{" "}
-  //               </span>
-  //               <Link href="/login" className="toast-link">
-  //                 👈 صفحه ورود
-  //               </Link>
-  //             </div>,
-  //             {
-  //               position: "top-right",
-  //               autoClose: 4000,
-  //               hideProgressBar: false,
-  //               closeOnClick: true,
-  //               pauseOnHover: true,
-  //               draggable: true,
-  //               progress: undefined,
-  //               theme: "colored",
-  //               transition: Bounce,
-  //             }
-  //           );
-  //           setIsLogged("not-logged-in");
-  //         }else{
-  //           setCartLength(request.data.items.length);
-  //         }
-  //       });
-  //   }
-  // }, [removeCourse, token]);
-
   const calculateDiscountedPrice = (price, discountType, discountValue) => {
     if (discountType === "percent" && discountValue) {
       return price - (price * discountValue) / 100;
@@ -183,6 +140,9 @@ function Cart() {
     case "logged-in":
       return (
         <div className={styles.container}>
+          <Head>
+            <title>صفحه | سبد خرید 🛒</title>
+          </Head>
           <BreadCrumb
             title={
               <>
@@ -230,7 +190,7 @@ function Cart() {
                     courseId={course.id}
                     title={course.title}
                     teacher={course.teacher.name}
-                    imageSrc={`/assets/images/${course.thumbnail}`}
+                    imageSrc={`http://neginzare.com:8080/storage/${course.thumbnail}`}
                     type={course.type}
                     price={
                       hasDiscount ? (

@@ -92,14 +92,14 @@ const Hero = () => {
           </section>
         </div>
         <div className={styles.imageContainer}>
-            <Image
-              className={styles.heroImage}
-              width={600}
-              height={700}
-              src="/assets/images/hero.svg"
-              alt="hero-model"
-              priority={true}
-            />
+          <Image
+            className={styles.heroImage}
+            width={1200}
+            height={900}
+            src="/assets/images/hero.png"
+            alt="hero-model"
+            priority={true}
+          />
         </div>
       </div>
     </div>

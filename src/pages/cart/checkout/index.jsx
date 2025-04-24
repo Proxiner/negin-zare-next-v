@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from "react";
 import styles from "./_checkout.module.scss";
 import CourseData from "@/components/courseData";
 import axios from "axios";
-import useTitle from "@/hooks/useTitle";
 import BreadCrumb from "@/components/breadcrumb";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -10,11 +9,10 @@ import { toast, ToastContainer, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { base_url } from "@/api/url";
 import { LoginContext } from "@/context/LoginContext";
+import Head from "next/head";
 
 const CheckOut = () => {
   const { token } = useContext(LoginContext);
-
-  useTitle("صفحه | تکمیل خرید 🛒");
 
   const router = useRouter();
 
@@ -127,7 +125,9 @@ const CheckOut = () => {
             },
           }
         );
-        const updatedCourses = course.filter((course) => course.id !== courseId);
+        const updatedCourses = course.filter(
+          (course) => course.id !== courseId
+        );
         setCourse(updatedCourses);
 
         if (updatedCourses.length === 0) {
@@ -161,7 +161,9 @@ const CheckOut = () => {
       },
       success: {
         render() {
-          return <div className="toast-container">دوره با موفقیت حذف شد 👌</div>;
+          return (
+            <div className="toast-container">دوره با موفقیت حذف شد 👌</div>
+          );
         },
       },
       error: {
@@ -184,12 +186,18 @@ const CheckOut = () => {
 
   return (
     <div className={styles.container}>
+      <Head>
+        <title>صفحه | تکمیل خرید 🛒</title>
+      </Head>
       {course.length > 0 ? (
         <>
           <BreadCrumb
             title={
               <>
-                <Link style={{ color: "#111", textDecoration: "none" }} href={"/"}>
+                <Link
+                  style={{ color: "#111", textDecoration: "none" }}
+                  href={"/"}
+                >
                   خانه
                 </Link>
                 /
@@ -230,17 +238,13 @@ const CheckOut = () => {
                     courseId={course.id}
                     title={course.title}
                     teacher={course.teacher.name}
-                    imageSrc={
-                      course.thumbnail
-                        ? `/assets/images/${course.thumbnail}`
-                        : "/assets/images/intro_3.jpg"
-                    }
+                    imageSrc={`http://neginzare.com:8080/storage/${course.thumbnail}`}
                     type={course.type}
                     price={
                       hasDiscount ? (
                         <span>
                           <span className={styles.originalPrice}>
-                            {course.price.toLocaleString('fa-IR')} تومان
+                            {course.price.toLocaleString("fa-IR")} تومان
                           </span>{" "}
                           | با تخفیف :
                           <span className={styles.discountedPrice}>
@@ -268,7 +272,18 @@ const CheckOut = () => {
               <div className={styles.totalPriceContainer}>
                 <span className={styles.totalPriceText}> قیمت کل </span>
                 <span className={styles.totalPrice}>
-                  {course.reduce((acc, curr) => acc + calculateDiscountedPrice(curr.price, curr.discount_type, curr.discount_value), 0).toLocaleString("fa-IR")}
+                  {course
+                    .reduce(
+                      (acc, curr) =>
+                        acc +
+                        calculateDiscountedPrice(
+                          curr.price,
+                          curr.discount_type,
+                          curr.discount_value
+                        ),
+                      0
+                    )
+                    .toLocaleString("fa-IR")}
                 </span>
               </div>
 
@@ -283,7 +298,7 @@ const CheckOut = () => {
       ) : (
         <div className={styles.notify}>
           <h1> سبد خرید شما خالی هست! </h1>
-          <Link href={'/courses'}> مشاهده دوره ها </Link>
+          <Link href={"/courses"}> مشاهده دوره ها </Link>
         </div>
       )}
     </div>

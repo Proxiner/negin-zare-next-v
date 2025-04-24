@@ -1,95 +1,120 @@
-import React, { useEffect, useState } from "react";
+"use client";
+
+import React, { useEffect } from "react";
+import { useRouter } from "next/router";
+import Head from "next/head";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import axios from "axios";
 import useStripHtml from "@/hooks/useStripHtml";
 import { IoEye } from "react-icons/io5";
 import styles from "./_courses.module.scss";
-import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
-import useTitle from "@/hooks/useTitle";
 import { base_url } from "@/api/url";
 import { toast, Bounce } from "react-toastify";
 
-function Courses() {
-  const [courses, setCourses] = useState([]);
-  const [coursePrices, setCoursePrices] = useState({});
+const fetchCourses = async () => {
+  const { data } = await axios.get(`${base_url}/products`);
+  return data;
+};
 
+export default function Courses() {
+  const router = useRouter();
+  const queryClient = useQueryClient();
+  const stripHtml = useStripHtml();
+
+  // 1) Fetch courses via React Query
+  const {
+    data: courses = [],
+    isLoading,
+    isError,
+    error,
+  } = useQuery({
+    queryKey: ["courses"],
+    queryFn: fetchCourses,
+    staleTime: 1000 * 60 * 5, // 5 minutes
+    refetchOnWindowFocus: false,
+    retry: 1,
+  });
+
+  // 2) Invalidate & refetch when navigating back to this route
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(`${base_url}/products`);
-        setCourses(response.data);
-      } catch (error) {
-        toast.error(
-          <div className="toast-container">
-            <span className="toast-message">خطا در نمایش دوره ها</span>
-          </div>,
-          {
-            position: "bottom-right",
-            autoClose: false,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-            transition: Bounce,
-          }
-        );
+    const handleRouteChange = (url) => {
+      if (url === router.pathname) {
+        queryClient.invalidateQueries(["courses"]);
       }
     };
 
-    fetchData();
-  }, []);
+    router.events.on("routeChangeComplete", handleRouteChange);
+    return () => {
+      router.events.off("routeChangeComplete", handleRouteChange);
+    };
+  }, [router.events, router.pathname, queryClient]);
 
-  useTitle("نگین | دوره ها 💄");
+  // 3) Loading state
+  if (isLoading) {
+    return <div className={styles.loading}>در حال بارگذاری دوره‌ها…</div>;
+  }
 
-  const stripHtml = useStripHtml();
-
-  useEffect(() => {
-    const updatedCoursePrices = {};
-
-    courses.forEach((course) => {
-      let discountPrice;
-      switch (course.discount_type) {
-        case "percent":
-          const calculateDiscount =
-            course.price * (course.discount_value / 100);
-          discountPrice = course.price - calculateDiscount;
-          updatedCoursePrices[course.id] = {
-            price: discountPrice.toLocaleString("fa-IR"),
-            hasDiscount: true,
-          };
-          break;
-        case "static":
-          discountPrice = course.price - course.discount_value;
-          updatedCoursePrices[course.id] = {
-            price: discountPrice.toLocaleString("fa-IR"),
-            hasDiscount: true,
-          };
-          break;
-        default:
-          updatedCoursePrices[course.id] = {
-            price: course.price.toLocaleString("fa-IR"),
-            hasDiscount: false,
-          };
-          break;
+  // 4) Error state
+  if (isError) {
+    toast.error(
+      <div className="toast-container">
+        <span className="toast-message">
+          خطا در نمایش دوره‌ها: {error.message}
+        </span>
+      </div>,
+      {
+        position: "bottom-right",
+        autoClose: false,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        transition: Bounce,
       }
-    });
+    );
+    return <div className={styles.error}>خطا در بارگذاری دوره‌ها.</div>;
+  }
 
-    setCoursePrices(updatedCoursePrices);
-  }, [courses]);
+  // 5) Compute discounted prices
+  const coursePrices = {};
+  courses.forEach((course) => {
+    let finalPrice = course.price;
+    let hasDiscount = false;
+
+    if (course.discount_type === "percent") {
+      const discount = course.price * (course.discount_value / 100);
+      finalPrice = course.price - discount;
+      hasDiscount = true;
+    } else if (course.discount_type === "static") {
+      finalPrice = course.price - course.discount_value;
+      hasDiscount = true;
+    }
+
+    coursePrices[course.id] = {
+      price: finalPrice.toLocaleString("fa-IR"),
+      hasDiscount,
+      original: course.price.toLocaleString("fa-IR"),
+    };
+  });
 
   return (
     <div className={styles.container}>
+      <Head>
+        <title>نگین | دوره‌ها 💄</title>
+      </Head>
+
       {courses.map((course) => {
-        const { price, hasDiscount } = coursePrices[course.id] || {};
+        const { price, hasDiscount, original } = coursePrices[course.id] || {};
+
         return (
           <div key={course.id} className={styles.courseContainer}>
             <Image
               width={400}
               height={300}
-              src={`/assets/images/${course.thumbnail}`}
-              alt=""
+              src={`http://neginzare.com:8080/storage/${course.thumbnail}`}
+              alt={stripHtml(course.headline)}
             />
             <h2>{stripHtml(course.headline)}</h2>
             <p>{stripHtml(course.body)}</p>
@@ -101,13 +126,11 @@ function Courses() {
                       {price} تومان
                     </span>
                     <span className={styles.originalPrice}>
-                      {course.price.toLocaleString("fa-IR")} تومان
+                      {original} تومان
                     </span>
                   </>
                 ) : (
-                  <span className={styles.originalPrice}>
-                    {course.price.toLocaleString("fa-IR")} تومان
-                  </span>
+                  <span className={styles.originalPrice}>{original} تومان</span>
                 )}
               </div>
               <Link href={`/courses/${course.slug}`}>
@@ -120,5 +143,3 @@ function Courses() {
     </div>
   );
 }
-
-export default Courses;
