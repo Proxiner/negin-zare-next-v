@@ -147,15 +147,13 @@ const Dashboard = () => {
       <div className={styles.mainContent}>
         <h2>سلام {user?.name || "کاربر عزیز"} 👋</h2>
 
-        {isLicensesLoading ? (
-          <h3>در حال بارگذاری دوره‌های خریداری شده...</h3>
-        ) : licensesPurchased && licensesPurchased.length > 0 ? (
+        {licensesPurchased && licensesPurchased.length > 0 ? (
           licensesPurchased.map((item, index) => (
             <Licence
-              key={item.licenseKey || index}
-              licence={item.licenseKey}
-              title={item.title}
-              handleCopy={() => copyLicense(item.licenseKey)}
+              key={item.infoLicense.license_key || index}
+              licence={item.infoLicense.license_key}
+              title={item.product.title}
+              handleCopy={() => copyLicense(item.infoLicense.license_key)}
             />
           ))
         ) : (
