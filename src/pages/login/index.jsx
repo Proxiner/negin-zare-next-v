@@ -138,7 +138,7 @@ const Login = () => {
                 id="phoneNumber"
                 type="text"
                 label="شماره تماس"
-                placeholder="شماره تلفون خود وارد کنید"
+                placeholder="شماره تلفن خود وارد کنید"
                 register={{ ...register("phoneNumber") }}
               />
               <span style={{ color: "#ff0000", fontFamily: "dana-light" }}>

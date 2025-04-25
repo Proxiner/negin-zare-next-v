@@ -18,61 +18,31 @@ const fetchUser = async (token) => {
     headers: { Authorization: `Bearer ${token}` },
     validateStatus: (status) => status < 500,
   });
-  if (res.status === 404) {
+
+  if (res.status === 401) {
     const error = new Error("User not found");
-    error.status = 404;
+    error.status = 401;
     throw error;
   }
+
   return res.data;
 };
 
-const fetchPurchases = async (token) => {
+const fetchUserLicenses = async (token) => {
   const res = await axios.get(`${base_url}/user-products/list`, {
     headers: { Authorization: `Bearer ${token}` },
   });
+
+  if (res.data?.message === "User dose not have product") {
+    return []; // No licenses purchased
+  }
+
   return res.data;
 };
 
 const Dashboard = () => {
   const { token, setToken } = useContext(LoginContext);
   const router = useRouter();
-
-  /* eslint-disable react-hooks/exhaustive-deps */
-
-  useEffect(() => {
-    if (!token) {
-      toast.error("لطفاً ابتدا وارد شوید");
-      const timer = setTimeout(() => {
-        router.replace("/login");
-      }, 3000);
-      return () => clearTimeout(timer);
-    }
-  }, [token, router]);
-
-  const { data: userInformations, isLoading: userLoading } = useQuery({
-    queryKey: ["user", token],
-    queryFn: () => fetchUser(token),
-    enabled: Boolean(token),
-    retry: false,
-    onError: (err) => {
-      if (err.status === 404) {
-        router.replace("/login");
-      } else {
-        toast.error("خطا در بارگذاری اطلاعات کاربر");
-      }
-    },
-  });
-
-  const {
-    data: purchases = [],
-    isLoading: purchasesLoading,
-    refetch: refetchPurchases,
-  } = useQuery({
-    queryKey: ["purchases", token],
-    queryFn: () => fetchPurchases(token),
-    enabled: false,
-    onError: () => toast.error("خطا در دریافت دوره‌ها"),
-  });
 
   const logout = () => {
     localStorage.removeItem("token");
@@ -101,31 +71,67 @@ const Dashboard = () => {
     }
   };
 
-  if (!token) {
-    return <ToastContainer rtl />;
-  }
+  const {
+    data: user,
+    isError,
+    isLoading,
+  } = useQuery({
+    queryKey: ["user", token],
+    queryFn: () => fetchUser(token),
+    enabled: Boolean(token),
+    retry: false,
+  });
 
-  if (userLoading) {
+  const {
+    data: licensesPurchased,
+    isLoading: isLicensesLoading,
+    isError: isLicensesError,
+    refetch: refetchPurchases,
+  } = useQuery({
+    queryKey: ["licenses", token],
+    queryFn: () => fetchUserLicenses(token),
+    enabled: Boolean(token),
+  });
+
+  useEffect(() => {
+    if (isError) {
+      toast.error("احراز هویت انجام نشد. در حال انتقال به صفحه ورود...", {
+        autoClose: 3000,
+        onClose: () => router.replace("/login"),
+      });
+    }
+  }, [isError, router]);
+
+  if (isLoading) {
     return (
       <div className={styles.wrapper}>
+        <h1>در حال بارگذاری اطلاعات هستیم...</h1>
         <ToastContainer rtl />
-        <h1>در حال بارگذاری اطلاعات...</h1>
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className={styles.wrapper}>
+        <h1>خطایی رخ داده است</h1>
+        <ToastContainer rtl />
       </div>
     );
   }
 
   return (
     <div className={styles.container}>
+      <ToastContainer rtl />
+
       <Head>
         <title>نگین | پنل کاربری 💄</title>
       </Head>
 
-      <ToastContainer rtl />
-
       <div className={styles.sidePanel}>
         <div className={styles.info}>
-          <span>{userInformations.name}</span>
-          <span className={styles.phone}>{userInformations.phone}</span>
+          <span>{user?.name}</span>
+          <span className={styles.phone}>{user?.phone}</span>
         </div>
         <ul>
           <li onClick={() => refetchPurchases()}>
@@ -139,25 +145,26 @@ const Dashboard = () => {
       </div>
 
       <div className={styles.mainContent}>
-        {purchasesLoading ? (
-          <h3>در حال بارگذاری دوره‌ها...</h3>
-        ) : purchases.length > 0 ? (
-          purchases.map((product) => (
+        <h2>سلام {user?.name || "کاربر عزیز"} 👋</h2>
+
+        {isLicensesLoading ? (
+          <h3>در حال بارگذاری دوره‌های خریداری شده...</h3>
+        ) : licensesPurchased && licensesPurchased.length > 0 ? (
+          licensesPurchased.map((item, index) => (
             <Licence
-              key={product.infoLicense.license_key}
-              licence={product.infoLicense.license_key}
-              title={product.product.title}
-              handleCopy={() => copyLicense(product.infoLicense.license_key)}
+              key={item.licenseKey || index}
+              licence={item.licenseKey}
+              title={item.title}
+              handleCopy={() => copyLicense(item.licenseKey)}
             />
           ))
         ) : (
-          <>
-            <h3>هنوز دوره‌ای خریداری نکرده‌اید 😔</h3>
-            <Link href="/courses" className={styles.link}>
-              خرید دوره جدید
-            </Link>
-          </>
+          <h3>هنوز دوره‌ای خریداری نکرده‌اید 😔</h3>
         )}
+
+        <Link href="/courses" className={styles.link}>
+          خرید دوره جدید
+        </Link>
       </div>
     </div>
   );

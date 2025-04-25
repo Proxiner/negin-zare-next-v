@@ -6,8 +6,7 @@
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 85dvh;
-  background-color: #fcfcfc;
+  height: 400px;
 
   h1 {
     font-size: 2rem;
@@ -96,31 +95,27 @@
       width: 100%;
     }
 
-    h3{
+    h3 {
       margin-bottom: 0.5rem;
     }
 
-    .link{
+    .link {
       text-decoration: none;
       color: #ffffff;
       background-color: #c25d23;
       width: max-content;
-      padding: 0.5rem 1rem;
+      padding: 0.2rem 0.5rem;
+      cursor: pointer;
     }
 
     p {
-      width: 80%;
+      width: 100%;
+      height: max-content;
       background-color: rgba(241, 202, 180, 0.391);
       font-family: dana-light;
       font-size: 1.2rem;
-      padding: 0 0.5rem;
-
-      span {
-        color: #d08051;
-        font-style: normal;
-        padding: 0 0.2rem;
-        cursor: pointer;
-      }
+      padding: 1rem 0.5rem;
+      line-height: 2.5rem;
     }
   }
 }

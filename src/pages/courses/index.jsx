@@ -90,6 +90,10 @@ export default function Courses() {
     } else if (course.discount_type === "static") {
       finalPrice = course.price - course.discount_value;
       hasDiscount = true;
+    } else {
+      // discount_type is null or unrecognized
+      finalPrice = course.price;
+      hasDiscount = false;
     }
 
     coursePrices[course.id] = {
@@ -125,12 +129,10 @@ export default function Courses() {
                     <span className={styles.discountedPrice}>
                       {price} تومان
                     </span>
-                    <span className={styles.originalPrice}>
-                      {original} تومان
-                    </span>
+                    <span className={styles.afterPrice}>{original} تومان</span>
                   </>
                 ) : (
-                  <span className={styles.originalPrice}>{original} تومان</span>
+                  <span>{original} تومان</span>
                 )}
               </div>
               <Link href={`/courses/${course.slug}`}>
