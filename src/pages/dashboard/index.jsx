@@ -12,6 +12,7 @@ import { LoginContext } from "@/context/LoginContext";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Head from "next/head";
+import Loading from "@/components/loading";
 
 const fetchUser = async (token) => {
   const res = await axios.get(`${base_url}/getUser`, {
@@ -103,12 +104,7 @@ const Dashboard = () => {
   }, [isError, router]);
 
   if (isLoading) {
-    return (
-      <div className={styles.wrapper}>
-        <h1>در حال بارگذاری اطلاعات هستیم...</h1>
-        <ToastContainer rtl />
-      </div>
-    );
+    return <Loading />;
   }
 
   if (isError) {

@@ -2,11 +2,13 @@
 
 .container {
   display: flex;
+  justify-content: space-between;
+  align-items: center;
   flex-wrap: wrap;
   width: 100%;
   height: 100%;
-  padding: 1rem 8%;
-  gap: 1rem;
+  padding: 1rem 4%;
+  gap: 0.5rem;
   margin-top: 2rem;
 
   @media #{responsive.$laptop} {
@@ -25,6 +27,7 @@
   @media #{responsive.$phone} {
     padding: 1rem 4%;
     justify-content: center;
+    gap: 1rem;
   }
 
   .courseContainer {

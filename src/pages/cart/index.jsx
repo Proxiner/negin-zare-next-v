@@ -10,17 +10,20 @@ import BreadCrumb from "@/components/breadcrumb";
 import { base_url } from "@/api/url";
 import { LoginContext } from "@/context/LoginContext";
 import NotifyIphoneUsers from "@/components/notifyIphoneUsers";
+import Loading from "@/components/loading";
 import Head from "next/head";
 
 function Cart() {
-  const [cartData, setCartData] = useState("empty");
+  const [cartData, setCartData] = useState([]);
   const [isLogged, setIsLogged] = useState("");
-  const [cartLength, setCartLength] = useState();
-
+  const [loading, setLoading] = useState(true);
   const { token } = useContext(LoginContext);
+  const router = useRouter();
 
   useEffect(() => {
-    if (localStorage.getItem("token") === null) {
+    const localToken = localStorage.getItem("token");
+
+    if (!localToken) {
       toast.warning(
         <div className="toast-container">
           <span className="toast-message"> لطفا وارد حساب خود شوید! </span>
@@ -31,56 +34,54 @@ function Cart() {
         {
           position: "top-right",
           autoClose: 4000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
           theme: "colored",
           transition: Bounce,
         }
       );
+      setIsLogged("not-logged-in");
+      setLoading(false);
+      return;
     }
-    setIsLogged("not-logged-in");
-  }, [token]);
 
-  useEffect(() => {
-    if (token) {
-      const fetchCartList = async () => {
-        try {
-          const response = await axios.get(`${base_url}/cart/list`, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
-          setCartData(response.data.items);
-          setIsLogged("logged-in");
-        } catch (error) {
-          toast.warning(
-            <div className="toast-container">
-              <span className="toast-message"> لطفا وارد حساب خود شوید! </span>
-              <Link href="/login" className="toast-link">
-                👈 صفحه ورود
-              </Link>
-            </div>,
-            {
-              position: "top-right",
-              autoClose: 4000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "colored",
-              transition: Bounce,
-            }
-          );
-          setIsLogged("not-logged-in");
+    const fetchCartList = async () => {
+      try {
+        const response = await axios.get(`${base_url}/cart/list`, {
+          headers: {
+            Authorization: `Bearer ${localToken.replace(/"/g, "")}`,
+          },
+        });
+
+        const items = response.data.items;
+        if (!items || items.length === 0) {
+          router.push("/courses");
+          return;
         }
-      };
-      fetchCartList();
-    }
-  }, [token]);
+
+        setCartData(items);
+        setIsLogged("logged-in");
+      } catch (error) {
+        toast.warning(
+          <div className="toast-container">
+            <span className="toast-message"> لطفا وارد حساب خود شوید! </span>
+            <Link href="/login" className="toast-link">
+              👈 صفحه ورود
+            </Link>
+          </div>,
+          {
+            position: "top-right",
+            autoClose: 4000,
+            theme: "colored",
+            transition: Bounce,
+          }
+        );
+        setIsLogged("not-logged-in");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCartList();
+  }, [token, router]);
 
   const removeCourse = async (courseId) => {
     try {
@@ -93,7 +94,13 @@ function Cart() {
           },
         }
       );
-      setCartData(cartData.filter((course) => course.id !== courseId));
+
+      const updatedCart = cartData.filter((course) => course.id !== courseId);
+      setCartData(updatedCart);
+
+      if (updatedCart.length === 0) {
+        router.push("/courses");
+      }
     } catch (error) {
       toast.error(
         <div className="toast-container">
@@ -102,11 +109,6 @@ function Cart() {
         {
           position: "top-right",
           autoClose: 4000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
           theme: "light",
           transition: Bounce,
         }
@@ -124,111 +126,89 @@ function Cart() {
     return price;
   };
 
-  const router = useRouter();
+  if (loading) {
+    return <Loading />;
+  }
 
-  if (cartLength == 0) {
+  if (isLogged === "not-logged-in") {
     return (
       <div className={styles.notify}>
         <ToastContainer rtl />
-        <h1> سبد خرید شما خالی هست :( </h1>
-        <Link href={"/courses"}> مشاهده دوره ها </Link>
+        <h1> لطفا مجددا وارد حساب خود شوید! </h1>
+        <Link href={"/login"}> صفحه ورود به حساب </Link>
       </div>
     );
   }
 
-  switch (isLogged) {
-    case "logged-in":
-      return (
-        <div className={styles.container}>
-          <Head>
-            <title>صفحه | سبد خرید 🛒</title>
-          </Head>
-          <BreadCrumb
-            title={
-              <>
-                <Link
-                  style={{ color: "#111", textDecoration: "none" }}
-                  href={"/"}
-                >
-                  خانه
-                </Link>
-                /
-                <Link
-                  style={{ color: "#111", textDecoration: "none" }}
-                  href={"/courses"}
-                >
-                  دوره ها
-                </Link>
-                /
-                <Link
-                  style={{ color: "#111", textDecoration: "none" }}
-                  href={"/cart"}
-                >
-                  سبد خرید
-                </Link>
-                /
-              </>
-            }
-            currentHref={router.route}
-            proceedTitle={"مرحله بعد"}
-            hrefProceed={"/cart/checkout"}
-            show={false}
-          />
-          <ToastContainer rtl />
-          <div className={styles.list}>
-            {cartData.map((course, index) => {
-              const discountedPrice = calculateDiscountedPrice(
-                course.price,
-                course.discount_type,
-                course.discount_value
-              );
-              const hasDiscount = course.discount_type !== null;
+  return (
+    <div className={styles.container}>
+      <Head>
+        <title>صفحه | سبد خرید 🛒</title>
+      </Head>
+      <BreadCrumb
+        title={
+          <>
+            <Link style={{ color: "#111", textDecoration: "none" }} href={"/"}>
+              خانه
+            </Link>{" "}
+            /{" "}
+            <Link
+              style={{ color: "#111", textDecoration: "none" }}
+              href={"/courses"}
+            >
+              دوره ها
+            </Link>{" "}
+            /{" "}
+          </>
+        }
+        currentHref={router.route}
+        proceedTitle={"مرحله بعد"}
+        hrefProceed={"/cart/checkout"}
+        show={false}
+      />
+      <ToastContainer rtl />
+      <div className={styles.list}>
+        {cartData.map((course, index) => {
+          const discountedPrice = calculateDiscountedPrice(
+            course.price,
+            course.discount_type,
+            course.discount_value
+          );
+          const hasDiscount = course.discount_type !== null;
 
-              return (
-                <React.Fragment key={`course-${course.id}`}>
-                  <CourseData
-                    courseId={course.id}
-                    title={course.title}
-                    teacher={course.teacher.name}
-                    imageSrc={`http://neginzare.com:8080/storage/${course.thumbnail}`}
-                    type={course.type}
-                    price={
-                      hasDiscount ? (
-                        <span>
-                          <span className={styles.originalPrice}>
-                            {course.price.toLocaleString("fa-IR")} تومان
-                          </span>{" "}
-                          | با تخفیف :
-                          <span className={styles.discountedPrice}>
-                            {discountedPrice.toLocaleString("fa-IR")}
-                          </span>
-                        </span>
-                      ) : (
-                        `${course.price.toLocaleString("fa-IR")}`
-                      )
-                    }
-                    removeCourse={removeCourse}
-                  />
-                  <div key={`line-${index}`} className={styles.line}></div>
-                </React.Fragment>
-              );
-            })}
-          </div>
-          <NotifyIphoneUsers />
-        </div>
-      );
-
-    case "not-logged-in":
-      return (
-        <div className={styles.notify}>
-          <h1> لطفا مجددا وارد حساب خود شوید! </h1>
-          <Link href={"/login"}> صفحه ورود به حساب </Link>
-        </div>
-      );
-
-    default:
-      return null;
-  }
+          return (
+            <React.Fragment key={`course-${course.id}`}>
+              <CourseData
+                courseId={course.id}
+                title={course.title}
+                teacher={course.teacher.name}
+                imageSrc={`http://neginzare.com:8080/storage/${course.thumbnail}`}
+                type={course.type}
+                price={
+                  hasDiscount ? (
+                    <span>
+                      <span className={styles.originalPrice}>
+                        {course.price.toLocaleString("fa-IR")} تومان
+                      </span>{" "}
+                      | با تخفیف :
+                      <span className={styles.discountedPrice}>
+                        {discountedPrice.toLocaleString("fa-IR")}
+                      </span>
+                    </span>
+                  ) : (
+                    `${course.price.toLocaleString("fa-IR")}`
+                  )
+                }
+                removeCourse={removeCourse}
+              />
+              <div key={`line-${index}`} className={styles.line}></div>
+            </React.Fragment>
+          );
+        })}
+      </div>
+      <NotifyIphoneUsers />
+    </div>
+  );
 }
 
 export default Cart;

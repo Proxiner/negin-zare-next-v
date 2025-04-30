@@ -8,22 +8,38 @@ import "react-toastify/dist/ReactToastify.css";
 import { FaArrowLeftLong } from "react-icons/fa6";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { CartContext } from "@/context/CartContext"; // Import CartContext
+import { CartContext } from "@/context/CartContext";
 import axios from "axios";
 import { base_url } from "@/api/url";
 import NotifyIphoneUsers from "@/components/notifyIphoneUsers";
 import Head from "next/head";
+import { useQuery } from "@tanstack/react-query";
+import Loading from "@/components/loading";
 
-const CourseDetail = ({ course }) => {
+const fetchCourse = async (slug) => {
+  const res = await axios.get(`${base_url}/product/${slug}`);
+  return res.data;
+};
+
+const CourseDetail = () => {
   const router = useRouter();
+  const { slug } = router.query;
   const stripHtml = useStripHtml();
   const [courseDiscountPrice, setCourseDiscountPrice] = useState(null);
-
   const [exist, setExist] = useState(false);
-  const [token, setToken] = useState();
+  const [token, setToken] = useState(null);
   const [discountState, setDiscountState] = useState(false);
+  const { setCartLength } = useContext(CartContext);
 
-  const { setCartLength } = useContext(CartContext); // Use CartContext
+  const {
+    data: course,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["course", slug],
+    queryFn: () => fetchCourse(slug),
+    enabled: !!slug, // wait until slug is available
+  });
 
   useEffect(() => {
     if (localStorage.getItem("token") === null) {
@@ -39,13 +55,8 @@ const CourseDetail = ({ course }) => {
         {
           position: "top-right",
           autoClose: 4000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
           transition: Bounce,
+          theme: "light",
         }
       );
     } else {
@@ -59,17 +70,14 @@ const CourseDetail = ({ course }) => {
       let discountPrice;
       switch (course.discount_type) {
         case "percent":
-          const calculateDiscount =
-            course.price * (course.discount_value / 100);
-          discountPrice = course.price - calculateDiscount;
+          discountPrice =
+            course.price - course.price * (course.discount_value / 100);
           setDiscountState(true);
           break;
-
         case "static":
           discountPrice = course.price - course.discount_value;
           setDiscountState(true);
           break;
-
         default:
           discountPrice = course.price;
           setDiscountState(false);
@@ -78,6 +86,29 @@ const CourseDetail = ({ course }) => {
       setCourseDiscountPrice(discountPrice.toLocaleString("fa-IR"));
     }
   }, [course]);
+
+  useEffect(() => {
+    const checkCourseInCart = async () => {
+      if (token && course) {
+        try {
+          const cartResponse = await axios.get(`${base_url}/cart/list`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+
+          const existsInCart = cartResponse.data.items.some(
+            (item) => item.id === course.id
+          );
+          setExist(existsInCart);
+        } catch (error) {
+          console.warn("Error checking cart contents:", error);
+        }
+      }
+    };
+
+    checkCourseInCart();
+  }, [token, course]);
 
   const addCourse = async () => {
     if (!token) {
@@ -93,16 +124,11 @@ const CourseDetail = ({ course }) => {
         {
           position: "top-right",
           autoClose: 4000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
           transition: Bounce,
+          theme: "light",
         }
       );
-      return; // Prevent further actions if no token
+      return;
     }
 
     try {
@@ -116,73 +142,55 @@ const CourseDetail = ({ course }) => {
         }
       );
 
-      const data = response.data.status;
-
       if (response.data.message === "شما قبلا این دوره را خریداری کرده اید") {
         toast.error(
           <div className="toast-container">
             <span className="toast-message">
               شما قبلا دوره را خریداری کرده اید!
-              <Link href={"/dashboard"}> دوره های من </Link>
+              <Link href={"/dashboard"}> دوره‌های من </Link>
             </span>
           </div>,
           {
             position: "top-right",
             autoClose: 4000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
             theme: "light",
             transition: Bounce,
           }
         );
       }
-      setExist(data);
 
-      // Fetch the updated cart list to get the new length
+      setExist(true);
+
       const cartResponse = await axios.get(`${base_url}/cart/list`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
+
       const newCartLength = cartResponse.data.items.length;
-      setCartLength(newCartLength); // Update the cart length in the context
+      setCartLength(newCartLength);
     } catch (error) {
-      // Error handling for the add course request
       toast.warning(
         <div className="toast-container">
           <span className="toast-message">
-            مشکلی در اضافه کردن دوره به سبد خرید به وجود آمد، لطفا دوباره تلاش
-            کنید.
+            مشکلی در اضافه کردن دوره به سبد خرید به وجود آمد.
           </span>
         </div>,
         {
           position: "top-right",
           autoClose: 4000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
           transition: Bounce,
+          theme: "light",
         }
       );
     }
   };
 
-  if (router.isFallback) {
-    return (
-      <div className={styles.loading}>
-        در حال بارگذاری...
-        {/* You can add a spinner here */}
-      </div>
-    );
+  if (isLoading || router.isFallback) {
+    return <Loading />;
   }
 
-  if (!course) {
+  if (isError || !course) {
     return <div className={styles.error}>خطا: دوره مورد نظر پیدا نشد.</div>;
   }
 
@@ -211,8 +219,7 @@ const CourseDetail = ({ course }) => {
                 className={styles.remove}
                 onClick={() => router.push("/cart")}
               >
-                ادامه خرید دوره
-                <FaArrowLeftLong />
+                ادامه خرید دوره <FaArrowLeftLong />
               </button>
             ) : (
               <button className={styles.buy} onClick={addCourse}>
@@ -227,14 +234,13 @@ const CourseDetail = ({ course }) => {
             )}
           </section>
         </div>
-
         <div className={styles.courseModel}>
           <Image
             width={400}
             height={600}
             src={`http://neginzare.com:8080/storage/${course.thumbnail}`}
             alt="course image"
-            onError={(e) => (e.target.src = "/assets/images/placeholder.png")} // Fallback image
+            onError={(e) => (e.target.src = "/assets/images/placeholder.png")}
           />
         </div>
       </div>
@@ -242,38 +248,5 @@ const CourseDetail = ({ course }) => {
     </>
   );
 };
-
-export async function getStaticPaths() {
-  try {
-    const response = await axios.get(`${base_url}/products`);
-    const courses = response.data;
-    const paths = courses.map((course) => ({
-      params: { slug: course.slug },
-    }));
-
-    return { paths, fallback: true };
-  } catch (error) {
-    return { paths: [], fallback: true };
-  }
-}
-
-export async function getStaticProps({ params }) {
-  try {
-    const response = await axios.get(`${base_url}/product/${params.slug}`);
-    const course = response.data;
-
-    if (!course) {
-      return {
-        notFound: true,
-      };
-    }
-
-    return { props: { course }, revalidate: 60 };
-  } catch (error) {
-    return {
-      notFound: true,
-    };
-  }
-}
 
 export default CourseDetail;

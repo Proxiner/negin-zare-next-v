@@ -1,24 +1,23 @@
-@use './base/reset';
-@use './base/fonts';
-@use './base/colors';
+@use "./base/reset";
+@use "./base/fonts";
+@use "./base/colors";
 
-@use './utils/media-queries';
+@use "./utils/media-queries";
 
-.toast-container{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    width: 100%;
-    font-family: dana;
-    gap: 0.5rem;
-    color: #111;
+.toast-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  font-family: dana;
+  gap: 0.5rem;
+  color: #111;
 
-    .toast-link{
-        width: max-content;
-        background-color: #111;
-        padding: 0.5rem 1rem;
-        color: #fff;
-        text-decoration: none;
-    }
+  .toast-link {
+    width: max-content;
+    background-color: #111;
+    padding: 0.5rem 1rem;
+    color: #fff;
+    text-decoration: none;
+  }
 }
-

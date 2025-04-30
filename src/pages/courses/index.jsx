@@ -12,6 +12,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { base_url } from "@/api/url";
 import { toast, Bounce } from "react-toastify";
+import Loading from "@/components/loading";
 
 const fetchCourses = async () => {
   const { data } = await axios.get(`${base_url}/products`);
@@ -53,7 +54,7 @@ export default function Courses() {
 
   // 3) Loading state
   if (isLoading) {
-    return <div className={styles.loading}>در حال بارگذاری دوره‌ها…</div>;
+    return <Loading />;
   }
 
   // 4) Error state
