@@ -38,11 +38,15 @@ const CourseDetail = () => {
   } = useQuery({
     queryKey: ["course", slug],
     queryFn: () => fetchCourse(slug),
-    enabled: !!slug, // wait until slug is available
+    enabled: !!slug,
   });
 
   useEffect(() => {
-    if (localStorage.getItem("token") === null) {
+    const localToken = localStorage.getItem("token");
+    if (localToken) {
+      const cleanedToken = localToken.replace(/"/g, "");
+      setToken(cleanedToken);
+    } else {
       toast.info(
         <div className="toast-container">
           <span className="toast-message">
@@ -59,9 +63,6 @@ const CourseDetail = () => {
           theme: "light",
         }
       );
-    } else {
-      const retrieveToken = localStorage.getItem("token")?.replace(/"/g, "");
-      setToken(retrieveToken);
     }
   }, []);
 
@@ -81,32 +82,29 @@ const CourseDetail = () => {
         default:
           discountPrice = course.price;
           setDiscountState(false);
-          break;
       }
       setCourseDiscountPrice(discountPrice.toLocaleString("fa-IR"));
     }
   }, [course]);
 
+  const checkCourseInCart = async () => {
+    if (!token || !course) return;
+    try {
+      const cartResponse = await axios.get(`${base_url}/cart/list`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const alreadyInCart = cartResponse.data.items.some(
+        (item) => item.id === course.id
+      );
+      setExist(alreadyInCart);
+    } catch (error) {
+      console.warn("Error checking cart contents:", error);
+    }
+  };
+
   useEffect(() => {
-    const checkCourseInCart = async () => {
-      if (token && course) {
-        try {
-          const cartResponse = await axios.get(`${base_url}/cart/list`, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
-
-          const existsInCart = cartResponse.data.items.some(
-            (item) => item.id === course.id
-          );
-          setExist(existsInCart);
-        } catch (error) {
-          console.warn("Error checking cart contents:", error);
-        }
-      }
-    };
-
     checkCourseInCart();
   }, [token, course]);
 
@@ -132,7 +130,24 @@ const CourseDetail = () => {
     }
 
     try {
-      const response = await axios.post(
+      const cartResponse = await axios.get(`${base_url}/cart/list`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const alreadyInCart = cartResponse.data.items.some(
+        (item) => item.id === course.id
+      );
+
+      if (alreadyInCart) {
+        setExist(true);
+        toast.warn("دوره به سبد خرید اضافه شده!");
+        router.push("/cart");
+        return;
+      }
+
+      await axios.post(
         `${base_url}/cart/add`,
         { productId: course.id },
         {
@@ -142,33 +157,14 @@ const CourseDetail = () => {
         }
       );
 
-      if (response.data.message === "شما قبلا این دوره را خریداری کرده اید") {
-        toast.error(
-          <div className="toast-container">
-            <span className="toast-message">
-              شما قبلا دوره را خریداری کرده اید!
-              <Link href={"/dashboard"}> دوره‌های من </Link>
-            </span>
-          </div>,
-          {
-            position: "top-right",
-            autoClose: 4000,
-            theme: "light",
-            transition: Bounce,
-          }
-        );
-      }
-
-      setExist(true);
-
-      const cartResponse = await axios.get(`${base_url}/cart/list`, {
+      const updatedCart = await axios.get(`${base_url}/cart/list`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
 
-      const newCartLength = cartResponse.data.items.length;
-      setCartLength(newCartLength);
+      setCartLength(updatedCart.data.items.length);
+      setExist(true);
     } catch (error) {
       toast.warning(
         <div className="toast-container">
@@ -186,9 +182,7 @@ const CourseDetail = () => {
     }
   };
 
-  if (isLoading || router.isFallback) {
-    return <Loading />;
-  }
+  if (isLoading || router.isFallback) return <Loading />;
 
   if (isError || !course) {
     return <div className={styles.error}>خطا: دوره مورد نظر پیدا نشد.</div>;
@@ -240,7 +234,9 @@ const CourseDetail = () => {
             height={600}
             src={`http://neginzare.com:8080/storage/${course.thumbnail}`}
             alt="course image"
-            onError={(e) => (e.target.src = "/assets/images/placeholder.png")}
+            onError={(e) =>
+              (e.currentTarget.src = "/assets/images/placeholder.png")
+            }
           />
         </div>
       </div>
